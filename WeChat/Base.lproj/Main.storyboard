@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="82P-0b-Lxe">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--We Chat Tab Bar Controller-->
+        <scene sceneID="VoI-15-U6X">
+            <objects>
+                <tabBarController id="82P-0b-Lxe" customClass="WeChatTabBarController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="thx-9w-sbI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="VhV-wD-ooQ" kind="relationship" relationship="viewControllers" id="WLq-4Q-jqo"/>
+                        <segue destination="9NF-xB-TTP" kind="relationship" relationship="viewControllers" id="bQl-lR-U5c"/>
+                        <segue destination="JtT-7D-UO3" kind="relationship" relationship="viewControllers" id="4xs-08-XDG"/>
+                        <segue destination="H1f-Qq-Txl" kind="relationship" relationship="viewControllers" id="b5D-p1-iA7"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ayn-mx-2bt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-467" y="1237"/>
+        </scene>
+        <!--Message-->
+        <scene sceneID="YH8-I0-y2U">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Message" id="VhV-wD-ooQ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="PuY-tk-K5C"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eOk-xR-1t6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1" y="1049"/>
+        </scene>
+        <!--Contact-->
+        <scene sceneID="0s7-bq-iB0">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Contact" id="9NF-xB-TTP" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="0V8-4f-POA"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Al-L2-Phj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="59.5" y="1155"/>
+        </scene>
+        <!--Discover-->
+        <scene sceneID="gTp-me-dvt">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Discover" id="JtT-7D-UO3" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="f9N-Fw-ghr"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VrA-xR-eXQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="59" y="1336"/>
+        </scene>
+        <!--Me-->
+        <scene sceneID="tSg-Br-yVW">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Me" id="H1f-Qq-Txl" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="Paw-xb-kir"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uye-Al-lt5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-18.5" y="1448"/>
+        </scene>
+    </scenes>
+</document>
