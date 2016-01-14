@@ -11,6 +11,9 @@
 		760D3F1B1C42607900F41269 /* SearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D3F1A1C42607900F41269 /* SearchBarViewController.swift */; };
 		761042CD1C427A1B00D6FB85 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761042CB1C427A1B00D6FB85 /* Contact.storyboard */; };
 		761042D11C4294A800D6FB85 /* ResourceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761042D01C4294A800D6FB85 /* ResourceDetailViewController.swift */; };
+		7610D87A1C47AF1C003D012D /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610D8791C47AF1C003D012D /* PersonViewController.swift */; };
+		7610D87D1C47BA17003D012D /* PersonInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610D87C1C47BA17003D012D /* PersonInfoCell.swift */; };
+		7610D87F1C47BB98003D012D /* PersonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610D87E1C47BB98003D012D /* PersonInfo.swift */; };
 		7610E48D1C44A51400F80B71 /* RemarkTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610E48C1C44A51400F80B71 /* RemarkTagViewController.swift */; };
 		761513101C3F5C7600DE8B2A /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7615130F1C3F5C7600DE8B2A /* ContactViewController.swift */; };
 		761513121C3F7EC100DE8B2A /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761513111C3F7EC100DE8B2A /* ContactTableViewCell.swift */; };
@@ -62,6 +65,9 @@
 		760D3F1A1C42607900F41269 /* SearchBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarViewController.swift; sourceTree = "<group>"; };
 		761042CC1C427A1B00D6FB85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Contact.storyboard; sourceTree = "<group>"; };
 		761042D01C4294A800D6FB85 /* ResourceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceDetailViewController.swift; sourceTree = "<group>"; };
+		7610D8791C47AF1C003D012D /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
+		7610D87C1C47BA17003D012D /* PersonInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfoCell.swift; sourceTree = "<group>"; };
+		7610D87E1C47BB98003D012D /* PersonInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInfo.swift; sourceTree = "<group>"; };
 		7610E48C1C44A51400F80B71 /* RemarkTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemarkTagViewController.swift; sourceTree = "<group>"; };
 		7615130F1C3F5C7600DE8B2A /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		761513111C3F7EC100DE8B2A /* ContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
@@ -122,7 +128,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		761042CE1C42942A00D6FB85 /* list */ = {
+		761042CE1C42942A00D6FB85 /* List */ = {
 			isa = PBXGroup;
 			children = (
 				7615130F1C3F5C7600DE8B2A /* ContactViewController.swift */,
@@ -131,17 +137,27 @@
 				760D3F161C421D3D00F41269 /* TableViewIndex.swift */,
 				760D3F1A1C42607900F41269 /* SearchBarViewController.swift */,
 			);
-			name = list;
+			name = List;
 			sourceTree = "<group>";
 		};
-		761042CF1C42945900D6FB85 /* detail */ = {
+		761042CF1C42945900D6FB85 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
 				761042D01C4294A800D6FB85 /* ResourceDetailViewController.swift */,
 				76A9FA0F1C43CA7300E244D3 /* SocialDetailViewController.swift */,
 				7610E48C1C44A51400F80B71 /* RemarkTagViewController.swift */,
 			);
-			name = detail;
+			name = Detail;
+			sourceTree = "<group>";
+		};
+		7610D87B1C47B998003D012D /* Person */ = {
+			isa = PBXGroup;
+			children = (
+				7610D8791C47AF1C003D012D /* PersonViewController.swift */,
+				7610D87C1C47BA17003D012D /* PersonInfoCell.swift */,
+				7610D87E1C47BB98003D012D /* PersonInfo.swift */,
+			);
+			name = Person;
 			sourceTree = "<group>";
 		};
 		7615130A1C3F586300DE8B2A /* WeChatTabBar */ = {
@@ -153,6 +169,7 @@
 				7615130D1C3F593900DE8B2A /* Discover */,
 				7615130C1C3F593000DE8B2A /* Contact */,
 				761042CB1C427A1B00D6FB85 /* Contact.storyboard */,
+				76A9FA111C43E6C700E244D3 /* DrawView.swift */,
 				7615130B1C3F589400DE8B2A /* Message */,
 				76A9D33B1C3CF2F2001805CA /* WeChatTabBarController.swift */,
 				765964441C3BF60800910F0D /* WeChat.swift */,
@@ -173,9 +190,9 @@
 		7615130C1C3F593000DE8B2A /* Contact */ = {
 			isa = PBXGroup;
 			children = (
-				761042CE1C42942A00D6FB85 /* list */,
-				761042CF1C42945900D6FB85 /* detail */,
-				76A9FA111C43E6C700E244D3 /* DrawView.swift */,
+				761042CE1C42942A00D6FB85 /* List */,
+				761042CF1C42945900D6FB85 /* Detail */,
+				7610D87B1C47B998003D012D /* Person */,
 			);
 			name = Contact;
 			sourceTree = "<group>";
@@ -406,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				760D3F1B1C42607900F41269 /* SearchBarViewController.swift in Sources */,
+				7610D87F1C47BB98003D012D /* PersonInfo.swift in Sources */,
 				7659640C1C3BE90700910F0D /* ViewController.swift in Sources */,
 				76A9FA121C43E6C700E244D3 /* DrawView.swift in Sources */,
 				761513101C3F5C7600DE8B2A /* ContactViewController.swift in Sources */,
@@ -417,11 +435,13 @@
 				76A9D33C1C3CF2F2001805CA /* WeChatTabBarController.swift in Sources */,
 				760D3F171C421D3D00F41269 /* TableViewIndex.swift in Sources */,
 				765964431C3BF53B00910F0D /* WeChatTableViewCell.swift in Sources */,
+				7610D87A1C47AF1C003D012D /* PersonViewController.swift in Sources */,
 				7659640A1C3BE90700910F0D /* AppDelegate.swift in Sources */,
 				76B965FC1C467A3300678AE5 /* WeChatDrawView.swift in Sources */,
 				76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */,
 				761513121C3F7EC100DE8B2A /* ContactTableViewCell.swift in Sources */,
 				765773731C3FE99F007AF9B9 /* DiscoverViewController.swift in Sources */,
+				7610D87D1C47BA17003D012D /* PersonInfoCell.swift in Sources */,
 				7653D22D1C4518510085F983 /* WeChatBottomAlert.swift in Sources */,
 				765964451C3BF60800910F0D /* WeChat.swift in Sources */,
 				7610E48D1C44A51400F80B71 /* RemarkTagViewController.swift in Sources */,

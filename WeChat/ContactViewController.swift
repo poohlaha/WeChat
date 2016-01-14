@@ -8,7 +8,7 @@
 
 import UIKit
 
-//联系人页面
+//联系人页面,这里应该使用UITableViewController
 class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,WeChatPropDelegate {
 
     //@IBOutlet weak var searchBar: UISearchBar!

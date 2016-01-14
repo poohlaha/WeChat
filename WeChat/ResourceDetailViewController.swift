@@ -71,25 +71,49 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     
     //MARKS: 取消tableview cell选中状态,使用尾部闭包
     override func viewWillAppear(animated: Bool) {
-        setCellStyleNone(3,y: 0,callback: { (cell:UITableViewCell) -> Void in
-            cell.selectionStyle = .None
-            cell.backgroundColor = UIColor.clearColor()
-            cell.backgroundColor = self.getBackgroundColor()
-            //MARKS: 去掉最后一行cell的分割线
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
-        })
+        setCellStyleNone()
         
+    }
+    
+    func setCellStyleNone(){
+        for(var i = 0;i < tableView.numberOfSections; i++){
+            for(var j = 0;j < tableView.numberOfRowsInSection(i);j++){
+               
+                if (i == 1 && j == 0) || (i == 2 && j == 1) || (i == 2 && j == 2){
+                    continue
+                }
+                
+                
+                let indexPath = NSIndexPath(forRow: j, inSection: i)
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                cell?.selectionStyle = .None
+                
+                if i == 3 && j == 0 {
+                    cell!.backgroundColor = UIColor.clearColor()
+                    cell!.backgroundColor = self.getBackgroundColor()
+                    //MARKS: 去掉最后一行cell的分割线
+                    cell!.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell!.bounds.size.width);
+                }
+            }
+        }
+
     }
     
     //MARKS: 页面跳转,参数传递
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "socialInfo" {//跳转到社交资料页面
             //let socialDetailController = segue.destinationViewController as! SocialDetailViewController
-            
         } else if segue.identifier == "markInfo"{//跳转到备注信息页面
             let remarkTagController = segue.destinationViewController as! RemarkTagViewController
             remarkTagController.remarkText = self.name.text
+        }else if segue.identifier == "personInfo" {
+            let persionInfoController = segue.destinationViewController as! PersonViewController
+            persionInfoController.navigationTitle = self.name.text
+            persionInfoController.headerImage = self.photoView.image
         }
+        
+        //取消选中状态
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
     }
     
     //MARKS: 去掉tableview随scrollview滚动的黏性
