@@ -38,7 +38,6 @@
 		76A9FA1A1C43FEDD00E244D3 /* WeChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */; };
 		76B965FC1C467A3300678AE5 /* WeChatDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */; };
 		76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */; };
-		76BBDCE51C471D500078DD11 /* IMG_1216.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 76BBDCE41C471D500078DD11 /* IMG_1216.PNG */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +95,6 @@
 		76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationController.swift; sourceTree = "<group>"; };
 		76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatDrawView.swift; sourceTree = "<group>"; };
 		76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatContactPhotoView.swift; sourceTree = "<group>"; };
-		76BBDCE41C471D500078DD11 /* IMG_1216.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_1216.PNG; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,7 +230,6 @@
 		765964081C3BE90700910F0D /* WeChat */ = {
 			isa = PBXGroup;
 			children = (
-				76BBDCE41C471D500078DD11 /* IMG_1216.PNG */,
 				7615130A1C3F586300DE8B2A /* WeChatTabBar */,
 				765964091C3BE90700910F0D /* AppDelegate.swift */,
 				7659640B1C3BE90700910F0D /* ViewController.swift */,
@@ -382,7 +379,6 @@
 				76A9D3421C3CFF87001805CA /* Discover.storyboard in Resources */,
 				765964141C3BE90700910F0D /* Assets.xcassets in Resources */,
 				7659640F1C3BE90700910F0D /* Main.storyboard in Resources */,
-				76BBDCE51C471D500078DD11 /* IMG_1216.PNG in Resources */,
 				76A9D3441C3CFFB8001805CA /* Me.storyboard in Resources */,
 				761042CD1C427A1B00D6FB85 /* Contact.storyboard in Resources */,
 			);
