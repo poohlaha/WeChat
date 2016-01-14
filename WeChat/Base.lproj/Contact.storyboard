@@ -453,16 +453,19 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="150" id="co7-ya-dsX">
-                                        <rect key="frame" x="0.0" y="439.5" width="600" height="150"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="310" id="co7-ya-dsX">
+                                        <rect key="frame" x="0.0" y="439.5" width="600" height="310"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="co7-ya-dsX" id="Tbt-Qm-4UF">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="149.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="309.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Hb-tF-0X9">
-                                                    <rect key="frame" x="15" y="5" width="570" height="139.5"/>
+                                                    <rect key="frame" x="15" y="5" width="570" height="300"/>
                                                     <gestureRecognizers/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="300" id="fVe-VJ-OcK"/>
+                                                    </constraints>
                                                     <connections>
                                                         <outletCollection property="gestureRecognizers" destination="50Z-09-gBl" appends="YES" id="SPJ-Ia-TMN"/>
                                                     </connections>
@@ -640,7 +643,7 @@
                                                 <stackView opaque="NO" contentMode="left" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hQw-gL-KMW">
                                                     <rect key="frame" x="8" y="5" width="551" height="44"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="A2CEB3F0-7F48-4533-AB8E-EA1E996224E3" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="C377EE95-945C-4BE9-AC7E-90B54E6251DD" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="8hI-cV-Q9U"/>
@@ -749,7 +752,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="A2CEB3F0-7F48-4533-AB8E-EA1E996224E3" width="100" height="100">
+        <image name="C377EE95-945C-4BE9-AC7E-90B54E6251DD" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

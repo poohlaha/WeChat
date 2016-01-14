@@ -38,7 +38,7 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     
     func initFrame(){
         //initTableView()
-        //initImageView()
+        initImageView()
         setCellStyleNone(0, y: 0) { (cell) -> () in }
         self.remark.text = remarkText!
         
@@ -84,6 +84,7 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
         self.tableView.endUpdates()
     }
     
+    //MARKS: 创建图片上的文字
     func createText(size:CGFloat,string:String,frame:CGRect) -> CATextLayer{
         let textLayer = CATextLayer()
         textLayer.font = CTFontCreateWithName("AlNile",size,nil)
@@ -132,6 +133,8 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         // Set photoImageView to display the selected image.
         photoView.image = selectedImage
+        //移除文本和边框
+        photoView.layer.sublayers = []
         // Dismiss the picker.
         picker.dismissViewControllerAnimated(true) { () -> Void in
             self.setDefaultTabBarIndex()
