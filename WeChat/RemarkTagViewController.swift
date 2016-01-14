@@ -9,7 +9,7 @@
 import UIKit
 
 //备注信息页面
-class RemarkTagViewController: WeChatTableViewNormalController {
+class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
     @IBOutlet weak var remark: UITextField!
     @IBOutlet weak var addPhoneBtn: UIButton!
@@ -38,7 +38,7 @@ class RemarkTagViewController: WeChatTableViewNormalController {
     
     func initFrame(){
         //initTableView()
-        initImageView()
+        //initImageView()
         setCellStyleNone(0, y: 0) { (cell) -> () in }
         self.remark.text = remarkText!
         
@@ -47,8 +47,9 @@ class RemarkTagViewController: WeChatTableViewNormalController {
     
     func initImageView(){
         let layer = photoView.layer
-        layer.borderColor = UIColor.grayColor().CGColor
-        layer.borderWidth = 1
+        //layer.borderWidth = 1
+        layer.addSublayer(drawDashLine(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width - 15 * 2, photoView.frame.height)))
+        
         //在图片上添加文字
         let textWidth:CGFloat = 142
         let textHeight:CGFloat = 20
@@ -56,6 +57,18 @@ class RemarkTagViewController: WeChatTableViewNormalController {
         let y = (photoView.bounds.height - textHeight) / 2
         layer.addSublayer(createText(16,string:"添加名片或相关图片",
             frame:CGRectMake(x,y,textWidth,textHeight)))
+    }
+    
+    //绘制虚线
+    func drawDashLine(rect:CGRect) -> CAShapeLayer{
+        let shape = CAShapeLayer()
+        shape.path = UIBezierPath(rect: rect).CGPath
+        shape.lineDashPattern = [7]
+        shape.lineJoin = kCALineJoinBevel
+        shape.strokeColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1).CGColor
+        shape.fillColor = UIColor.clearColor().CGColor
+        shape.lineWidth = 1
+        return shape
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -94,4 +107,41 @@ class RemarkTagViewController: WeChatTableViewNormalController {
             self.tableView.endUpdates()
         }
     }*/
+    
+    /*************************** SELECT IMAGE *****************************/
+    //MARKS: 添加图片
+    @IBAction func addImagePhoto(sender: UITapGestureRecognizer) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .PhotoLibrary
+        // Make sure ViewController is notified when the user picks an image.
+        imagePickerController.delegate = self
+        self.presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+    
+    
+    // MARKS: 取消的时候默认选中第1个TabBar
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true) { () -> Void in
+            self.setDefaultTabBarIndex()
+        }
+    }
+    
+    //MARKS: 获取选中图片,默认选中第1个TabBar
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        // The info dictionary contains multiple representations of the image, and this uses the original.
+        let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        // Set photoImageView to display the selected image.
+        photoView.image = selectedImage
+        // Dismiss the picker.
+        picker.dismissViewControllerAnimated(true) { () -> Void in
+            self.setDefaultTabBarIndex()
+        }
+
+    }
+    
+    //MARKS: 默认选中第1个TabBar
+    func setDefaultTabBarIndex(){
+        let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
+        rootController.selectedIndex = 1
+    }
 }

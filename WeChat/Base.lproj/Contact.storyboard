@@ -19,14 +19,14 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResourceSection1" rowHeight="110" id="0uI-zj-d7H">
                                         <rect key="frame" x="0.0" y="92" width="600" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="0uI-zj-d7H" id="alB-mp-QrC">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0uI-zj-d7H" id="alB-mp-QrC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="109.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6dl-Ma-MPq">
+                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6dl-Ma-MPq">
                                                     <rect key="frame" x="8" y="5" width="570" height="80"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="defultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="uhC-Bx-vGd">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="uhC-Bx-vGd">
                                                             <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="80" id="HfZ-sD-fcP"/>
@@ -38,10 +38,10 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="44" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O8L-0g-tBH">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="44" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O8L-0g-tBH">
                                                             <rect key="frame" x="88" y="0.0" width="482" height="80"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="18" text="张三" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ze-I4-MQY">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="18" text="张三" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ze-I4-MQY">
                                                                     <rect key="frame" x="0.0" y="0.0" width="482" height="25"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="25" id="1XT-7f-ihd"/>
@@ -50,7 +50,7 @@
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="微信号:  test001" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eog-T7-jHU">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="微信号:  test001" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eog-T7-jHU">
                                                                     <rect key="frame" x="0.0" y="33" width="482" height="47"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="55" id="Cid-gc-kWs"/>
@@ -460,8 +460,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Hb-tF-0X9">
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Hb-tF-0X9">
                                                     <rect key="frame" x="15" y="5" width="570" height="139.5"/>
+                                                    <gestureRecognizers/>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="50Z-09-gBl" appends="YES" id="SPJ-Ia-TMN"/>
+                                                    </connections>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -489,6 +493,11 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uUF-8Y-xPc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="50Z-09-gBl">
+                    <connections>
+                        <action selector="addImagePhoto:" destination="hlU-Dk-gb9" id="tLE-9i-6hO"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1751" y="2062"/>
         </scene>
@@ -631,7 +640,7 @@
                                                 <stackView opaque="NO" contentMode="left" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hQw-gL-KMW">
                                                     <rect key="frame" x="8" y="5" width="551" height="44"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="F4E94C29-B45C-4A9E-81C8-6386C6BF9CC9" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="A2CEB3F0-7F48-4533-AB8E-EA1E996224E3" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="8hI-cV-Q9U"/>
@@ -740,7 +749,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="F4E94C29-B45C-4A9E-81C8-6386C6BF9CC9" width="100" height="100">
+        <image name="A2CEB3F0-7F48-4533-AB8E-EA1E996224E3" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
