@@ -23,6 +23,25 @@ class PersonViewController: WeChatTableViewNormalController {
     let paddingTop:CGFloat = 10//上边距
     let paddingBottom:CGFloat = 10//下边距
     
+    let titleTopPadding:CGFloat = 10//标题上边空白
+    let titleBottomPadding:CGFloat = 10//标题下边空白
+    let photoLeftPadding:CGFloat = 5//图片左边空白
+    let photoRightPadding:CGFloat = 5//图片右边空白
+    let photoBottomPadding:CGFloat = 5//图片下边空白
+    let contentRightPadding:CGFloat = 10//内容右边空白
+    let contentTopPadding:CGFloat = 5
+    let contentBottomPadding:CGFloat = 5
+    let dateBottomPadding:CGFloat = 5
+    let dateTopPadding:CGFloat = 10
+    
+    let dateHeight:CGFloat = 25
+    let placeHeight:CGFloat = 25
+    let titleHeight:CGFloat = 20
+    let photoHeight:CGFloat = 50
+    let contentHeight:CGFloat = 40
+    
+    
+    
     var personInfos:[PersonInfo] = [PersonInfo]()
     let headerBgHeight:CGFloat = 300//背景大图高度
     
@@ -73,7 +92,7 @@ class PersonViewController: WeChatTableViewNormalController {
     //MARKS: 初始化数据
     func initData(){
         for i in 0 ..< 10 {
-            let info = Info(content: "我，已经选择了你，你叫我怎么放弃...\n我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+            let info = Info(photoImage:UIImage(named: "contact3"),content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
             let personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
             personInfos.append(personInfo)
         }
@@ -148,14 +167,86 @@ class PersonViewController: WeChatTableViewNormalController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
         
+        let personInfo = personInfos[indexPath.row]
         //set data
-        cell.dateLabel.text = personInfos[0].date
-        cell.placeLabel.text = personInfos[0].place
-        cell.contentLabel.text = personInfos[0].infos[0].content
+        cell.dateLabel.text = personInfo.date
+        cell.placeLabel.text = personInfo.place
+        cell.contentLabel.text = personInfo.infos[0].content
+        cell.photoImageView.image = personInfo.infos[0].photoImage
         
-        //去掉分割线
-        //cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
+        cell.titleLabel.hidden = true
+        
+        //重新计算cell调度
+        //cell.resizeHeight(250)
         return cell
     }
+    
+    //MARKS:根据内容重新计算高度
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        //let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
+        
+        let personInfo = personInfos[indexPath.row]
+        var height:CGFloat = 0
+        for var info in personInfo.infos {
+            
+            if !info.title.isEmpty && info.photoImage != nil {//当有标题和图片
+                height += titleTopPadding
+                //height += cell.titleLabel.frame.height
+                height += titleHeight
+                height += titleBottomPadding
+                
+                //height += cell.photoImageView.frame.height
+                height += photoHeight
+                height += photoBottomPadding
+            } else if info.title.isEmpty && info.photoImage != nil {//当没有标题,只有图片
+                var leftHeight:CGFloat = 0
+                if !personInfo.date.isEmpty {
+                    //leftHeight += cell.dateLabel.frame.height
+                    leftHeight += dateHeight
+                }
+                
+                if !personInfo.place.isEmpty {
+                    //leftHeight += cell.placeLabel.frame.height
+                    leftHeight += placeHeight
+                }
+                
+                if leftHeight > (photoHeight + titleBottomPadding + photoBottomPadding + dateTopPadding) {
+                    height += leftHeight
+                }else{
+                    height += photoHeight + titleBottomPadding + photoBottomPadding + dateTopPadding
+                }
+            } else if info.title.isEmpty && info.photoImage == nil && !info.content.isEmpty{//当只有内容
+                //只有内容的时候要判断是不是大于左边的高度,如果大于以及为主,如果小于以左边为主
+                var leftHeight:CGFloat = 0
+                if !personInfo.date.isEmpty {
+                    //leftHeight += cell.dateLabel.frame.height
+                    leftHeight += dateHeight
+                }
+                
+                if !personInfo.place.isEmpty {
+                    //leftHeight += cell.placeLabel.frame.height
+                    leftHeight += placeHeight
+                }
+                
+                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding + dateTopPadding) {
+                     height += leftHeight
+                }else{
+                    height += contentHeight + contentTopPadding + contentBottomPadding + dateTopPadding
+                }
+                
+                /*if leftHeight > cell.contentLabel.frame.height {
+                    height += leftHeight
+                } else {
+                    height += cell.contentLabel.frame.height
+                }*/
+                
+            } else {
+                continue
+            }
+        }
+        
+        return height
+    }
+
     
 }
