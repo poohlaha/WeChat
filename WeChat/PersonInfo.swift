@@ -12,10 +12,12 @@ class PersonInfo {
     
     //MARKS: Properties
     var date:String = "" //日期
+    var place:String = ""//地点
     var infos:[Info] = [Info]()
     
-    init(date:String,infos:[Info]){
+    init(date:String,place:String,infos:[Info]){
         self.date = date
+        self.place = place
         self.infos = infos
     }
    
@@ -37,6 +39,10 @@ class Info{
     
     init(photoImage:UIImage?,content:String){
         self.photoImage = photoImage
+        self.content = content
+    }
+    
+    init(content:String){
         self.content = content
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		760D3F171C421D3D00F41269 /* TableViewIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D3F161C421D3D00F41269 /* TableViewIndex.swift */; };
 		760D3F1B1C42607900F41269 /* SearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D3F1A1C42607900F41269 /* SearchBarViewController.swift */; };
+		760EFFF51C488B7B004332E2 /* Contact-Detail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 760EFFF31C488B7B004332E2 /* Contact-Detail.storyboard */; };
 		761042CD1C427A1B00D6FB85 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761042CB1C427A1B00D6FB85 /* Contact.storyboard */; };
 		761042D11C4294A800D6FB85 /* ResourceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761042D01C4294A800D6FB85 /* ResourceDetailViewController.swift */; };
 		7610D87A1C47AF1C003D012D /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610D8791C47AF1C003D012D /* PersonViewController.swift */; };
@@ -63,6 +64,7 @@
 /* Begin PBXFileReference section */
 		760D3F161C421D3D00F41269 /* TableViewIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewIndex.swift; sourceTree = "<group>"; };
 		760D3F1A1C42607900F41269 /* SearchBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarViewController.swift; sourceTree = "<group>"; };
+		760EFFF41C488B7B004332E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Contact-Detail.storyboard"; sourceTree = "<group>"; };
 		761042CC1C427A1B00D6FB85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Contact.storyboard; sourceTree = "<group>"; };
 		761042D01C4294A800D6FB85 /* ResourceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceDetailViewController.swift; sourceTree = "<group>"; };
 		7610D8791C47AF1C003D012D /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				7615130E1C3F594300DE8B2A /* Me */,
 				7615130D1C3F593900DE8B2A /* Discover */,
 				7615130C1C3F593000DE8B2A /* Contact */,
+				760EFFF31C488B7B004332E2 /* Contact-Detail.storyboard */,
 				761042CB1C427A1B00D6FB85 /* Contact.storyboard */,
 				76A9FA111C43E6C700E244D3 /* DrawView.swift */,
 				7615130B1C3F589400DE8B2A /* Message */,
@@ -395,6 +398,7 @@
 				76A9D3371C3CF290001805CA /* Message.storyboard in Resources */,
 				76A9D3421C3CFF87001805CA /* Discover.storyboard in Resources */,
 				765964141C3BE90700910F0D /* Assets.xcassets in Resources */,
+				760EFFF51C488B7B004332E2 /* Contact-Detail.storyboard in Resources */,
 				7659640F1C3BE90700910F0D /* Main.storyboard in Resources */,
 				76A9D3441C3CFFB8001805CA /* Me.storyboard in Resources */,
 				761042CD1C427A1B00D6FB85 /* Contact.storyboard in Resources */,
@@ -482,6 +486,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		760EFFF31C488B7B004332E2 /* Contact-Detail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				760EFFF41C488B7B004332E2 /* Base */,
+			);
+			name = "Contact-Detail.storyboard";
+			sourceTree = "<group>";
+		};
 		761042CB1C427A1B00D6FB85 /* Contact.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

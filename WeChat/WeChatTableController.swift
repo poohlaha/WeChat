@@ -38,6 +38,14 @@ class WeChatTableViewNormalController:UITableViewController,WeChatPropDelegate {
         }
     }
     
+    //MARKS: 获取随机数
+    func getRandom(min:UInt32,max:UInt32) -> UInt32 {
+        let min:UInt32 = min
+        let max:UInt32 = max
+        let num = arc4random_uniform(max - min) + min
+        return num
+    }
+    
     //MARKS: 初始化tableview一些属性
     func initTableView(){
         tableView.scrollEnabled = false

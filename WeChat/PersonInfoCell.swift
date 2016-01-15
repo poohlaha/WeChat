@@ -11,6 +11,7 @@ import UIKit
 class PersonInfoCell: UITableViewCell {
 
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var placeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var contentLabel: UILabel!
