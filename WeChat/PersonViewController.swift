@@ -37,6 +37,17 @@ class PersonViewController: WeChatTableViewNormalController {
         }
     }
     
+    override var CELL_FOOTER_HEIGHT:CGFloat {
+        get {
+            return 0
+        }
+        
+        set {
+            self.CELL_FOOTER_HEIGHT = newValue
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initFrame()
@@ -52,7 +63,7 @@ class PersonViewController: WeChatTableViewNormalController {
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         
         //去掉tableview分割线
-        //tableView.separatorStyle = .None
+        tableView.separatorStyle = .None
         tableView.scrollEnabled = true
         tableView.showsVerticalScrollIndicator = true
         initTableHeaderView()
@@ -61,31 +72,27 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS: 初始化数据
     func initData(){
-        let info = Info(content: "我，已经选择了你，你叫我怎么放弃...\n我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
-        let personInfo = PersonInfo(date: "23十二月", place: "上海・张江高科技园区", infos: [info])
-        //personInfos.append(personInfo)
+        for i in 0 ..< 10 {
+            let info = Info(content: "我，已经选择了你，你叫我怎么放弃...\n我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+            let personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
+            personInfos.append(personInfo)
+        }
     }
     
     //初始化tableHeaderView
     func initTableHeaderView(){
-        //以CGRectZero作为frame初始化UIView为了去掉其底部线条
-        let headerView:UIView = UIView(frame: CGRectZero)
-        //headerView.frame = CGRectMake(0,0,UIScreen.mainScreen().bounds.width,headerHeight)
-        headerView.backgroundColor = UIColor.clearColor()
         
         //头像小图
+        let upHeight:CGFloat = 20//向上提升高度
         let headerImageX = UIScreen.mainScreen().bounds.width - headerImageWidth - paddingRight
-        let headerImageY = headerBgHeight - headerImageHeight / 2 - 20
-        
-        //背景大图
-        let bgImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: headerBgHeight))
-        bgImageView.image = UIImage(named: "info-bg\(getRandom(1,max: 10))")
-        headerView.addSubview(bgImageView)
-        
-        
+        let headerImageY = headerBgHeight - headerImageHeight / 2 - upHeight
         let headerImageView = UIImageView(frame: CGRect(x: headerImageX, y: headerImageY, width: headerImageWidth, height: headerImageHeight))
         headerImageView.image = headerImage
-        headerView.addSubview(headerImageView)
+        
+        //背景大图,需要向上提升
+        let bgUpHeight:CGFloat = 50//向上提升空白数
+        let bgImageView = UIImageView(frame: CGRect(x: 0, y: -bgUpHeight, width: UIScreen.mainScreen().bounds.width, height: headerBgHeight + bgUpHeight))
+        bgImageView.image = UIImage(named: "info-bg\(getRandom(1,max: 10))")
         
         //小头像边上文字
         let photoLabel = UILabel(frame: CGRectMake(UIScreen.mainScreen().bounds.width - headerImageWidth - headerLabelWidth - paddingRight * 3, headerBgHeight - paddingBottom * 3, headerLabelWidth, headerLabelHeight))
@@ -93,19 +100,42 @@ class PersonViewController: WeChatTableViewNormalController {
         photoLabel.font = UIFont(name: "AlNile-Bold", size: 20)
         photoLabel.textColor = UIColor.whiteColor()
         photoLabel.text = navigationTitle
-        headerView.addSubview(photoLabel)
         
-        
+        var label:UILabel?
+        let spaceUpLabel = paddingTop + paddingBottom//文字上面空白
         //添加Label,获取随机数:
         let random = getRandom(1, max: 4)
         if random % 2 == 0 {
-            let label = UILabel(frame: CGRectMake(UIScreen.mainScreen().bounds.width - headerLabelWidth - paddingRight, headerBgHeight + headerImageHeight / 2 + paddingTop + paddingBottom - 20, headerLabelWidth, headerLabelHeight))
-            label.textAlignment = .Right
-            label.font = UIFont(name: "AlNile", size: 14)
-            label.textColor = UIColor(red: 143/255, green: 143/255, blue: 143/255, alpha: 1)
-            label.text = "如果还可以重来,我将用一生去呵护你..."
-           headerView.addSubview(label)
+            label = UILabel(frame: CGRectMake(UIScreen.mainScreen().bounds.width - headerLabelWidth - paddingRight, headerBgHeight + headerImageHeight / 2 + spaceUpLabel - upHeight, headerLabelWidth, headerLabelHeight))
+            label!.textAlignment = .Right
+            label!.font = UIFont(name: "AlNile", size: 14)
+            label!.textColor = UIColor(red: 143/255, green: 143/255, blue: 143/255, alpha: 1)
+            label!.text = "如果还可以重来,我将用一生去呵护你..."
+            
         }
+        
+        //以CGRectZero作为frame初始化UIView为了去掉其底部线条
+        //计算headerView高度
+        var headerViewHeight:CGFloat = 0
+        if label != nil {
+            headerViewHeight += label!.frame.origin.y
+        }else{
+            headerViewHeight += (headerBgHeight + (headerImageHeight / 2 - upHeight))
+        }
+        
+        headerViewHeight += 40 //底部留40的空白
+        //let headerView:UIView = UIView(frame: CGRectZero)
+        let headerView = UIView(frame: CGRectMake(0,0,UIScreen.mainScreen().bounds.width,headerViewHeight))
+        headerView.backgroundColor = UIColor.clearColor()
+        headerView.addSubview(bgImageView)
+        headerView.addSubview(headerImageView)
+        headerView.addSubview(photoLabel)
+        if label != nil {
+            headerView.addSubview(label!)
+        }
+       
+        
+        
         
         tableView.tableHeaderView = headerView
     }
@@ -123,6 +153,9 @@ class PersonViewController: WeChatTableViewNormalController {
         cell.placeLabel.text = personInfos[0].place
         cell.contentLabel.text = personInfos[0].infos[0].content
         
+        //去掉分割线
+        //cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
         return cell
     }
+    
 }
