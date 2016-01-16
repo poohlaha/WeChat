@@ -20,29 +20,99 @@ class PersonInfo {
         self.place = place
         self.infos = infos
     }
+    
+    init(date:String,infos:[Info]){
+        self.date = date
+        self.infos = infos
+    }
    
+    init(){
+        
+    }
 }
 
 
 class Info{
     
     //MARKS: Properties
-    var title:String = "" //标题
-    var photoImage:UIImage? //图片
-    var content:String = "" //内容
+    var title:Title?
+    var photo:Photo?
+    var content:Content?
     
-    init(title:String,photoImage:UIImage?,content:String){
+    init(title:Title?,photo:Photo?,content:Content){
         self.title = title
-        self.photoImage = photoImage
+        self.photo = photo
         self.content = content
     }
     
-    init(photoImage:UIImage?,content:String){
-        self.photoImage = photoImage
+    init(photo:Photo?,content:Content){
+        self.photo = photo
         self.content = content
     }
+    
+    init(content:Content){
+        self.content = content
+    }
+}
+
+//图片
+class Photo:InfoNormal{
+    var photoImage:UIImage? //图片
+    var width:CGFloat = 50
+    var height:CGFloat = 50
+    
+    init(photoImage:UIImage?,width:CGFloat,height:CGFloat){
+        self.photoImage = photoImage
+        self.width = width
+        self.height = height
+    }
+    
+    init(photoImage:UIImage?){
+        self.photoImage = photoImage
+    }
+    
+    init(width:CGFloat,height:CGFloat){
+        self.width = width
+        self.height = height
+    }
+}
+
+//标题
+class Title:InfoNormal{
+    var title:String = "" //标题
+    
+    init(title:String){
+        self.title = title
+    }
+}
+
+//内容
+class Content:InfoNormal{
+    var content:String = "" //内容
     
     init(content:String){
         self.content = content
+    }
+}
+
+class InfoNormal {
+    var fontSize:CGFloat = 14//字体大小
+    var color = UIColor.blackColor()
+    
+    init(){
+        
+    }
+    
+    func initFontSizeAndColor(fontSize:CGFloat,color:UIColor){
+        self.fontSize = fontSize
+        self.color = color
+    }
+    
+    func initFontSize(fontSize:CGFloat){
+        self.fontSize = fontSize
+    }
+    
+    func initColor(color:UIColor){
+        self.color = color
     }
 }

@@ -33,6 +33,13 @@ class PersonViewController: WeChatTableViewNormalController {
     let contentBottomPadding:CGFloat = 5
     let dateBottomPadding:CGFloat = 5
     let dateTopPadding:CGFloat = 10
+    let dateRightPadding:CGFloat = 5
+    let placeBottomPadding:CGFloat = 5
+    
+    let leftPadding:CGFloat = 10//左边空白
+    let rightPadding:CGFloat = 10//右边空白
+    let leftWidth:CGFloat = 100//左边宽度
+    let topPadding:CGFloat = 10//距上边空白
     
     let dateHeight:CGFloat = 25
     let placeHeight:CGFloat = 25
@@ -91,10 +98,29 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS: 初始化数据
     func initData(){
-        for i in 0 ..< 10 {
-            let info = Info(photoImage:UIImage(named: "contact3"),content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
-            let personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
-            personInfos.append(personInfo)
+        for i in 0 ..< 3 {
+            var personInfo:PersonInfo = PersonInfo()
+            if i % 3 == 1 {//图片和内容
+                let photo = Photo(photoImage: UIImage(named: "contact1"))
+                let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+                let info = Info(photo: photo, content: content)
+                personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
+                personInfos.append(personInfo)
+            } else if i % 3 == 2 {//图片、内容和标题
+                let photo = Photo(photoImage: UIImage(named: "contact2"), width: 30, height: 30)
+                let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+                let title = Title(title: "[得意]说得很有道理")
+                let info = Info(title: title, photo: photo, content: content)
+                personInfo = PersonInfo(date: "2\(i)十二月", infos: [info])
+                personInfos.append(personInfo)
+            } else if i % 3 == 0 {//内容
+                let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+                let info = Info(content: content)
+                personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
+                personInfos.append(personInfo)
+            }
+            
+            
         }
     }
     
@@ -169,15 +195,57 @@ class PersonViewController: WeChatTableViewNormalController {
         
         let personInfo = personInfos[indexPath.row]
         //set data
-        cell.dateLabel.text = personInfo.date
-        cell.placeLabel.text = personInfo.place
-        cell.contentLabel.text = personInfo.infos[0].content
-        cell.photoImageView.image = personInfo.infos[0].photoImage
+        if !personInfo.date.isEmpty{
+            cell.dateLabel.text = personInfo.date
+        }else{
+            cell.dateLabel.hidden = true
+        }
         
-        cell.titleLabel.hidden = true
+        if !personInfo.place.isEmpty {
+            cell.placeLabel.text = personInfo.place
+        }else{
+            cell.placeLabel.hidden = true
+        }
         
-        //重新计算cell调度
-        //cell.resizeHeight(250)
+        let info = personInfo.infos[0]
+        
+        if info.content != nil {
+            cell.contentLabel.text = info.content?.content
+        }else{
+            cell.contentLabel.hidden = true
+        }
+        
+        //重新定义小图片大小
+        if info.title != nil && info.photo != nil {
+            cell.photoImageView.hidden = true
+            let originX = leftPadding + leftWidth
+            let originY = titleTopPadding + titleHeight + titleBottomPadding
+            let imageView = UIImageView(frame: CGRect(x: originX, y: originY, width: info.photo!.width, height: info.photo!.height))
+            imageView.image = info.photo?.photoImage
+            cell.addSubview(imageView)
+            /*cell.photoImageView.image = info.photo?.photoImage
+            cell.photoImageView.frame.size = CGSize(width: info.photo!.width, height: info.photo!.height)*/
+            
+        } else {
+            if info.photo != nil {
+                cell.photoImageView.image = info.photo?.photoImage
+            }else{
+                cell.photoImageView.hidden = true
+            }
+        }
+        
+       
+        if info.title != nil {
+            cell.titleLabel.text = info.title?.title
+        }else{
+            cell.titleLabel.hidden = true
+        }
+        
+        
+        //重新设置选中开始的坐标点
+        let frame = CGRectMake(leftPadding + leftWidth, cell.frame.origin.y, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height)
+        cell.selectedBackgroundView = UIView(frame: frame)
+        cell.selectedBackgroundView!.backgroundColor = UIColor.grayColor()
         return cell
     }
     
@@ -188,57 +256,57 @@ class PersonViewController: WeChatTableViewNormalController {
         let personInfo = personInfos[indexPath.row]
         var height:CGFloat = 0
         for var info in personInfo.infos {
-            
-            if !info.title.isEmpty && info.photoImage != nil {//当有标题和图片
+            let photo = info.photo
+            let title = info.title
+            let content = info.content
+            if title != nil && photo != nil {//当有标题和图片和内容,图片为小图
                 height += titleTopPadding
-                //height += cell.titleLabel.frame.height
                 height += titleHeight
                 height += titleBottomPadding
                 
-                //height += cell.photoImageView.frame.height
-                height += photoHeight
+                height += (photo?.height)!
                 height += photoBottomPadding
-            } else if info.title.isEmpty && info.photoImage != nil {//当没有标题,只有图片
+            } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
                 var leftHeight:CGFloat = 0
-                if !personInfo.date.isEmpty {
-                    //leftHeight += cell.dateLabel.frame.height
+                if !personInfo.date.isEmpty && !personInfo.place.isEmpty{
+                    leftHeight += dateTopPadding
                     leftHeight += dateHeight
-                }
-                
-                if !personInfo.place.isEmpty {
-                    //leftHeight += cell.placeLabel.frame.height
+                    leftHeight += dateBottomPadding
                     leftHeight += placeHeight
+                    leftHeight += placeBottomPadding
+                }else if !personInfo.date.isEmpty && personInfo.place.isEmpty{
+                    leftHeight += dateTopPadding
+                    leftHeight += dateHeight
+                    leftHeight += dateBottomPadding
                 }
                 
-                if leftHeight > (photoHeight + titleBottomPadding + photoBottomPadding + dateTopPadding) {
+                if leftHeight > (photoHeight + titleBottomPadding + photoBottomPadding) {
                     height += leftHeight
                 }else{
-                    height += photoHeight + titleBottomPadding + photoBottomPadding + dateTopPadding
+                    height += photoHeight + titleBottomPadding + photoBottomPadding
                 }
-            } else if info.title.isEmpty && info.photoImage == nil && !info.content.isEmpty{//当只有内容
+                
+            } else if title == nil && photo == nil && content != nil{//当只有内容
                 //只有内容的时候要判断是不是大于左边的高度,如果大于以及为主,如果小于以左边为主
                 var leftHeight:CGFloat = 0
-                if !personInfo.date.isEmpty {
-                    //leftHeight += cell.dateLabel.frame.height
+                
+                if !personInfo.date.isEmpty && !personInfo.place.isEmpty{
+                    leftHeight += dateTopPadding
                     leftHeight += dateHeight
-                }
-                
-                if !personInfo.place.isEmpty {
-                    //leftHeight += cell.placeLabel.frame.height
+                    leftHeight += dateBottomPadding
                     leftHeight += placeHeight
+                    leftHeight += placeBottomPadding
+                }else if !personInfo.date.isEmpty && personInfo.place.isEmpty{
+                    leftHeight += dateTopPadding
+                    leftHeight += dateHeight
+                    leftHeight += dateBottomPadding
                 }
                 
-                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding + dateTopPadding) {
+                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
                      height += leftHeight
                 }else{
-                    height += contentHeight + contentTopPadding + contentBottomPadding + dateTopPadding
+                    height += contentHeight + contentTopPadding + contentBottomPadding
                 }
-                
-                /*if leftHeight > cell.contentLabel.frame.height {
-                    height += leftHeight
-                } else {
-                    height += cell.contentLabel.frame.height
-                }*/
                 
             } else {
                 continue
