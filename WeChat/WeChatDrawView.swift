@@ -28,7 +28,7 @@ class WeChatDrawView: UIView {
         titleLabel.text = content
         titleLabel.textAlignment = .Center
         titleLabel.numberOfLines = 0
-        titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        titleLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         titleLabel.font = UIFont(name: fontName, size: size)
         titleLabel.textColor = color
         

@@ -9,6 +9,7 @@
 import UIKit
 
 //个人信息页面
+//需要重新定义视图,把控件包含进去
 class PersonViewController: WeChatTableViewNormalController {
 
     //MARKS:Properties
@@ -44,7 +45,6 @@ class PersonViewController: WeChatTableViewNormalController {
     let dateHeight:CGFloat = 25
     let placeHeight:CGFloat = 25
     let titleHeight:CGFloat = 20
-    let photoHeight:CGFloat = 50
     let contentHeight:CGFloat = 40
     
     
@@ -92,6 +92,8 @@ class PersonViewController: WeChatTableViewNormalController {
         tableView.separatorStyle = .None
         tableView.scrollEnabled = true
         tableView.showsVerticalScrollIndicator = true
+        //去掉scrollview自动设置
+        self.automaticallyAdjustsScrollViewInsets = false
         initTableHeaderView()
         initData()
     }
@@ -132,14 +134,9 @@ class PersonViewController: WeChatTableViewNormalController {
         let headerImageY = headerBgHeight - headerImageHeight / 2 - upHeight
 
         let spacePadding:CGFloat = 5
-        let headerImageView = UIImageView(frame: CGRect(x: headerImageX, y: headerImageY, width: headerImageWidth, height: headerImageHeight))
-        headerImageView.image = headerImage
-        
         let imageFrame = CGRect(x: headerImageX - spacePadding, y: headerImageY - spacePadding, width: headerImageWidth + spacePadding , height: headerImageHeight + spacePadding)
         
         let personView = PersonImageView(frame: imageFrame, image: headerImage!)
-        
-       
         
         //背景大图,需要向上提升
         let bgUpHeight:CGFloat = 50//向上提升空白数
@@ -186,9 +183,6 @@ class PersonViewController: WeChatTableViewNormalController {
             headerView.addSubview(label!)
         }
        
-        
-        
-        
         tableView.tableHeaderView = headerView
     }
     
@@ -196,7 +190,113 @@ class PersonViewController: WeChatTableViewNormalController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return personInfos.count
     }
+    
+    //创建Label
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontSize:CGFloat,isAllowNext:Bool) -> UILabel{
+        let label = UILabel(frame: frame)
+        label.textAlignment = .Left
+        label.font = UIFont(name: "AlNile", size: fontSize)
+        label.textColor = color
+        label.text = string
+        if isAllowNext {
+            label.numberOfLines = 0
+            label.lineBreakMode = NSLineBreakMode.ByTruncatingTail//有省略号
+        }
+        return label
+    }
+    
+    //创建Photo
+    func createPhotoView(frame:CGRect,image:UIImage) -> UIImageView{
+        let photoView = UIImageView(frame: frame)
+        photoView.image = image
+        return photoView
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
+        
+        //隐藏所有控件
+        cell.titleLabel.hidden = true
+        cell.photoImageView.hidden = true
+        cell.contentLabel.hidden = true
+        
+        let personInfo = personInfos[indexPath.row]
+        if !personInfo.date.isEmpty{
+            cell.dateLabel.text = personInfo.date
+        }else{
+            cell.dateLabel.hidden = true
+        }
+        
+        if !personInfo.place.isEmpty {
+            cell.placeLabel.text = personInfo.place
+        }else{
+            cell.placeLabel.hidden = true
+        }
+        
+        //创建UIView,包含所有控件
+        let controlView = UIView()
+         controlView.frame = CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height)
+        
+        for info in personInfo.infos {
+            let photo = info.photo
+            let title = info.title
+            let content = info.content
+            
+            if title != nil && photo != nil {//当有标题和图片和内容,图片为小图
+                let titleLabel = createLabel(CGRectMake(photoLeftPadding, titleTopPadding, controlView.frame.width, titleHeight), string: (title?.title)!, color: UIColor.blackColor(), fontSize: 14,isAllowNext: false)
+                let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleHeight + titleBottomPadding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
+                let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleHeight + titleBottomPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
+                
+                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.addSubview(titleLabel)
+                controlView.addSubview(photoImage)
+                controlView.addSubview(contentLabel)
+                
+            } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
+                var height:CGFloat = 0
+                var padding:CGFloat = titleTopPadding
+                let leftHeight = getLeftHeight(personInfo)
+                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
+                    height += leftHeight
+                    //重新计算padding
+                    padding = (controlView.frame.height - photo!.height) / 2 - photoBottomPadding
+                }else{
+                    height += photo!.height + padding + photoBottomPadding
+                }
+                
+                let photoImage = createPhotoView(CGRectMake(photoLeftPadding, padding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
+                let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleTopPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
+                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.addSubview(photoImage)
+                controlView.addSubview(contentLabel)
+                
+            } else if title == nil && photo == nil && content != nil{//当只有内容
+                var height:CGFloat = 0
+                var padding:CGFloat = titleTopPadding
+                let leftHeight = getLeftHeight(personInfo)
+                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
+                    height += leftHeight
+                    //重新计算padding
+                    padding = (controlView.frame.height - contentHeight) / 2
+                }else{
+                    height += contentHeight + padding + contentBottomPadding
+                }
+                
+                let contentLabel = createLabel(CGRectMake(photoLeftPadding,padding, controlView.frame.width - photoLeftPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
+                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.addSubview(contentLabel)
+            } else {
+                
+            }
+        }
+        
+        //取消cell选中样式
+        cell.selectionStyle = .None
+        cell.addSubview(controlView)
+        return cell
+    }
 
+    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
         
@@ -254,15 +354,18 @@ class PersonViewController: WeChatTableViewNormalController {
         cell.selectedBackgroundView = UIView(frame: frame)
         cell.selectedBackgroundView!.backgroundColor = UIColor.grayColor()
         return cell
-    }
+    }*/
     
     //MARKS:根据内容重新计算高度
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        //let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
-        
         let personInfo = personInfos[indexPath.row]
+        return getViewHeight(personInfo)
+    }
+
+    //获取高度
+    func getViewHeight(personInfo:PersonInfo) -> CGFloat{
         var height:CGFloat = 0
-        for var info in personInfo.infos {
+        for info in personInfo.infos {
             let photo = info.photo
             let title = info.title
             let content = info.content
@@ -274,43 +377,19 @@ class PersonViewController: WeChatTableViewNormalController {
                 height += (photo?.height)!
                 height += photoBottomPadding
             } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
-                var leftHeight:CGFloat = 0
-                if !personInfo.date.isEmpty && !personInfo.place.isEmpty{
-                    leftHeight += dateTopPadding
-                    leftHeight += dateHeight
-                    leftHeight += dateBottomPadding
-                    leftHeight += placeHeight
-                    leftHeight += placeBottomPadding
-                }else if !personInfo.date.isEmpty && personInfo.place.isEmpty{
-                    leftHeight += dateTopPadding
-                    leftHeight += dateHeight
-                    leftHeight += dateBottomPadding
-                }
+                var leftHeight = getLeftHeight(personInfo)
                 
-                if leftHeight > (photoHeight + titleBottomPadding + photoBottomPadding) {
+                if leftHeight > (photo!.height + titleBottomPadding + photoBottomPadding) {
                     height += leftHeight
                 }else{
-                    height += photoHeight + titleBottomPadding + photoBottomPadding
+                    height += photo!.height + titleBottomPadding + photoBottomPadding
                 }
                 
             } else if title == nil && photo == nil && content != nil{//当只有内容
                 //只有内容的时候要判断是不是大于左边的高度,如果大于以及为主,如果小于以左边为主
-                var leftHeight:CGFloat = 0
-                
-                if !personInfo.date.isEmpty && !personInfo.place.isEmpty{
-                    leftHeight += dateTopPadding
-                    leftHeight += dateHeight
-                    leftHeight += dateBottomPadding
-                    leftHeight += placeHeight
-                    leftHeight += placeBottomPadding
-                }else if !personInfo.date.isEmpty && personInfo.place.isEmpty{
-                    leftHeight += dateTopPadding
-                    leftHeight += dateHeight
-                    leftHeight += dateBottomPadding
-                }
-                
+                let leftHeight = getLeftHeight(personInfo)
                 if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
-                     height += leftHeight
+                    height += leftHeight
                 }else{
                     height += contentHeight + contentTopPadding + contentBottomPadding
                 }
@@ -322,6 +401,21 @@ class PersonViewController: WeChatTableViewNormalController {
         
         return height
     }
-
     
+    func getLeftHeight(personInfo:PersonInfo) -> CGFloat{
+        var leftHeight:CGFloat = 0
+        if !personInfo.date.isEmpty && !personInfo.place.isEmpty{
+            leftHeight += dateTopPadding
+            leftHeight += dateHeight
+            leftHeight += dateBottomPadding
+            leftHeight += placeHeight
+            leftHeight += placeBottomPadding
+        }else if !personInfo.date.isEmpty && personInfo.place.isEmpty{
+            leftHeight += dateTopPadding
+            leftHeight += dateHeight
+            leftHeight += dateBottomPadding
+        }
+        
+        return leftHeight
+    }
 }

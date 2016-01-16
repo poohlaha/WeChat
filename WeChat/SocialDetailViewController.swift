@@ -36,7 +36,7 @@ class SocialDetailViewController: WeChatTableFooterBlankController {
     func initData(){
         //自动换行
         personal.numberOfLines = 0
-        personal.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        personal.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         personal.text = "我用尽所有力气去爱你,却发现被感动的只有我自己..."
         source.text = "通过扫一扫添加"
         
