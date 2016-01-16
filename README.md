@@ -12,4 +12,4 @@
 
 <br/><br/>
 3.发现:<br/>
-![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1221.PNG)<br/>
+![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1222.PNG)<br/>
