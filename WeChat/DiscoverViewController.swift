@@ -8,9 +8,10 @@
 
 import UIKit
 
-class DiscoverViewController: UIViewController{
+class DiscoverViewController: WeChatTableViewNormalController{
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        initTableView()
     }
 }
