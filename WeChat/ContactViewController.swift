@@ -223,8 +223,15 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     //MARKS: 自定义向右滑动菜单
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remarkAction = UITableViewRowAction(style: .Normal, title: "备注") { (action:UITableViewRowAction, index:NSIndexPath) -> Void in
-            //let session = self.sessions[index.section]
-            //let remark = session.contacts[index.row]
+            let session = self.sessions[index.section]
+            let contact = session.contacts[indexPath.row]
+            
+            //根据storyboard获取controller
+            let sb = UIStoryboard(name:"Contact-Detail", bundle: nil)
+            let remarkTagController = sb.instantiateViewControllerWithIdentifier("RemarkTagController") as! RemarkTagViewController
+            
+            remarkTagController.remarkText = contact.name
+            self.navigationController?.pushViewController(remarkTagController, animated: true)
         }
         
         return [remarkAction]
