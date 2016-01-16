@@ -12,17 +12,20 @@ class PersonInfo {
     
     //MARKS: Properties
     var date:String = "" //日期
+    var day:String = ""//当天
     var place:String = ""//地点
     var infos:[Info] = [Info]()
     
-    init(date:String,place:String,infos:[Info]){
+    init(date:String,day:String,place:String,infos:[Info]){
         self.date = date
+        self.day = day
         self.place = place
         self.infos = infos
     }
     
-    init(date:String,infos:[Info]){
+    init(date:String,day:String,infos:[Info]){
         self.date = date
+        self.day = day
         self.infos = infos
     }
    

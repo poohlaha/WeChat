@@ -15,6 +15,7 @@ class PersonInfoCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var dayLabel: UILabel!
     
     override func layoutSubviews() {
         super.layoutSubviews()

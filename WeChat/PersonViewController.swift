@@ -106,19 +106,19 @@ class PersonViewController: WeChatTableViewNormalController {
                 let photo = Photo(photoImage: UIImage(named: "contact1"))
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(photo: photo, content: content)
-                personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
                 personInfos.append(personInfo)
             } else if i % 3 == 2 {//图片、内容和标题
                 let photo = Photo(photoImage: UIImage(named: "contact2"), width: 40, height: 40)
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let title = Title(title: "[得意]说得很有道理")
                 let info = Info(title: title, photo: photo, content: content)
-                personInfo = PersonInfo(date: "2\(i)十二月", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
                 personInfos.append(personInfo)
             } else if i % 3 == 0 {//内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(content: content)
-                personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
                 personInfos.append(personInfo)
             }
             
@@ -223,8 +223,17 @@ class PersonViewController: WeChatTableViewNormalController {
         let personInfo = personInfos[indexPath.row]
         if !personInfo.date.isEmpty{
             cell.dateLabel.text = personInfo.date
+            //cell.dateLabel.font = UIFont(name: "AlNile", size: 20)
         }else{
             cell.dateLabel.hidden = true
+        }
+        
+        if !personInfo.day.isEmpty{
+            cell.dayLabel.text = personInfo.day
+            //cell.dayLabel.font = UIFont(name: "AlNile-bold", size: 30)
+            //cell.dayLabel.frame = CGRectMake(0, 20, 50, 20)
+        }else{
+            cell.dayLabel.hidden = true
         }
         
         if !personInfo.place.isEmpty {
@@ -328,66 +337,7 @@ class PersonViewController: WeChatTableViewNormalController {
         let gestureView = gestrue.view
         gestureView?.backgroundColor = UIColor.blueColor()
     }
-    
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
-        
-        let personInfo = personInfos[indexPath.row]
-        //set data
-        if !personInfo.date.isEmpty{
-            cell.dateLabel.text = personInfo.date
-        }else{
-            cell.dateLabel.hidden = true
-        }
-        
-        if !personInfo.place.isEmpty {
-            cell.placeLabel.text = personInfo.place
-        }else{
-            cell.placeLabel.hidden = true
-        }
-        
-        let info = personInfo.infos[0]
-        
-        if info.content != nil {
-            cell.contentLabel.text = info.content?.content
-        }else{
-            cell.contentLabel.hidden = true
-        }
-        
-        //重新定义小图片大小
-        if info.title != nil && info.photo != nil {
-            cell.photoImageView.hidden = true
-            let originX = leftPadding + leftWidth
-            let originY = titleTopPadding + titleHeight + titleBottomPadding
-            let imageView = UIImageView(frame: CGRect(x: originX, y: originY, width: info.photo!.width, height: info.photo!.height))
-            imageView.image = info.photo?.photoImage
-            cell.addSubview(imageView)
-            /*cell.photoImageView.image = info.photo?.photoImage
-            cell.photoImageView.frame.size = CGSize(width: info.photo!.width, height: info.photo!.height)*/
-            
-        } else {
-            if info.photo != nil {
-                cell.photoImageView.image = info.photo?.photoImage
-            }else{
-                cell.photoImageView.hidden = true
-            }
-        }
-        
-       
-        if info.title != nil {
-            cell.titleLabel.text = info.title?.title
-        }else{
-            cell.titleLabel.hidden = true
-        }
-        
-        
-        //重新设置选中开始的坐标点
-        let frame = CGRectMake(leftPadding + leftWidth, cell.frame.origin.y, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height)
-        cell.selectedBackgroundView = UIView(frame: frame)
-        cell.selectedBackgroundView!.backgroundColor = UIColor.grayColor()
-        return cell
-    }*/
+   
     
     //MARKS:根据内容重新计算高度
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -410,7 +360,7 @@ class PersonViewController: WeChatTableViewNormalController {
                 height += (photo?.height)!
                 height += photoBottomPadding
             } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
-                var leftHeight = getLeftHeight(personInfo)
+                let leftHeight = getLeftHeight(personInfo)
                 
                 if leftHeight > (photo!.height + titleBottomPadding + photoBottomPadding) {
                     height += leftHeight
