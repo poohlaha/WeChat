@@ -16,6 +16,11 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     @IBOutlet weak var moreRemarks: UITextField!
     @IBOutlet weak var photoView: UIImageView!
     
+    //MARKS: Done Click Event,close current view
+    @IBAction func save(sender: UIBarButtonItem) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     var selectImage:UIImage? = nil
     var remarkText:String?
     
@@ -172,10 +177,10 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
                 if selectImage!.size.height > height {
                     return height + 10
                 }else {
-                    return (selectImage?.size.height)! + 10
+                    return (selectImage?.size.height)! + 20
                 }
             } else {
-                return photoView.frame.height + 10
+                return photoView.frame.height + 20
             }
             
         }
