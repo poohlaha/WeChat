@@ -236,6 +236,10 @@ class PersonViewController: WeChatTableViewNormalController {
         //创建UIView,包含所有控件
         let controlView = UIView()
          controlView.frame = CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height)
+        controlView.userInteractionEnabled = true
+        //添加点击效果
+        let tap = UITapGestureRecognizer(target: self, action: "controlViewTap:")
+        controlView.addGestureRecognizer(tap)
         
         for info in personInfo.infos {
             let photo = info.photo
@@ -296,6 +300,30 @@ class PersonViewController: WeChatTableViewNormalController {
         return cell
     }
 
+    //MARKS: View点击效果
+    func controlViewTap(gestrue: UITapGestureRecognizer){
+        //去掉所有cell的选中事件
+        for(var i = 0;i < tableView.numberOfSections; i++){
+            for(var j = 0;j < tableView.numberOfRowsInSection(i);j++){
+                let indexPath = NSIndexPath(forRow: j, inSection: i)
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                for(var k = 0;k < cell?.subviews.count; k++){
+                    let sub = cell?.subviews[k]
+                    if sub == nil {
+                        continue
+                    }
+                    
+                    if sub!.isKindOfClass(UIView){
+                        sub?.backgroundColor =  UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                    }
+                }
+            }
+        }
+        
+        let gestureView = gestrue.view
+        gestureView?.backgroundColor = UIColor.lightGrayColor()
+    }
+    
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
