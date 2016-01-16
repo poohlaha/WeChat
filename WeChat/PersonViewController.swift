@@ -233,13 +233,6 @@ class PersonViewController: WeChatTableViewNormalController {
             cell.placeLabel.hidden = true
         }
         
-        //创建UIView,包含所有控件
-        let controlView = UIView()
-         controlView.frame = CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height)
-        controlView.userInteractionEnabled = true
-        //添加点击效果
-        let tap = UITapGestureRecognizer(target: self, action: "controlViewTap:")
-        controlView.addGestureRecognizer(tap)
         
         for info in personInfo.infos {
             let photo = info.photo
@@ -247,16 +240,24 @@ class PersonViewController: WeChatTableViewNormalController {
             let content = info.content
             
             if title != nil && photo != nil {//当有标题和图片和内容,图片为小图
+                //创建UIView,包含所有控件
+                let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                
                 let titleLabel = createLabel(CGRectMake(photoLeftPadding, titleTopPadding, controlView.frame.width, titleHeight), string: (title?.title)!, color: UIColor.blackColor(), fontSize: 14,isAllowNext: false)
                 let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleHeight + titleBottomPadding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
                 let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleHeight + titleBottomPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
                 
-                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.backgroundColor = bgColor
                 controlView.addSubview(titleLabel)
                 controlView.addSubview(photoImage)
                 controlView.addSubview(contentLabel)
-                
+                cell.addSubview(controlView)
             } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
+                //创建UIView,包含所有控件
+                let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                
                 var height:CGFloat = 0
                 var padding:CGFloat = titleTopPadding
                 let leftHeight = getLeftHeight(personInfo)
@@ -270,11 +271,15 @@ class PersonViewController: WeChatTableViewNormalController {
                 
                 let photoImage = createPhotoView(CGRectMake(photoLeftPadding, padding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
                 let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleTopPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
-                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.backgroundColor = bgColor
                 controlView.addSubview(photoImage)
                 controlView.addSubview(contentLabel)
-                
+                cell.addSubview(controlView)
             } else if title == nil && photo == nil && content != nil{//当只有内容
+                //创建UIView,包含所有控件
+                let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                
                 var height:CGFloat = 0
                 var padding:CGFloat = titleTopPadding
                 let leftHeight = getLeftHeight(personInfo)
@@ -287,8 +292,9 @@ class PersonViewController: WeChatTableViewNormalController {
                 }
                 
                 let contentLabel = createLabel(CGRectMake(photoLeftPadding,padding, controlView.frame.width - photoLeftPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
-                controlView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+                controlView.backgroundColor = bgColor
                 controlView.addSubview(contentLabel)
+                cell.addSubview(controlView)
             } else {
                 
             }
@@ -296,7 +302,6 @@ class PersonViewController: WeChatTableViewNormalController {
         
         //取消cell选中样式
         cell.selectionStyle = .None
-        cell.addSubview(controlView)
         return cell
     }
 
@@ -321,7 +326,7 @@ class PersonViewController: WeChatTableViewNormalController {
         }
         
         let gestureView = gestrue.view
-        gestureView?.backgroundColor = UIColor.lightGrayColor()
+        gestureView?.backgroundColor = UIColor.blueColor()
     }
     
     /*
