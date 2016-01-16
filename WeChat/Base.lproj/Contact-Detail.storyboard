@@ -565,7 +565,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="备注信息" id="tRo-ro-Xy8">
                         <barButtonItem key="rightBarButtonItem" title="完成" id="WxA-nJ-lo1">
-                            <color key="tintColor" red="0.13152901107787077" green="0.32366655759162299" blue="0.19610938191923571" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.37416880177090817" green="0.77053337696335078" blue="0.38778670509518604" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="save:" destination="hlU-Dk-gb9" id="e14-wc-7Vr"/>
                             </connections>

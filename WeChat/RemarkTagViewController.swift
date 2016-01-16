@@ -50,13 +50,12 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     
      override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.reloadData()
         initFrame()
     }
     
     
     func initFrame(){
-        //initTableView()
+        self.tableView.backgroundColor = getBackgroundColor()
         initImageView()
         setCellStyleNone(0, y: 0) { (cell) -> () in }
         self.remark.text = remarkText!
