@@ -79,6 +79,17 @@ class WeChatDrawView: UIView {
         return shape
     }
     
+    func drawRect(beginPointX x:CGFloat,beginPointY y:CGFloat,width:CGFloat,height:CGFloat,color:UIColor) -> CAShapeLayer{
+        let path = UIBezierPath(roundedRect: CGRectMake(x, y, width, height), cornerRadius: 0)
+        path.fill()
+        let shape = CAShapeLayer()
+        shape.path = path.CGPath
+        shape.fillColor = color.CGColor
+        shape.lineWidth = 0.1
+        path.closePath()
+        return shape
+    }
+    
 
     //画聊天对话框,剪头向下
     func drawDialog(){

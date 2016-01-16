@@ -19,7 +19,7 @@ class PersonViewController: WeChatTableViewNormalController {
     let headerLabelHeight:CGFloat = 20//小头像下文字高度
     let headerLabelWidth:CGFloat = 250//小头像下文字宽度
     let paddingLeft:CGFloat = 10//左边距
-    let paddingRight:CGFloat = 10//右边距
+    let paddingRight:CGFloat = 15//右边距
     let paddingTop:CGFloat = 10//上边距
     let paddingBottom:CGFloat = 10//下边距
     
@@ -107,7 +107,7 @@ class PersonViewController: WeChatTableViewNormalController {
                 personInfo = PersonInfo(date: "2\(i)十二月", place: "上海・张江高科技园区", infos: [info])
                 personInfos.append(personInfo)
             } else if i % 3 == 2 {//图片、内容和标题
-                let photo = Photo(photoImage: UIImage(named: "contact2"), width: 30, height: 30)
+                let photo = Photo(photoImage: UIImage(named: "contact2"), width: 40, height: 40)
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let title = Title(title: "[得意]说得很有道理")
                 let info = Info(title: title, photo: photo, content: content)
@@ -126,13 +126,20 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //初始化tableHeaderView
     func initTableHeaderView(){
-        
         //头像小图
         let upHeight:CGFloat = 20//向上提升高度
         let headerImageX = UIScreen.mainScreen().bounds.width - headerImageWidth - paddingRight
         let headerImageY = headerBgHeight - headerImageHeight / 2 - upHeight
+
+        let spacePadding:CGFloat = 5
         let headerImageView = UIImageView(frame: CGRect(x: headerImageX, y: headerImageY, width: headerImageWidth, height: headerImageHeight))
         headerImageView.image = headerImage
+        
+        let imageFrame = CGRect(x: headerImageX - spacePadding, y: headerImageY - spacePadding, width: headerImageWidth + spacePadding , height: headerImageHeight + spacePadding)
+        
+        let personView = PersonImageView(frame: imageFrame, image: headerImage!)
+        
+       
         
         //背景大图,需要向上提升
         let bgUpHeight:CGFloat = 50//向上提升空白数
@@ -173,7 +180,7 @@ class PersonViewController: WeChatTableViewNormalController {
         let headerView = UIView(frame: CGRectMake(0,0,UIScreen.mainScreen().bounds.width,headerViewHeight))
         headerView.backgroundColor = UIColor.clearColor()
         headerView.addSubview(bgImageView)
-        headerView.addSubview(headerImageView)
+        headerView.addSubview(personView)
         headerView.addSubview(photoLabel)
         if label != nil {
             headerView.addSubview(label!)
