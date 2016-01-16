@@ -16,7 +16,11 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     @IBOutlet weak var moreRemarks: UITextField!
     @IBOutlet weak var photoView: UIImageView!
     
+    var selectImage:UIImage? = nil
     var remarkText:String?
+    
+    let photoLeftPadding:CGFloat = 15
+    let photoRightPadding:CGFloat = 15
     
     override var CELL_HEADER_HEIGHT:CGFloat {
         get {
@@ -27,6 +31,16 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
             self.CELL_HEADER_HEIGHT = newValue
         }
         
+    }
+    
+    var CELL_HEIGHT:CGFloat {
+        get {
+            return 40
+        }
+        
+        set {
+            self.CELL_HEIGHT = newValue
+        }
     }
     
      override func viewDidLoad() {
@@ -131,13 +145,15 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         // The info dictionary contains multiple representations of the image, and this uses the original.
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        // Set photoImageView to display the selected image.
-        photoView.image = selectedImage
+        
+        self.selectImage = selectedImage
+        //photoView.image = selectedImage
         //移除文本和边框
         photoView.layer.sublayers = []
         // Dismiss the picker.
         picker.dismissViewControllerAnimated(true) { () -> Void in
             self.setDefaultTabBarIndex()
+            self.tableView.reloadData()
         }
 
     }
@@ -146,5 +162,23 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     func setDefaultTabBarIndex(){
         let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
         rootController.selectedIndex = 1
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 3 && indexPath.row == 1{
+            if selectImage != nil {
+                photoView.image = selectImage!
+                let height = UIScreen.mainScreen().bounds.width - photoLeftPadding - photoRightPadding
+                if selectImage!.size.height > height {
+                    return height + 10
+                }else {
+                    return (selectImage?.size.height)! + 10
+                }
+            } else {
+                return photoView.frame.height + 10
+            }
+            
+        }
+        return CELL_HEIGHT
     }
 }

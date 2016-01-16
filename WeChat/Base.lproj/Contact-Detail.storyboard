@@ -532,15 +532,15 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="310" id="co7-ya-dsX">
                                         <rect key="frame" x="0.0" y="439.5" width="600" height="310"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="co7-ya-dsX" id="Tbt-Qm-4UF">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="co7-ya-dsX" id="Tbt-Qm-4UF">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="309.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Hb-tF-0X9">
-                                                    <rect key="frame" x="15" y="5" width="570" height="300"/>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Hb-tF-0X9">
+                                                    <rect key="frame" x="15" y="5" width="570" height="100"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="300" id="fVe-VJ-OcK"/>
+                                                        <constraint firstAttribute="height" constant="150" id="fVe-VJ-OcK"/>
                                                     </constraints>
                                                     <connections>
                                                         <outletCollection property="gestureRecognizers" destination="50Z-09-gBl" appends="YES" id="SPJ-Ia-TMN"/>
