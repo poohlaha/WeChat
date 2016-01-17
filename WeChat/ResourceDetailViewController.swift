@@ -16,12 +16,14 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var weChatNumber: UILabel!
     @IBOutlet weak var personLabel: UILabel!
+    @IBOutlet weak var phoneNumber: UILabel!
     
     
     var nameText:String?
     var photoImage:UIImage?
     var weChatNumberText:String?
     var indexPath:NSIndexPath?
+    var photoNumberText:String?
     var parentController:ContactViewController?
 
     override func viewDidLoad() {
@@ -56,12 +58,29 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
         initTableView()
         //MARKS: 去掉tableview底部空白
         createFooterForTableView()
+        //添加点击事件
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "phoneClick:")
+        phoneNumber.userInteractionEnabled = true
+        phoneNumber.addGestureRecognizer(tap)
+    }
+    
+    //MARKS: 电话拨号功能,短信是sms,telprompt弹出确认对话框
+    func phoneClick(gestrue: UITapGestureRecognizer){
+        //let url = NSURL(string: "tel://\(photoNumberText!)")
+        let url = NSURL(string: "telprompt://\(photoNumberText!)")
+        if UIApplication.sharedApplication().canOpenURL(url!){
+            UIApplication.sharedApplication().openURL(url!)
+        }
+        
     }
     
     func initData(){
         self.photoView.image = photoImage
         self.name.text = nameText
         self.weChatNumber.text = weChatNumberText
+        self.phoneNumber.text = photoNumberText
+       // self.photoNumberText = photoNumberText!.stringByReplacingOccurrencesOfString("-", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        self.phoneNumber.textColor = UIColor(red: 51/255, green: 153/255, blue: 204/255, alpha: 1)
     }
     
     //右侧...点击事件

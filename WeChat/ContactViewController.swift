@@ -249,6 +249,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 destinationController.photoImage = contact.photo
                 destinationController.nameText = contact.name
                 destinationController.weChatNumberText = "微信号:  test00\(indexPath.row + 1)"
+                destinationController.photoNumberText = contact.phone
                 //MARKS: 跳转视图后取消tableviewcell选中事件
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
             }
