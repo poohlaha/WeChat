@@ -44,6 +44,8 @@ class PersonViewController: WeChatTableViewNormalController {
     let topPadding:CGFloat = 10//距上边空白
     
     let dateHeight:CGFloat = 25
+    let dateWidth:CGFloat = 50
+    let dayWidth:CGFloat = 30
     let placeHeight:CGFloat = 25
     let titleHeight:CGFloat = 20
     let contentHeight:CGFloat = 40
@@ -113,7 +115,7 @@ class PersonViewController: WeChatTableViewNormalController {
         let photo3 = Photo(photoImage: UIImage(named: "info-bg6"),width:100,height:100,isBigPic:true)
         let photo4 = Photo(photoImage: UIImage(named: "info-bg4"),width:100,height:100,isBigPic:true)
         
-        for i in 0 ... 6 {
+        for i in 0 ..< 6 {
             var personInfo:PersonInfo = PersonInfo()
             if i % 6 == 1 {//小图片和内容
                 let photo = Photo(photoImage: UIImage(named: "contact1"))
@@ -145,7 +147,8 @@ class PersonViewController: WeChatTableViewNormalController {
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else {
-                let info = Info(photo: [photo1,photo2])
+                let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
+                let info = Info(photo: [photo1],content: content)
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
@@ -221,10 +224,10 @@ class PersonViewController: WeChatTableViewNormalController {
     }
     
     //创建Label
-    func createLabel(frame:CGRect,string:String,color:UIColor,fontSize:CGFloat,isAllowNext:Bool) -> UILabel{
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat,isAllowNext:Bool) -> UILabel{
         let label = UILabel(frame: frame)
         label.textAlignment = .Left
-        label.font = UIFont(name: "AlNile", size: fontSize)
+        label.font = UIFont(name: fontName, size: fontSize)
         label.textColor = color
         label.text = string
         if isAllowNext {
@@ -249,25 +252,81 @@ class PersonViewController: WeChatTableViewNormalController {
         cell.photoImageView.hidden = true
         cell.contentLabel.hidden = true
         
+        cell.dayLabel.hidden = true
+        cell.dateLabel.hidden = true
+        cell.placeLabel.hidden = true
+        
+        
         let personInfo = personInfos[indexPath.row]
-        if !personInfo.date.isEmpty{
+        if !personInfo.day.isEmpty {
+            let beginX:CGFloat = leftPadding
+            let beginY:CGFloat = dateTopPadding / 2
+            let width:CGFloat = dayWidth
+            let height:CGFloat = dateHeight
+            let dayLabel = createLabel(
+                CGRectMake(beginX, beginY, width, height),
+                string: personInfo.day,
+                color: textColor,
+                fontName: "AlNile-bold",
+                fontSize: 35,
+                isAllowNext:false
+            )
+            dayLabel.textAlignment = .Right
+            cell.addSubview(dayLabel)
+        }
+        
+        if !personInfo.date.isEmpty {
+            let beginX:CGFloat = leftPadding + dayWidth + dateRightPadding
+            let beginY:CGFloat = dateTopPadding / 2
+            let width:CGFloat = dateWidth
+            let height:CGFloat = dateHeight
+            let dateLabel = createLabel(
+                CGRectMake(beginX, beginY, width, height),
+                string: personInfo.date,
+                color: textColor,
+                fontName: "AlNile",
+                fontSize: 12,
+                isAllowNext:false
+            )
+            cell.addSubview(dateLabel)
+        }
+        
+        if !personInfo.place.isEmpty {
+            let beginX:CGFloat = leftPadding
+            let beginY:CGFloat = dateHeight + dateTopPadding / 2
+            let width:CGFloat = leftWidth
+            let height:CGFloat = placeHeight
+            let dateLabel = createLabel(
+                CGRectMake(beginX, beginY, width, height),
+                string: personInfo.place,
+                color: UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1),
+                fontName: "AlNile",
+                fontSize: 12,
+                isAllowNext:true
+            )
+            cell.addSubview(dateLabel)
+        }
+        
+        /*if !personInfo.date.isEmpty{
             cell.dateLabel.text = personInfo.date
             //cell.dateLabel.font = UIFont(name: "AlNile", size: 20)
         }else{
-            cell.dateLabel.hidden = true
+            cell.dateLabel.text = ""
         }
         
         if !personInfo.day.isEmpty{
             cell.dayLabel.text = personInfo.day
         }else{
-            cell.dayLabel.hidden = true
+            cell.dayLabel.text = ""
         }
         
         if !personInfo.place.isEmpty {
             cell.placeLabel.text = personInfo.place
         }else{
-            cell.placeLabel.hidden = true
-        }
+            cell.placeLabel.text = ""
+        }*/
+        
+        
     
         for info in personInfo.infos {
             let photo = info.photo
@@ -338,6 +397,7 @@ class PersonViewController: WeChatTableViewNormalController {
                                  CGRectMake(beginX, beginY, width, height),
                                  string: title!.title,
                                  color: textColor,
+                                 fontName: "AlNile",
                                  fontSize: titleFontSize,
                                  isAllowNext:true
                              )
@@ -456,6 +516,7 @@ class PersonViewController: WeChatTableViewNormalController {
                 CGRectMake(beginX, beginY, width, height),
                 string: content!.content,
                 color: textColor,
+                fontName: "AlNile",
                 fontSize: titleFontSize,
                 isAllowNext:true
             )
