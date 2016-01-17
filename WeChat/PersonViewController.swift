@@ -44,11 +44,12 @@ class PersonViewController: WeChatTableViewNormalController {
     let topPadding:CGFloat = 10//距上边空白
     
     let dateHeight:CGFloat = 25
-    let dateWidth:CGFloat = 50
-    let dayWidth:CGFloat = 30
+    let dateWidth:CGFloat = 40
+    let dayWidth:CGFloat = 40
     let placeHeight:CGFloat = 25
     let titleHeight:CGFloat = 20
     let contentHeight:CGFloat = 40
+    let infoPadding:CGFloat = 10
     
     let lastCellBottomPadding:CGFloat = 50//最后view距离线条高度
     let lastDrawHeight:CGFloat = 5//最后线条高度
@@ -128,28 +129,28 @@ class PersonViewController: WeChatTableViewNormalController {
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let title = Title(title: "[得意]说得很有道理")
                 let info = Info(title: title, photo: [photo], content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info,info,info])
                 personInfos.append(personInfo)
             } else if i % 6 == 3 {//内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info,info])
                 personInfos.append(personInfo)
             } else if i % 6 == 4 {//大图和内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(photo: [photo1,photo2,photo3],content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info,info,info,info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else if i % 6 == 5{//大图
                 let info = Info(photo: [photo1,photo2,photo3,photo4])
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info,info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else {
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(photo: [photo1],content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
+                personInfo = PersonInfo(date: "十二月",day:"\(26)", infos: [info,info,info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             }
@@ -244,18 +245,12 @@ class PersonViewController: WeChatTableViewNormalController {
         return photoView
     }
     
+    //自定义kdentifier,防止数据重叠
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
-        
-        //隐藏所有控件
-        cell.titleLabel.hidden = true
-        cell.photoImageView.hidden = true
-        cell.contentLabel.hidden = true
-        
-        cell.dayLabel.hidden = true
-        cell.dateLabel.hidden = true
-        cell.placeLabel.hidden = true
-        
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell\(indexPath.section)\(indexPath.row)")
+        if cell == nil {
+            cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
+        }
         
         let personInfo = personInfos[indexPath.row]
         if !personInfo.day.isEmpty {
@@ -272,7 +267,7 @@ class PersonViewController: WeChatTableViewNormalController {
                 isAllowNext:false
             )
             dayLabel.textAlignment = .Right
-            cell.addSubview(dayLabel)
+            cell!.addSubview(dayLabel)
         }
         
         if !personInfo.date.isEmpty {
@@ -288,7 +283,7 @@ class PersonViewController: WeChatTableViewNormalController {
                 fontSize: 12,
                 isAllowNext:false
             )
-            cell.addSubview(dateLabel)
+            cell!.addSubview(dateLabel)
         }
         
         if !personInfo.place.isEmpty {
@@ -304,31 +299,12 @@ class PersonViewController: WeChatTableViewNormalController {
                 fontSize: 12,
                 isAllowNext:true
             )
-            cell.addSubview(dateLabel)
+            cell!.addSubview(dateLabel)
         }
         
-        /*if !personInfo.date.isEmpty{
-            cell.dateLabel.text = personInfo.date
-            //cell.dateLabel.font = UIFont(name: "AlNile", size: 20)
-        }else{
-            cell.dateLabel.text = ""
-        }
-        
-        if !personInfo.day.isEmpty{
-            cell.dayLabel.text = personInfo.day
-        }else{
-            cell.dayLabel.text = ""
-        }
-        
-        if !personInfo.place.isEmpty {
-            cell.placeLabel.text = personInfo.place
-        }else{
-            cell.placeLabel.text = ""
-        }*/
-        
-        
-    
-        for info in personInfo.infos {
+        var originY:CGFloat = 0
+        for(var i = 0;i < personInfo.infos.count;i++){
+            let info = personInfo.infos[i]
             let photo = info.photo
             let title = info.title
             let content = info.content
@@ -345,7 +321,7 @@ class PersonViewController: WeChatTableViewNormalController {
             let customView = createControlView(
                 CGRectMake(
                     leftPadding + leftWidth,
-                    0,
+                    originY,
                     UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding,
                     infoHeight
                 ),
@@ -357,18 +333,25 @@ class PersonViewController: WeChatTableViewNormalController {
             
             customView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTap:"))
             
-            cell.addSubview(customView)
+            cell!.addSubview(customView)
             customViews.append(customView)
+            
+            if i != (personInfo.infos.count - 1){
+                originY += (customView.frame.height + infoPadding)
+            }else{
+                originY += customView.frame.height
+            }
+            
         }
         
         //最后一行添加线条
         if indexPath.row == (personInfos.count - 1) {
-            cell.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cell.frame.height - lastCellBottomPadding * 2 + lastCellBottomPadding, cell.frame.width - leftWidth,lastDrawHeight)))
+            cell!.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cell!.frame.height - lastCellBottomPadding * 2 + lastCellBottomPadding, cell!.frame.width - leftWidth,lastDrawHeight)))
         }
         
         //取消cell选中样式
-        cell.selectionStyle = .None
-        return cell
+        cell!.selectionStyle = .None
+        return cell!
     }
     
     func viewTap(gestrue: UITapGestureRecognizer){
@@ -547,7 +530,8 @@ class PersonViewController: WeChatTableViewNormalController {
     //获取高度
     func getViewHeight(personInfo:PersonInfo) -> CGFloat{
         var height:CGFloat = 0
-        for info in personInfo.infos {
+        for(var i = 0;i < personInfo.infos.count;i++){
+            let info = personInfo.infos[i]
             let photo = info.photo
             let title = info.title
             let content = info.content
@@ -578,6 +562,10 @@ class PersonViewController: WeChatTableViewNormalController {
                 
             } else {
                 continue
+            }
+            
+            if i != (personInfo.infos.count - 1){
+                height += 10
             }
         }
         
