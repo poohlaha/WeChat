@@ -116,7 +116,7 @@ class PersonViewController: WeChatTableViewNormalController {
         let photo3 = Photo(photoImage: UIImage(named: "info-bg6"),width:100,height:100,isBigPic:true)
         let photo4 = Photo(photoImage: UIImage(named: "info-bg4"),width:100,height:100,isBigPic:true)
         
-        for i in 0 ..< 6 {
+        for i in 0 ... 21 {
             var personInfo:PersonInfo = PersonInfo()
             if i % 6 == 1 {//小图片和内容
                 let photo = Photo(photoImage: UIImage(named: "contact1"))
@@ -134,7 +134,7 @@ class PersonViewController: WeChatTableViewNormalController {
             } else if i % 6 == 3 {//内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info,info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
                 personInfos.append(personInfo)
             } else if i % 6 == 4 {//大图和内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
@@ -144,13 +144,13 @@ class PersonViewController: WeChatTableViewNormalController {
                 personInfos.append(personInfo)
             } else if i % 6 == 5{//大图
                 let info = Info(photo: [photo1,photo2,photo3,photo4])
-                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info,info])
+                personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else {
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(photo: [photo1],content: content)
-                personInfo = PersonInfo(date: "十二月",day:"\(26)", infos: [info,info,info])
+                personInfo = PersonInfo(date: "十二月",day:"\(26)", infos: [info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             }
@@ -245,8 +245,8 @@ class PersonViewController: WeChatTableViewNormalController {
         return photoView
     }
     
-    //自定义kdentifier,防止数据重叠
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        //let cell = tableView.dequeueReusableCellWithIdentifier("PersonInfoCell", forIndexPath: indexPath) as! PersonInfoCell
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell\(indexPath.section)\(indexPath.row)")
         if cell == nil {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
@@ -301,7 +301,7 @@ class PersonViewController: WeChatTableViewNormalController {
             )
             cell!.addSubview(dateLabel)
         }
-        
+       
         var originY:CGFloat = 0
         for(var i = 0;i < personInfo.infos.count;i++){
             let info = personInfo.infos[i]
@@ -345,9 +345,9 @@ class PersonViewController: WeChatTableViewNormalController {
         }
         
         //最后一行添加线条
-        if indexPath.row == (personInfos.count - 1) {
+        /*if indexPath.row == (personInfos.count - 1) {
             cell!.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cell!.frame.height - lastCellBottomPadding * 2 + lastCellBottomPadding, cell!.frame.width - leftWidth,lastDrawHeight)))
-        }
+        }*/
         
         //取消cell选中样式
         cell!.selectionStyle = .None
