@@ -15,13 +15,13 @@ class PersonCustomView: UIView {
     var color:UIColor?
     var bgColor:UIColor?
     
-    init(frame: CGRect,tableView:UITableView,color:UIColor) {
+    init(frame: CGRect,tableView:UITableView,color:UIColor?) {
         super.init(frame: frame)
         self.tableView = tableView
         self.color = color
         self.bgColor = UIColor(red: 135, green: 206, blue: 255, alpha: 1)
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = self.color
         self.userInteractionEnabled = true
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTap:"))
     }

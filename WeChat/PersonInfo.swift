@@ -39,18 +39,22 @@ class Info{
     
     //MARKS: Properties
     var title:Title?
-    var photo:Photo?
+    var photo:[Photo]?
     var content:Content?
     
-    init(title:Title?,photo:Photo?,content:Content){
+    init(title:Title?,photo:[Photo]?,content:Content){
         self.title = title
         self.photo = photo
         self.content = content
     }
     
-    init(photo:Photo?,content:Content){
+    init(photo:[Photo]?,content:Content){
         self.photo = photo
         self.content = content
+    }
+    
+    init(photo:[Photo]?){
+        self.photo = photo
     }
     
     init(content:Content){
@@ -63,6 +67,7 @@ class Photo:InfoNormal{
     var photoImage:UIImage? //图片
     var width:CGFloat = 50
     var height:CGFloat = 50
+    var isBigPic:Bool = false
     
     init(photoImage:UIImage?,width:CGFloat,height:CGFloat){
         self.photoImage = photoImage
@@ -72,6 +77,18 @@ class Photo:InfoNormal{
     
     init(photoImage:UIImage?){
         self.photoImage = photoImage
+    }
+    
+    init(photoImage:UIImage?,width:CGFloat,height:CGFloat,isBigPic:Bool){
+        self.photoImage = photoImage
+        self.width = width
+        self.height = height
+        self.isBigPic = isBigPic
+    }
+    
+    init(photoImage:UIImage?,isBigPic:Bool){
+        self.photoImage = photoImage
+        self.isBigPic = isBigPic
     }
     
     init(width:CGFloat,height:CGFloat){
