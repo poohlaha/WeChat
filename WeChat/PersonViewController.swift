@@ -39,6 +39,7 @@ class PersonViewController: WeChatTableViewNormalController {
     
     let leftPadding:CGFloat = 10//左边空白
     let rightPadding:CGFloat = 10//右边空白
+    let bottomPadding:CGFloat = 30//底部空白
     let leftWidth:CGFloat = 100//左边宽度
     let topPadding:CGFloat = 10//距上边空白
     
@@ -47,6 +48,8 @@ class PersonViewController: WeChatTableViewNormalController {
     let titleHeight:CGFloat = 20
     let contentHeight:CGFloat = 40
     
+    let lastCellBottomPadding:CGFloat = 50//最后view距离线条高度
+    let lastDrawHeight:CGFloat = 5//最后线条高度
     
     
     var personInfos:[PersonInfo] = [PersonInfo]()
@@ -93,7 +96,7 @@ class PersonViewController: WeChatTableViewNormalController {
         tableView.scrollEnabled = true
         tableView.showsVerticalScrollIndicator = true
         //去掉scrollview自动设置
-        self.automaticallyAdjustsScrollViewInsets = false
+        //self.automaticallyAdjustsScrollViewInsets = false
         initTableHeaderView()
         initData()
     }
@@ -242,6 +245,13 @@ class PersonViewController: WeChatTableViewNormalController {
             cell.placeLabel.hidden = true
         }
         
+        var cellHeight = cell.frame.height
+        //最后一行添加线条
+        if indexPath.row == (personInfos.count - 1) {
+            cellHeight -= lastCellBottomPadding * 2
+        }else{
+            cellHeight -= bottomPadding
+        }
         
         for info in personInfo.infos {
             let photo = info.photo
@@ -251,7 +261,7 @@ class PersonViewController: WeChatTableViewNormalController {
             if title != nil && photo != nil {//当有标题和图片和内容,图片为小图
                 //创建UIView,包含所有控件
                 let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
                 let titleLabel = createLabel(CGRectMake(photoLeftPadding, titleTopPadding, controlView.frame.width, titleHeight), string: (title?.title)!, color: UIColor.blackColor(), fontSize: 14,isAllowNext: false)
                 let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleHeight + titleBottomPadding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
@@ -265,7 +275,7 @@ class PersonViewController: WeChatTableViewNormalController {
             } else if title == nil && photo != nil {//当没有标题,只有图片或图片和内容
                 //创建UIView,包含所有控件
                 let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
                 var height:CGFloat = 0
                 var padding:CGFloat = titleTopPadding
@@ -287,7 +297,7 @@ class PersonViewController: WeChatTableViewNormalController {
             } else if title == nil && photo == nil && content != nil{//当只有内容
                 //创建UIView,包含所有控件
                 let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cell.bounds.height), tableView: self.tableView, color: bgColor)
+                let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
                 var height:CGFloat = 0
                 var padding:CGFloat = titleTopPadding
@@ -307,6 +317,11 @@ class PersonViewController: WeChatTableViewNormalController {
             } else {
                 
             }
+        }
+        
+        //最后一行添加线条
+        if indexPath.row == (personInfos.count - 1) {
+            cell.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cellHeight + lastCellBottomPadding, cell.frame.width - leftWidth,lastDrawHeight)))
         }
         
         //取消cell选中样式
@@ -342,7 +357,15 @@ class PersonViewController: WeChatTableViewNormalController {
     //MARKS:根据内容重新计算高度
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let personInfo = personInfos[indexPath.row]
-        return getViewHeight(personInfo)
+        
+        var height = getViewHeight(personInfo)
+        //最后一行添加线条
+        if indexPath.row == (personInfos.count - 1) {
+            height += lastCellBottomPadding * 2
+            return height
+        }
+        
+        return height + bottomPadding
     }
 
     //获取高度
@@ -401,4 +424,5 @@ class PersonViewController: WeChatTableViewNormalController {
         
         return leftHeight
     }
+    
 }

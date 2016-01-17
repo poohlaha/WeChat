@@ -67,6 +67,38 @@ class WeChatDrawView: UIView {
         return shape
     }
     
+    //绘制直线
+    func drawLine(beginPointX x1:CGFloat,beginPointY y1:CGFloat,endPointX x2:CGFloat,endPointY y2:CGFloat,color:UIColor) -> CAShapeLayer{
+        // 创建path
+        let path = UIBezierPath()
+        // 添加路径[1条点(x1,y1)到点(x2,y2)的线段]到path
+        path.moveToPoint(CGPointMake(x1, y1))
+        path.addLineToPoint(CGPointMake(x2,y2))
+        // 将path绘制出来
+        //path.stroke()
+        
+        let shape = CAShapeLayer()
+        shape.path = path.CGPath
+        shape.strokeColor = color.CGColor
+        shape.lineWidth = 0.5
+        path.closePath()
+        return shape
+    }
+    
+    //绘制圆,startAngle 是以 x 轴正方向为起点，clockwise 则是用来标记是否为顺时针方向。
+    func drawArc(point:CGPoint,radius:CGFloat,color:UIColor) -> CAShapeLayer{
+        let path = UIBezierPath()
+        //endAngle为180也okay,radius:表示圆大小
+        path.addArcWithCenter(point, radius: radius, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        
+        let shape = CAShapeLayer()
+        shape.path = path.CGPath
+        shape.fillColor = color.CGColor
+        shape.lineWidth = 1
+        path.closePath()
+        return shape
+    }
+    
     //绘制矩形
     func drawRect(beginPointX x:CGFloat,beginPointY y:CGFloat,width:CGFloat,height:CGFloat) -> CAShapeLayer{
         let path = UIBezierPath(roundedRect: CGRectMake(x, y, width, height), cornerRadius: 0)

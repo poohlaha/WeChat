@@ -42,6 +42,7 @@
 		76A9FA1A1C43FEDD00E244D3 /* WeChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */; };
 		76B965FC1C467A3300678AE5 /* WeChatDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */; };
 		76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */; };
+		76DBE5151C4B2A4600D77289 /* LastCellCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,7 @@
 		76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationController.swift; sourceTree = "<group>"; };
 		76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatDrawView.swift; sourceTree = "<group>"; };
 		76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatContactPhotoView.swift; sourceTree = "<group>"; };
+		76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastCellCustomView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				7610D87C1C47BA17003D012D /* PersonInfoCell.swift */,
 				7610D87E1C47BB98003D012D /* PersonInfo.swift */,
 				76189CFF1C4A8F9300D88842 /* PersonCustomView.swift */,
+				76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */,
 			);
 			name = Person;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				76189D001C4A8F9300D88842 /* PersonCustomView.swift in Sources */,
+				76DBE5151C4B2A4600D77289 /* LastCellCustomView.swift in Sources */,
 				760D3F1B1C42607900F41269 /* SearchBarViewController.swift in Sources */,
 				7610D87F1C47BB98003D012D /* PersonInfo.swift in Sources */,
 				761513101C3F5C7600DE8B2A /* ContactViewController.swift in Sources */,
