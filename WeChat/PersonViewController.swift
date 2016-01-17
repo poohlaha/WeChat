@@ -263,9 +263,10 @@ class PersonViewController: WeChatTableViewNormalController {
                 let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
                 let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
+                let _titleBottomPadding:CGFloat = titleBottomPadding / 2
                 let titleLabel = createLabel(CGRectMake(photoLeftPadding, titleTopPadding, controlView.frame.width, titleHeight), string: (title?.title)!, color: UIColor.blackColor(), fontSize: 14,isAllowNext: false)
-                let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleHeight + titleBottomPadding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
-                let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleHeight + titleBottomPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
+                let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleTopPadding + titleHeight + _titleBottomPadding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
+                let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,photoImage.frame.origin.y + contentTopPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
                 
                 controlView.backgroundColor = bgColor
                 controlView.addSubview(titleLabel)
@@ -278,15 +279,8 @@ class PersonViewController: WeChatTableViewNormalController {
                 let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
                 var height:CGFloat = 0
-                var padding:CGFloat = titleTopPadding
-                let leftHeight = getLeftHeight(personInfo)
-                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
-                    height += leftHeight
-                    //重新计算padding
-                    padding = (controlView.frame.height - photo!.height) / 2 - photoBottomPadding
-                }else{
-                    height += photo!.height + padding + photoBottomPadding
-                }
+                //重新计算padding
+                let padding:CGFloat = (controlView.frame.height - photo!.height) / 2
                 
                 let photoImage = createPhotoView(CGRectMake(photoLeftPadding, padding, (photo?.width)!, (photo?.height)!), image: (photo?.photoImage)!)
                 let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleTopPadding, controlView.frame.width - (photo?.width)! - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
@@ -299,16 +293,8 @@ class PersonViewController: WeChatTableViewNormalController {
                 let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
                 let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
                 
-                var height:CGFloat = 0
-                var padding:CGFloat = titleTopPadding
-                let leftHeight = getLeftHeight(personInfo)
-                if leftHeight > (contentHeight + contentTopPadding + contentBottomPadding) {
-                    height += leftHeight
-                    //重新计算padding
-                    padding = (controlView.frame.height - contentHeight) / 2
-                }else{
-                    height += contentHeight + padding + contentBottomPadding
-                }
+                //重新计算padding
+                let padding:CGFloat = (controlView.frame.height - contentHeight) / 2
                 
                 let contentLabel = createLabel(CGRectMake(photoLeftPadding,padding, controlView.frame.width - photoLeftPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.lightGrayColor(), fontSize: 14,isAllowNext: true)
                 controlView.backgroundColor = bgColor
