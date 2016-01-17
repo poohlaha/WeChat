@@ -116,7 +116,7 @@ class PersonViewController: WeChatTableViewNormalController {
         let photo3 = Photo(photoImage: UIImage(named: "info-bg6"),width:100,height:100,isBigPic:true)
         let photo4 = Photo(photoImage: UIImage(named: "info-bg4"),width:100,height:100,isBigPic:true)
         
-        for i in 0 ... 21 {
+        for i in 0 ..< 21 {
             var personInfo:PersonInfo = PersonInfo()
             if i % 6 == 1 {//小图片和内容
                 let photo = Photo(photoImage: UIImage(named: "contact1"))
@@ -221,7 +221,7 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS: 返回cell行数
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return personInfos.count
+        return personInfos.count + 1
     }
     
     //创建Label
@@ -251,6 +251,15 @@ class PersonViewController: WeChatTableViewNormalController {
         if cell == nil {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
         }
+        
+        //最后一行添加线条
+        if indexPath.row == personInfos.count {
+            cell!.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cell!.frame.height / 2, cell!.frame.width - leftWidth,lastDrawHeight)))
+            //取消cell选中样式
+            cell!.selectionStyle = .None
+            return cell!
+        }
+
         
         let personInfo = personInfos[indexPath.row]
         if !personInfo.day.isEmpty {
@@ -344,10 +353,6 @@ class PersonViewController: WeChatTableViewNormalController {
             
         }
         
-        //最后一行添加线条
-        /*if indexPath.row == (personInfos.count - 1) {
-            cell!.addSubview(LastCellCustomView(frame: CGRectMake(leftWidth + rightPadding, cell!.frame.height - lastCellBottomPadding * 2 + lastCellBottomPadding, cell!.frame.width - leftWidth,lastDrawHeight)))
-        }*/
         
         //取消cell选中样式
         cell!.selectionStyle = .None
@@ -515,16 +520,21 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS:根据内容重新计算高度
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let personInfo = personInfos[indexPath.row]
+        var height:CGFloat = 0
         
-        var height = getViewHeight(personInfo)
         //最后一行添加线条
-        if indexPath.row == (personInfos.count - 1) {
-            height += lastCellBottomPadding * 2
+        if indexPath.row == personInfos.count {
+            height += lastCellBottomPadding
             return height
         }
         
-        return height + bottomPadding
+        let personInfo = personInfos[indexPath.row]
+        height = getViewHeight(personInfo)
+        if indexPath.row != (personInfos.count - 1) {
+            return height + bottomPadding
+        }else{
+            return height
+        }
     }
 
     //获取高度
