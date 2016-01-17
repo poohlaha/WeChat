@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PersonInfo {
+class PersonInfo:InfoNormal {
     
     //MARKS: Properties
     var date:String = "" //日期
@@ -29,7 +29,7 @@ class PersonInfo {
         self.infos = infos
     }
    
-    init(){
+    override init(){
         
     }
 }
@@ -117,7 +117,7 @@ class Content:InfoNormal{
 
 class InfoNormal {
     var fontSize:CGFloat = 14//字体大小
-    var color = UIColor.blackColor()
+    var color = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     
     init(){
         

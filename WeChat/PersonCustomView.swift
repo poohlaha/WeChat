@@ -14,43 +14,26 @@ class PersonCustomView: UIView {
     var tableView:UITableView?
     var color:UIColor?
     var bgColor:UIColor?
+    var bgImageView:UIImageView?
     
     init(frame: CGRect,tableView:UITableView,color:UIColor?) {
         super.init(frame: frame)
         self.tableView = tableView
-        self.color = color
-        self.bgColor = UIColor(red: 135, green: 206, blue: 255, alpha: 1)
+        if color == nil {
+            self.color = UIColor.whiteColor()
+        }else{
+            self.color = color
+        }
         
+        self.bgColor = UIColor(red: 135, green: 206, blue: 255, alpha: 1)
         self.backgroundColor = self.color
         self.userInteractionEnabled = true
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTap:"))
+        self.bgImageView = UIImageView(image: UIImage(named: "custom-bg"))
+        bgImageView!.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    //MARKS: Tap事件
-    func viewTap(gestrue: UITapGestureRecognizer){
-        //去掉所有cell的选中事件
-        for(var i = 0;i < self.tableView!.numberOfSections; i++){
-            for(var j = 0;j < self.tableView!.numberOfRowsInSection(i);j++){
-                let indexPath = NSIndexPath(forRow: j, inSection: i)
-                let cell = self.tableView!.cellForRowAtIndexPath(indexPath)
-                for(var k = 0;k < cell?.subviews.count; k++){
-                    let sub = cell?.subviews[k]
-                    if sub == nil {
-                        continue
-                    }
-                    
-                    if sub!.isKindOfClass(PersonCustomView){
-                        sub?.backgroundColor =  self.color
-                    }
-                }
-            }
-        }
-        
-        let gestureView = gestrue.view
-        gestureView?.backgroundColor = UIColor(patternImage: UIImage(named: "custom-bg")!)
-    }
 }
+

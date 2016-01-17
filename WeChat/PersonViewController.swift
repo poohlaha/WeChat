@@ -58,6 +58,8 @@ class PersonViewController: WeChatTableViewNormalController {
     var personInfos:[PersonInfo] = [PersonInfo]()
     let headerBgHeight:CGFloat = 300//背景大图高度
     
+    var customViews = [PersonCustomView]()
+    
     //重写属性,去掉tableview header
     override var CELL_HEADER_HEIGHT:CGFloat {
         get {
@@ -135,14 +137,17 @@ class PersonViewController: WeChatTableViewNormalController {
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
                 let info = Info(photo: [photo1,photo2,photo3],content: content)
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info])
+                personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else if i % 6 == 5{//大图
                 let info = Info(photo: [photo1,photo2,photo3,photo4])
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
+                personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else {
                 let info = Info(photo: [photo1,photo2])
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
+                personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             }
             
@@ -263,15 +268,7 @@ class PersonViewController: WeChatTableViewNormalController {
         }else{
             cell.placeLabel.hidden = true
         }
-        
-        /*var cellHeight = cell.frame.height
-        //最后一行添加线条
-        if indexPath.row == (personInfos.count - 1) {
-            cellHeight -= lastCellBottomPadding * 2
-        }else{
-            cellHeight -= bottomPadding
-        }*/
-        
+    
         for info in personInfo.infos {
             let photo = info.photo
             let title = info.title
@@ -286,19 +283,23 @@ class PersonViewController: WeChatTableViewNormalController {
                 infoHeight = photoBottomPadding * 2 + contentHeight
             }
             
-            cell.addSubview(createControlView(
+            let customView = createControlView(
                 CGRectMake(
                     leftPadding + leftWidth,
                     0,
                     UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding,
                     infoHeight
                 ),
-                color: UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1),
+                color: personInfo.color,
                 title: title,
                 content: content,
                 photos: photo
-                )
             )
+            
+            customView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTap:"))
+            
+            cell.addSubview(customView)
+            customViews.append(customView)
         }
         
         //最后一行添加线条
@@ -310,55 +311,19 @@ class PersonViewController: WeChatTableViewNormalController {
         cell.selectionStyle = .None
         return cell
     }
-
-    //MARKS: 计算当有标题和图片和内容,图片为小图大小
-    /*func createOne(cellHeight:CGFloat,title:Title,content:Content,photo:[Photo]) -> PersonCustomView{
-        //创建UIView,包含所有控件
-        //控制背景色
-        let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-        
-        let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
-        
-        let _titleBottomPadding:CGFloat = titleBottomPadding / 2
-        let titleLabel = createLabel(CGRectMake(photoLeftPadding, titleTopPadding, controlView.frame.width, titleHeight), string: (title.title), color: UIColor.darkGrayColor(), fontSize: 14,isAllowNext: false)
-        
-        let photoImage = createPhotoView(CGRectMake(photoLeftPadding, titleTopPadding + titleHeight + _titleBottomPadding, (photo[0].width), photo[0].height), image: photo[0].photoImage!)
-        
-        let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,photoImage.frame.origin.y + contentTopPadding, controlView.frame.width - (photo[0].width) - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content.content), color: UIColor.darkGrayColor(), fontSize: 14,isAllowNext: true)
-        
-        controlView.backgroundColor = bgColor
-        controlView.addSubview(titleLabel)
-        controlView.addSubview(photoImage)
-        controlView.addSubview(contentLabel)
-        
-        //创建UIView,包含所有控件
-        let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-        let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
-        
-        //重新计算padding
-        let padding:CGFloat = (controlView.frame.height - photo![0].height) / 2
-        
-        let photoImage = createPhotoView(CGRectMake(photoLeftPadding, padding, photo![0].width, photo![0].height), image: photo![0].photoImage!)
-        let contentLabel = createLabel(CGRectMake(photoImage.frame.origin.x + photoImage.frame.width + photoRightPadding,contentTopPadding + titleTopPadding, controlView.frame.width - photo![0].width - photoLeftPadding - photoRightPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.darkGrayColor(), fontSize: 14,isAllowNext: true)
-        controlView.backgroundColor = bgColor
-        controlView.addSubview(photoImage)
-        controlView.addSubview(contentLabel)
-        
-        
-        //创建UIView,包含所有控件
-        let bgColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-        let controlView = PersonCustomView(frame: CGRectMake(leftPadding + leftWidth, titleTopPadding, UIScreen.mainScreen().bounds.width - (leftPadding + leftWidth) - rightPadding, cellHeight), tableView: self.tableView, color: bgColor)
-        
-        //重新计算padding
-        let padding:CGFloat = (controlView.frame.height - contentHeight) / 2
-        
-        let contentLabel = createLabel(CGRectMake(photoLeftPadding,padding, controlView.frame.width - photoLeftPadding - contentRightPadding,contentHeight), string: (content?.content)!, color: UIColor.darkGrayColor(), fontSize: 14,isAllowNext: true)
-        controlView.backgroundColor = bgColor
-        controlView.addSubview(contentLabel)
-        
-        return controlView
-    }*/
     
+    func viewTap(gestrue: UITapGestureRecognizer){
+        for customView in customViews {
+            customView.bgImageView?.removeFromSuperview()
+        }
+        
+        let gestureView = gestrue.view as! PersonCustomView
+        gestureView.addSubview(gestureView.bgImageView!)
+        gestureView.sendSubviewToBack(gestureView.bgImageView!)
+        
+    }
+    
+    //创建视图
     func createControlView(rect:CGRect,color:UIColor,title:Title?,content:Content?,photos:[Photo]?) -> PersonCustomView{
         let controlView = PersonCustomView(frame: rect, tableView: self.tableView, color: color)
         
