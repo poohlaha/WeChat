@@ -100,7 +100,7 @@ class ContactModel {
     //save in session
     func saveContactsModel(contact:Contact){
         var new = true
-        var englishName = getEnglistByName(contact.name) as String
+        var englishName = Normal().getEnglistByName(contact.name) as String
         if englishName.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 1 {
             englishName = "*"
         }
@@ -124,8 +124,13 @@ class ContactModel {
     }
     
     
+    
+}
+
+class Normal {
+    
     //MARKS: 获取中文的拼音
-    private func getEnglistByName(name:String) -> String{
+    func getEnglistByName(name:String) -> String{
         let s =  NSMutableString(string:name) as CFMutableString
         CFStringTransform(s, nil, kCFStringTransformMandarinLatin, false)
         //去掉音标

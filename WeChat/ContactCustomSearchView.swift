@@ -67,6 +67,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView?.delegate = self
         self.tableView?.scrollEnabled = true
         self.tableView?.separatorStyle = .None
+        //self.automaticallyAdjustsScrollViewInsets = false
         self.view.addSubview(self.tableView!)
         self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CustomTableCell")
     }
@@ -144,7 +145,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         return label
     }
     
-    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat,isAllowNext:Bool,isDifferent:Bool,index:Int) -> UILabel{
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat,isAllowNext:Bool,char:String) -> UILabel{
         let label = UILabel(frame: frame)
         label.textAlignment = .Left
         label.font = UIFont(name: fontName, size: fontSize)
@@ -153,10 +154,31 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
             label.numberOfLines = 0
             label.lineBreakMode = NSLineBreakMode.ByTruncatingTail//有省略号
         }
-        if isDifferent {
+        if !char.isEmpty {
             let str = NSMutableAttributedString(attributedString: NSAttributedString(string: string))
-            str.addAttribute("NSForegroundColorAttributeName", value: self.selectedTextColor, range: NSRange(location: 0,length: index))
-            str.addAttribute("NSFontAttributeName", value: UIFont(name: fontName, size: fontSize)!, range: NSRange(location: 0,length: str.length))
+            var range:NSRange?
+            
+            //查找字符串位置
+            if judgeIsEnglish(char){
+                //获取每个字的第一个字母
+                for(var i = 0;i < string.characters.count;i++){
+                    let _char = NSString(string:string).substringWithRange(NSMakeRange(i,1))
+                    let firstChar = getFirstCharByCharacter(_char)
+                    if firstChar.uppercaseString == char.uppercaseString {
+                        range = NSRange(location: i,length: 1)
+                        let range1 = NSRange(location: 0,length: str.length)
+                        str.addAttribute(NSForegroundColorAttributeName, value: self.selectedTextColor, range: range!)
+                        str.addAttribute(NSFontAttributeName, value: UIFont(name: fontName, size: fontSize)!, range: range1)
+                    }
+                }
+            } else {
+                let _str = NSString(string: string)
+                range = _str.rangeOfString(char)
+                str.addAttribute(NSForegroundColorAttributeName, value: self.selectedTextColor, range: range!)
+                str.addAttribute(NSFontAttributeName, value: UIFont(name: fontName, size: fontSize)!, range: NSRange(location: 0,length: str.length))
+            }
+            
+            
             label.attributedText = str
         } else {
             label.text = string
@@ -193,10 +215,31 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         if searchBar.text!.isEmpty {
             customView!.hidden = false
         } else {
-            getContainsData()
+            //如果是英文,则根据key搜索
+            if judgeIsEnglish(searchBar.text!) {
+                getContainsDataByEnglish()
+            } else {
+                getContainsData()
+            }
+            
             self.tableView?.reloadData()
             customView!.hidden = true
         }
+    }
+    
+    //判断输入的是否是英文
+    func judgeIsEnglish(str:String) -> Bool{
+        var isEnglish:Bool = true
+        for char in str.utf8 {
+            if (char > 64 && char < 91) || (char > 96 && char < 123) {
+                
+            }else{
+                isEnglish = false
+                break
+            }
+        }
+        
+        return isEnglish
     }
     
     //MARKS: 设置背景色
@@ -248,7 +291,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         cell.layer.addSublayer(shape)
         
         if indexPath.row == 0  && self.data.count > 0{
-            let label = createLabel(CGRectMake(leftPadding, tableCellOneTopPadding, UIScreen.mainScreen().bounds.width - leftPadding, tabelCellOneTextHeight), string: "联系人", color: UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1), fontName: self.fontName, fontSize: 14, isAllowNext: false,isDifferent: false,index: 0)
+            let label = createLabel(CGRectMake(leftPadding, tableCellOneTopPadding, UIScreen.mainScreen().bounds.width - leftPadding, tabelCellOneTextHeight), string: "联系人", color: UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1), fontName: self.fontName, fontSize: 14, isAllowNext: false,char:"")
             cell.addSubview(label)
             return cell
         }
@@ -258,7 +301,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         let photoImageView = createPhotoView(CGRectMake(leftPadding, tableCellPadding, tableCellImage, tableCellImage), image: contact.photo!,bounds: 4)
         cell.addSubview(photoImageView)
         
-        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,isDifferent: true,index: 0)
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,char:searchBar!.text!)
         cell.addSubview(textLabel)
         return cell
     }
@@ -285,5 +328,37 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
                 }
             }
         }
+    }
+    
+    func getContainsDataByEnglish(){
+        let str = searchBar!.text
+        for contactSession in sessions {
+            let key = contactSession.key
+            if key.uppercaseString == str?.uppercaseString {
+                for contact in contactSession.contacts{
+                    self.data.append(contact)
+                }
+            } else {
+                for contact in contactSession.contacts{
+                    let name = contact.name
+                    for(var i = 0;i < name.characters.count;i++){
+                        let _char = NSString(string:name).substringWithRange(NSMakeRange(i,1))
+                        let firstChar = getFirstCharByCharacter(_char)
+                        if firstChar.uppercaseString == str?.uppercaseString {
+                            self.data.append(contact)
+                            break;
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    //获取第一个字母
+    func getFirstCharByCharacter(char:String) -> String{
+        let englishName = Normal().getEnglistByName(String(char)) as String
+        let firstChar = englishName.substringToIndex(englishName.startIndex.advancedBy(1))
+        return firstChar
     }
 }

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/ContactCustomSearchView.swift"
-            timestampString = "474810672.160696"
+            timestampString = "474815605.408569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,12 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/ContactCustomSearchView.swift"
-            timestampString = "474810672.160696"
+            timestampString = "474815605.408569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "judgeIsEnglish(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/ContactCustomSearchView.swift"
+            timestampString = "474815605.408569"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "createLabel(_:string:color:fontName:fontSize:isAllowNext:char:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
