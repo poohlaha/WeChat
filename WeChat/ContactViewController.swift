@@ -128,6 +128,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         let customView = ContactCustomSearchView()
         customView.index = 1
+        customView.sessions = self.sessions
         self.presentViewController(customView, animated: false) { () -> Void in
             
         }

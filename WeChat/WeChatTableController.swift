@@ -104,7 +104,4 @@ class WeChatTableFooterBlankController:WeChatTableViewNormalController {
         view.backgroundColor = getBackgroundColor()
         tableView.tableFooterView = view
     }
-    
-    
-    
 }

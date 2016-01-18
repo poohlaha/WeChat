@@ -9,7 +9,7 @@
 import UIKit
 
 //自定义search视图,用于当用户开始输入数据的时候显示,以及显示搜索结果
-class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
+class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
     
     //MARKS: Properties
     let searchBarHeight:CGFloat = 40
@@ -18,10 +18,31 @@ class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
     let arcNum:CGFloat = 3
     let arcFillColor:UIColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
     var topPadding:CGFloat?
-    var index:Int = -1
+    
     let arcBottomPadding:CGFloat = 20
     let labelWidth:CGFloat = 45
     let labelHeight:CGFloat = 20
+    var tableView:UITableView?
+    var searchBar:UISearchBar?
+    var customView:UIView?
+    var frame:CGRect?
+    
+    var sessions = [ContactSession]()
+    var index:Int = -1
+    
+    let tableCellOneHeight:CGFloat = 45
+    let tabelCellOneTextHeight:CGFloat = 15
+    let tableCellOneTopPadding:CGFloat = 20
+    let tableCellOneBottomPadding:CGFloat = 10
+    let tableCellHeight:CGFloat = 54
+    let tableCellImage:CGFloat = 44
+    let tableCellPadding:CGFloat = 5
+    let selectedTextColor:UIColor = UIColor(red: 0/255, green: 102/255, blue: 51/255, alpha: 1)//搜索结果颜色
+    
+    let leftPadding:CGFloat = 15
+    let photoRightPadding:CGFloat = 10
+    let fontName = "AlNile"
+    var data = [Contact]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +55,20 @@ class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
         self.view.backgroundColor = UIColor.whiteColor()
         getStatusHeight()
         createSearchBar()
+        self.frame = CGRectMake(0, searchBar!.frame.origin.y + searchBar!.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBar!.frame.origin.y)
+        addTableView()
         createThreeArc()
+    }
+    
+    func addTableView(){
+        self.tableView = UITableView(frame: self.frame!)
+        self.tableView?.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
+        self.tableView?.dataSource = self
+        self.tableView?.delegate = self
+        self.tableView?.scrollEnabled = true
+        self.tableView?.separatorStyle = .None
+        self.view.addSubview(self.tableView!)
+        self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CustomTableCell")
     }
     
     //MARKS: 获取状态栏高度
@@ -45,25 +79,27 @@ class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
     
     //MARKS: 创建搜索框
     func createSearchBar(){
-        let searchBar = UISearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight))
-        searchBar.translucent = true
-        searchBar.placeholder = "搜索"
-        searchBar.barStyle = .Default
-        searchBar.showsCancelButton = true
-        searchBar.showsScopeBar = false
-        searchBar.barStyle = UIBarStyle.Default
-        searchBar.searchBarStyle = UISearchBarStyle.Default
-        searchBar.showsBookmarkButton = false
-        searchBar.showsSearchResultsButton = false
-        searchBar.delegate = self
-        self.view.addSubview(searchBar)
+        searchBar = UISearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight))
+        searchBar!.translucent = true
+        searchBar!.placeholder = "搜索"
+        searchBar!.barStyle = .Default
+        searchBar!.showsCancelButton = true
+        searchBar!.showsScopeBar = false
+        searchBar!.barStyle = UIBarStyle.Default
+        searchBar!.searchBarStyle = UISearchBarStyle.Default
+        searchBar!.showsBookmarkButton = false
+        searchBar!.showsSearchResultsButton = false
+        searchBar!.delegate = self
+        self.view.addSubview(searchBar!)
         
         //获取键盘
-        searchBar.becomeFirstResponder()
+        searchBar!.becomeFirstResponder()
     }
     
     //MARKS: 画三个圆
     func createThreeArc(){
+        customView = UIView(frame: self.frame!)
+        customView!.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         //计算圆之间的距离
         let arcPadding = (UIScreen.mainScreen().bounds.width - arcWidthHeight * arcNum) / (arcNum + 1)
         let originY = topPadding! + searchBarHeight + searchBarBottomPadding
@@ -72,41 +108,75 @@ class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
         let arcBegin1X:CGFloat = arcPadding
         let arcFrame1:CGRect = CGRectMake(arcBegin1X, originY, arcWidthHeight, arcWidthHeight)
         let arc1 = ContactSearchArcView(frame: arcFrame1, color: arcFillColor, image: UIImage(named: "arc-1")!)
-        self.view.addSubview(arc1)
+        customView!.addSubview(arc1)
         
         //计算第二个圆的位置
         let arcBegin2X:CGFloat = arcPadding + arcWidthHeight + arcPadding
         let arcFrame2:CGRect = CGRectMake(arcBegin2X, originY, arcWidthHeight, arcWidthHeight)
         let arc2 = ContactSearchArcView(frame: arcFrame2, color: arcFillColor, image: UIImage(named: "arc-2")!)
-        self.view.addSubview(arc2)
+        customView!.addSubview(arc2)
         
         //计算第三个圆的位置
         let arcBegin3X:CGFloat = UIScreen.mainScreen().bounds.width - arcWidthHeight - arcPadding
         let arcFrame3:CGRect = CGRectMake(arcBegin3X, originY, arcWidthHeight, arcWidthHeight)
         let arc3 = ContactSearchArcView(frame: arcFrame3, color: arcFillColor, image: UIImage(named: "arc-3")!)
-        self.view.addSubview(arc3)
+        customView!.addSubview(arc3)
         
         let label1BeginX = (arcFrame1.width - labelWidth) / 2 + arcFrame1.origin.x
         let label2BeginX = (arcFrame2.width - (labelWidth - 15)) / 2 + arcFrame2.origin.x
         let label3BeginX = (arcFrame3.width - labelWidth) / 2 + arcFrame3.origin.x
         //MARKS: 添加圆底部文字
         let label1 = createLabel(CGRectMake(label1BeginX, arcFrame1.origin.y + arcFrame1.height + arcBottomPadding, labelWidth, labelHeight),string: "朋友圈")
-        self.view.addSubview(label1)
+        customView!.addSubview(label1)
         
         let label2 = createLabel(CGRectMake(label2BeginX, arcFrame2.origin.y + arcFrame2.height + arcBottomPadding, labelWidth - 15, labelHeight),string: "文章")
-        self.view.addSubview(label2)
+        customView!.addSubview(label2)
         
         let label3 = createLabel(CGRectMake(label3BeginX, arcFrame3.origin.y + arcFrame3.height + arcBottomPadding, labelWidth, labelHeight),string: "公众号")
-        self.view.addSubview(label3)
+        customView!.addSubview(label3)
+        self.view.addSubview(customView!)
     }
     
     func createLabel(frame:CGRect,string:String) -> UILabel{
         let label = UILabel(frame: frame)
         label.text = string
-        label.font = UIFont(name: "AlNile", size: 14)
+        label.font = UIFont(name: self.fontName, size: 14)
         return label
     }
     
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat,isAllowNext:Bool,isDifferent:Bool,index:Int) -> UILabel{
+        let label = UILabel(frame: frame)
+        label.textAlignment = .Left
+        label.font = UIFont(name: fontName, size: fontSize)
+        label.textColor = color
+        if isAllowNext {
+            label.numberOfLines = 0
+            label.lineBreakMode = NSLineBreakMode.ByTruncatingTail//有省略号
+        }
+        if isDifferent {
+            let str = NSMutableAttributedString(attributedString: NSAttributedString(string: string))
+            str.addAttribute("NSForegroundColorAttributeName", value: self.selectedTextColor, range: NSRange(location: 0,length: index))
+            str.addAttribute("NSFontAttributeName", value: UIFont(name: fontName, size: fontSize)!, range: NSRange(location: 0,length: str.length))
+            label.attributedText = str
+        } else {
+            label.text = string
+        }
+        
+        return label
+    }
+    
+    //创建Photo
+    func createPhotoView(frame:CGRect,image:UIImage,bounds:CGFloat) -> UIImageView{
+        let photoView = UIImageView(frame: frame)
+        photoView.image = image
+        if bounds > 0 {
+            photoView.layer.masksToBounds = true
+            photoView.layer.cornerRadius = bounds
+        }
+        return photoView
+    }
+    
+    //MARKS: 取消事件
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
        dismissViewControllerAnimated(false) { () -> Void in
         if self.index >= 0 {
@@ -116,4 +186,104 @@ class ContactCustomSearchView: UIViewController,UISearchBarDelegate {
        }
     }
     
+    
+    //MARKS: 事件
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        self.data = [Contact]()
+        if searchBar.text!.isEmpty {
+            customView!.hidden = false
+        } else {
+            getContainsData()
+            self.tableView?.reloadData()
+            customView!.hidden = true
+        }
+    }
+    
+    //MARKS: 设置背景色
+    func getBackgroundColor() -> UIColor {
+        return UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
+    }
+    
+    //MARKS: 设置背景色,用于tableviewfooter一致
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = getBackgroundColor()
+        return view
+    }
+    
+    //MARKS: 去掉tableview底部空白
+    func createFooterForTableView(){
+        let view = UIView()
+        view.backgroundColor = getBackgroundColor()
+        tableView!.tableFooterView = view
+    }
+    
+    //MARKS: 设置tableViewCell高度
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return tableCellOneHeight
+        }
+        
+        return tableCellHeight
+    }
+    
+    //设置数据
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        /*var cell = tableView.dequeueReusableCellWithIdentifier("Cell\(indexPath.section)\(indexPath.row)")
+        if cell == nil {
+            cell = UITableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
+        }*/
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("CustomTableCell",forIndexPath:indexPath) as UITableViewCell
+        
+        //清除旧数据
+        if cell.subviews.count > 0 {
+            for subView in cell.subviews {
+                subView.removeFromSuperview()
+            }
+        }
+        
+        //画底部线条
+        let shape = WeChatDrawView().drawLine(beginPointX: leftPadding, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:arcFillColor)
+        cell.layer.addSublayer(shape)
+        
+        if indexPath.row == 0  && self.data.count > 0{
+            let label = createLabel(CGRectMake(leftPadding, tableCellOneTopPadding, UIScreen.mainScreen().bounds.width - leftPadding, tabelCellOneTextHeight), string: "联系人", color: UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1), fontName: self.fontName, fontSize: 14, isAllowNext: false,isDifferent: false,index: 0)
+            cell.addSubview(label)
+            return cell
+        }
+        
+        //MARKS: Get group sesssion
+        let contact = data[indexPath.row - 1]
+        let photoImageView = createPhotoView(CGRectMake(leftPadding, tableCellPadding, tableCellImage, tableCellImage), image: contact.photo!,bounds: 4)
+        cell.addSubview(photoImageView)
+        
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,isDifferent: true,index: 0)
+        cell.addSubview(textLabel)
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchBar!.text!.isEmpty {
+            return 0
+        }
+        
+        if self.data.count == 0 {
+            return 0
+        }
+
+        return self.data.count + 1
+    }
+    
+    //MARKS:计算包含数据
+    func getContainsData(){
+        let str = searchBar!.text
+        for contactSession in sessions {
+            for contact in contactSession.contacts{
+                if contact.name.containsString(str!){
+                    self.data.append(contact)
+                }
+            }
+        }
+    }
 }
