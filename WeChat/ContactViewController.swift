@@ -56,6 +56,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //MARKS: Init Frame
         initFrame()
     }
+    
 
     //MARKS: Init Data
     func initContactData(){
@@ -121,7 +122,16 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         headerView.addSubview(searchBar!)
         tableView.tableHeaderView = headerView
-        
+    }
+    
+    //MARKS:当焦点在输入框的时候
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        let customView = ContactCustomSearchView()
+        customView.index = 1
+        self.presentViewController(customView, animated: false) { () -> Void in
+            
+        }
+        return false
     }
     
     //MARKS: Init tableview index
@@ -208,6 +218,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 (cell as! ContactTableViewCell).resize((searchBar?.frame.width)!)
             }
         }
+        
     }
     
     //MARKS: 返回每组头标题名称
