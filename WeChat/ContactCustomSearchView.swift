@@ -55,7 +55,8 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.view.backgroundColor = UIColor.whiteColor()
         getStatusHeight()
         createSearchBar()
-        self.frame = CGRectMake(0, searchBar!.frame.origin.y + searchBar!.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBar!.frame.origin.y)
+        self.frame = CGRectMake(0, searchBar!.frame.origin.y + searchBar!.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBarHeight - topPadding!)
+        //self.edgesForExtendedLayout = .Bottom
         addTableView()
         createThreeArc()
     }
@@ -66,6 +67,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView?.dataSource = self
         self.tableView?.delegate = self
         self.tableView?.scrollEnabled = true
+        self.tableView?.showsVerticalScrollIndicator = true
         self.tableView?.separatorStyle = .None
         //self.automaticallyAdjustsScrollViewInsets = false
         self.view.addSubview(self.tableView!)
@@ -330,6 +332,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         }
     }
     
+    //MARKS: 计算英文数据
     func getContainsDataByEnglish(){
         let str = searchBar!.text
         for contactSession in sessions {
