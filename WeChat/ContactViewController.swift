@@ -55,9 +55,25 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         //MARKS: Init Frame
         initFrame()
+        //let refreshView = WeChatRefreshView(scrollView: tableView)
+        //refreshView.delegate = self
+        //self.tableView.addSubview(refreshView)
     }
     
-
+    func refresh(refreshView: WeChatRefreshView) {
+        delay(4) {
+            refreshView.endRefresh()
+        }
+    }
+    
+    func delay(seconds: Double, completion:()->()) {
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
+        
+        dispatch_after(popTime, dispatch_get_main_queue()) {
+            completion()
+        }
+    }
+    
     //MARKS: Init Data
     func initContactData(){
         let contactModel = ContactModel()
@@ -232,6 +248,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
     }
     
+    
     //MARKS: 自定义向右滑动菜单
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remarkAction = UITableViewRowAction(style: .Normal, title: "备注") { (action:UITableViewRowAction, index:NSIndexPath) -> Void in
@@ -244,6 +261,9 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             remarkTagController.remarkText = contact.name
             self.navigationController?.pushViewController(remarkTagController, animated: true)
+            
+            //让cell可以自动回到默认状态，所以需要退出编辑模式
+            tableView.editing = false
         }
         
         return [remarkAction]
