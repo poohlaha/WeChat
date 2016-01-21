@@ -104,6 +104,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
+        //self.navigationController?.tabBarController!.tabBar.hidden = false
         
         //改变索引的颜色
         //tableView.sectionIndexColor  = UIColor.grayColor()
@@ -111,6 +112,11 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         initSearchBar()
         initTableIndex()
         addFooter()
+    }
+    
+    //当视图出现的时候显示tabbar
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.tabBarController!.tabBar.hidden = false
     }
     
     //MARKS: Init SearchBar And Add Header View

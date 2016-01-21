@@ -37,6 +37,7 @@ class WeChatTableViewController: UITableViewController {
         loadSampleDatas()
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
+        self.navigationController?.tabBarController!.tabBar.hidden = false
     }
     
     func loadSampleDatas(){

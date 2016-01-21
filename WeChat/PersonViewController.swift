@@ -8,6 +8,10 @@
 
 import UIKit
 
+class WeChatUITapGestureRecognizer:UITapGestureRecognizer{
+    var data:[AnyObject]?
+}
+
 //个人信息页面
 //需要重新定义视图,把控件包含进去
 class PersonViewController: WeChatTableViewNormalController {
@@ -84,7 +88,6 @@ class PersonViewController: WeChatTableViewNormalController {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initFrame()
@@ -111,10 +114,10 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS: 初始化数据
     func initData(){
-        let photo1 = Photo(photoImage: UIImage(named: "info-bg1"),width:100,height:100,isBigPic:true)
-        let photo2 = Photo(photoImage: UIImage(named: "info-bg2"),width:100,height:100,isBigPic:true)
-        let photo3 = Photo(photoImage: UIImage(named: "info-bg6"),width:100,height:100,isBigPic:true)
-        let photo4 = Photo(photoImage: UIImage(named: "info-bg4"),width:100,height:100,isBigPic:true)
+        let photo1 = Photo(photoImage: UIImage(named: "info-bg1"),width:100,height:100)
+        let photo2 = Photo(photoImage: UIImage(named: "info-bg2"),width:100,height:100)
+        let photo3 = Photo(photoImage: UIImage(named: "info-bg6"),width:100,height:100)
+        let photo4 = Photo(photoImage: UIImage(named: "info-bg4"),width:100,height:100)
         
         for i in 0 ..< 21 {
             var personInfo:PersonInfo = PersonInfo()
@@ -138,18 +141,18 @@ class PersonViewController: WeChatTableViewNormalController {
                 personInfos.append(personInfo)
             } else if i % 6 == 4 {//大图和内容
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
-                let info = Info(photo: [photo1,photo2,photo3],content: content)
+                let info = Info(photo: [photo1,photo2,photo3],isBigPic:true,content: content)
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", place: "上海・张江高科技园区", infos: [info,info,info,info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else if i % 6 == 5{//大图
-                let info = Info(photo: [photo1,photo2,photo3,photo4])
+                let info = Info(photo: [photo1,photo2,photo3,photo4],isBigPic:true)
                 personInfo = PersonInfo(date: "十二月",day:"\(i+1)", infos: [info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
             } else {
                 let content = Content(content: "我，已经选择了你，你叫我怎么放弃...我不是碰不到更好的，而是因为已经有了你，我不想再碰到更好的；")
-                let info = Info(photo: [photo1],content: content)
+                let info = Info(photo: [photo1],isBigPic:true,content: content)
                 personInfo = PersonInfo(date: "十二月",day:"\(26)", infos: [info])
                 personInfo.color = UIColor.whiteColor()
                 personInfos.append(personInfo)
@@ -340,7 +343,11 @@ class PersonViewController: WeChatTableViewNormalController {
                 photos: photo
             )
             
-            customView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTap:"))
+            let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
+            if info.isBigPic {
+                tap.data = photo!
+            }
+            customView.addGestureRecognizer(tap)
             
             cell!.addSubview(customView)
             customViews.append(customView)
@@ -359,7 +366,7 @@ class PersonViewController: WeChatTableViewNormalController {
         return cell!
     }
     
-    func viewTap(gestrue: UITapGestureRecognizer){
+    func viewTap(gestrue: WeChatUITapGestureRecognizer){
         for customView in customViews {
             customView.bgImageView?.removeFromSuperview()
         }
@@ -368,6 +375,15 @@ class PersonViewController: WeChatTableViewNormalController {
         gestureView.addSubview(gestureView.bgImageView!)
         gestureView.sendSubviewToBack(gestureView.bgImageView!)
         
+        //photoView.delegate = self
+        if gestrue.data != nil {
+            let photoView = WeChatCustomPhotoView()
+            photoView.photos = gestrue.data as! [Photo]
+            self.navigationController?.pushViewController(photoView, animated: false)
+            /*presentViewController(photoView, animated: true) { () -> Void in
+            
+            }*/
+        }
     }
     
     //创建视图

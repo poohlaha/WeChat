@@ -47,13 +47,16 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
         
         let weChatPhotoView = WeChatContactPhotoView(frame: CGRectMake(90, 7, UIScreen.mainScreen().bounds.width - 90, personLabel.frame.height), images: images)
         cell?.addSubview(weChatPhotoView)
+        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     func initFrame(){
         self.navigationController?.navigationBarHidden = false
         self.navigationItem.rightBarButtonItem?.enabled = false
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "...",style: UIBarButtonItemStyle.Plain, target: self, action: "moreBtnClick")
+        //设置右侧按钮文字为三个点
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "● ● ●", style: UIBarButtonItemStyle.Plain, target: self, action: "moreBtnClick")
+        self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont(name: "Arial-BoldMT", size: 10)!], forState: UIControlState.Normal)
         
         initTableView()
         //MARKS: 去掉tableview底部空白
@@ -82,6 +85,7 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
        // self.photoNumberText = photoNumberText!.stringByReplacingOccurrencesOfString("-", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
         self.phoneNumber.textColor = UIColor(red: 51/255, green: 153/255, blue: 204/255, alpha: 1)
     }
+
     
     //右侧...点击事件
     func moreBtnClick(){
