@@ -19,8 +19,9 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     //var images:[UIImage] = [UIImage]()
     var photos:[Photo] = [Photo]()
     //var delegate:WeChatCustomPhotoViewDelegate!
-    var navigation:UINavigationController!
+    var navigation:WeChatCustomNavigationHeaderView!
     var statusBarFrame:CGRect!
+    var navigationBottom:WeChatCustomNavigationBottomView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,11 +101,22 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         //获取状态栏
         statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         let navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
-        let navigation = WeChatCustomNavigationView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
         
         //self.navigationController?.view.addSubview(navigation)
-        self.view.addSubview(navigation)
-        self.view.bringSubviewToFront(navigation)
+        self.view.addSubview(self.navigation)
+        self.view.bringSubviewToFront(self.navigation)
+        
+        navigationBottom = WeChatCustomNavigationBottomView()
+        navigationBottom.initData("时间，让深的，东西越来越深让浅的东西越来越浅。看的淡一点，伤的就会少一点，时间过了，爱情淡了，也就散了。别等不该等的人，别伤不该伤的心。我们真的要过了很久很久，才能够明白，自己真正怀念的，到底是怎样的人，怎样的事。")
+        if navigationBottom.labelView != nil {
+            self.view.addSubview(navigationBottom.labelView!)
+            self.view.bringSubviewToFront(navigationBottom.labelView!)
+        }
+        
+        self.view.addSubview(navigationBottom.bottomView)
+        self.view.bringSubviewToFront(navigationBottom.bottomView)
+
     }
     
     func createTitle(index:Int){
