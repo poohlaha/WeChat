@@ -146,7 +146,7 @@ class WeChatCustomNavigationHeaderView: UIView {
     func leftTap(gestrue: WeChatUITapGestureRecognizer){
         self.navigationController.popViewControllerAnimated(true)
         //显示隐藏的导航条
-        self.navigationController?.navigationBar.hidden = false
+        //self.navigationController?.navigationBar.hidden = false
     }
     
     //MARKS: 右侧事件

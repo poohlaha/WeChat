@@ -90,22 +90,7 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     }
     
     func createNavigation(){
-        self.navigationController?.navigationBar.hidden = true
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "MM月dd日 HH:mm"
-        var sysTime = dateFormat.stringFromDate(NSDate())
-        if photos.count > 1 {
-            sysTime += "\n\(1)/\(photos.count)"
-        }
-        
-        //获取状态栏
-        statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        let navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
-        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
-        
-        //self.navigationController?.view.addSubview(navigation)
-        self.view.addSubview(self.navigation)
-        self.view.bringSubviewToFront(self.navigation)
+        createNavigationHeaderView()
         
         navigationBottom = WeChatCustomNavigationBottomView()
         navigationBottom.initData("时间，让深的，东西越来越深让浅的东西越来越浅。看的淡一点，伤的就会少一点，时间过了，爱情淡了，也就散了。别等不该等的人，别伤不该伤的心。我们真的要过了很久很久，才能够明白，自己真正怀念的，到底是怎样的人，怎样的事。")
@@ -117,6 +102,28 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         self.view.addSubview(navigationBottom.bottomView)
         self.view.bringSubviewToFront(navigationBottom.bottomView)
 
+    }
+    
+    func createNavigationHeaderView(){
+        self.navigationController?.navigationBar.hidden = true
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "MM月dd日 HH:mm"
+        var sysTime = dateFormat.stringFromDate(NSDate())
+        if photos.count > 1 {
+            sysTime += "\n\(1)/\(photos.count)"
+        }
+        //获取状态栏
+        statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        let navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
+        //self.navigationController?.view.addSubview(navigation)
+        self.view.addSubview(self.navigation)
+        //self.view.bringSubviewToFront(self.navigation)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigation.removeFromSuperview()
+        createNavigationHeaderView()
     }
     
     func createTitle(index:Int){
