@@ -222,6 +222,11 @@ class PersonViewController: WeChatTableViewNormalController {
         tableView.tableHeaderView = headerView
     }
     
+    override func viewWillAppear(animated: Bool) {
+        //显示隐藏的导航条
+        self.navigationController?.navigationBar.hidden = false
+    }
+    
     //MARKS: 返回cell行数
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return personInfos.count + 1

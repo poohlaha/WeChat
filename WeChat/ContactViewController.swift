@@ -16,6 +16,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     let footerHeight:CGFloat = 40
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
+    let leftPadding:CGFloat = 15
     
     var totalCount = 0
     //MARKS: 重写协议的属性
@@ -111,7 +112,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         //改变索引的颜色
         //tableView.sectionIndexColor  = UIColor.grayColor()
-        tableView.separatorStyle = .None
+        //tableView.separatorStyle = .None
         initContactData()
         initSearchBar()
         initTableIndex()
@@ -127,7 +128,8 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func initSearchBar(){
         //tableView.frame = UIScreen.mainScreen().bounds
         tableView.frame.size = self.view.frame.size
-        tableView.backgroundColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
+        //tableView.backgroundColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
+        tableView.backgroundColor = UIColor.whiteColor()
         
         let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,headerHeight))
         searchBar = UISearchBar(frame: CGRectMake(0,0,tableView.frame.size.width,searchHeight))
@@ -215,10 +217,12 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let session = sessions[indexPath.section]
         let contact = session.contacts[indexPath.row]
         
-        //画底部线条
-        let shape = WeChatDrawView().drawLine(beginPointX: 15, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1))
-        cell.layer.addSublayer(shape)
-        
+        /*if indexPath.row != (session.contacts.count - 1) {
+            //画底部线条
+            let shape = WeChatDrawView().drawLine(beginPointX: leftPadding, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1))
+            cell.layer.addSublayer(shape)
+        }*/
+       
         
         //set data
         cell.nameLabel.text = contact.name

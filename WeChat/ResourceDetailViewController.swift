@@ -101,14 +101,32 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     func setCellStyleNone(){
         for(var i = 0;i < tableView.numberOfSections; i++){
             for(var j = 0;j < tableView.numberOfRowsInSection(i);j++){
+                
+                let indexPath = NSIndexPath(forRow: j, inSection: i)
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                
+                if tableView.numberOfRowsInSection(i) == 1 && i != 3 {
+                    //画线条
+                    let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: 0, endPointX: UIScreen.mainScreen().bounds.width, endPointY: 0,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
+                    cell!.layer.addSublayer(shape)
+                }
+                
+                if (j == 0 || j == (tableView.numberOfRowsInSection(i) - 1)) && i != 3{
+                    var beginY:CGFloat = 0
+                    if j == (tableView.numberOfRowsInSection(i) - 1) {
+                        beginY = cell!.frame.height
+                    }
+                    
+                    //画线条
+                    let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: beginY, endPointX: UIScreen.mainScreen().bounds.width, endPointY: beginY,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
+                    cell!.layer.addSublayer(shape)
+                }
+               
                
                 if (i == 1 && j == 0) || (i == 2 && j == 1) || (i == 2 && j == 2){
                     continue
                 }
                 
-                
-                let indexPath = NSIndexPath(forRow: j, inSection: i)
-                let cell = tableView.cellForRowAtIndexPath(indexPath)
                 cell?.selectionStyle = .None
                 
                 if i == 3 && j == 0 {
