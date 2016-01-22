@@ -115,7 +115,7 @@ class WeChatTableViewController: UITableViewController {
             let chat = self.chats[indexPath.row]
             /*let cancelMenu = UIAlertController(title: nil, message: "取消关注“\(chat.title)”后将不再收到其下发的消息", preferredStyle:UIAlertControllerStyle.ActionSheet)
             
-       s     let cancelAction = UIAlertAction(title: "不再关注", style: UIAlertActionStyle.Destructive, handler: nil)
+            let cancelAction = UIAlertAction(title: "不再关注", style: UIAlertActionStyle.Destructive, handler: nil)
             let alsoAction = UIAlertAction(title: "仍然关注", style: UIAlertActionStyle.Cancel, handler: nil)
             
             cancelMenu.addAction(cancelAction)
@@ -124,7 +124,7 @@ class WeChatTableViewController: UITableViewController {
             
             let controller = self.parentViewController
             
-            let weChatAlert = WeChatBottomAlert(frame: CGRectMake(0,-1,UIScreen.mainScreen().bounds.width,0),titles: ["取消关注“\(chat.title)”后将不再收到其下发的消息","不再关注","仍然关注"], fontSize: 0)
+            let weChatAlert = WeChatBottomAlert(frame: CGRectMake(0,-1,UIScreen.mainScreen().bounds.width,0),titles: ["取消关注“\(chat.title)”后将不再收到其下发的消息","不再关注","仍然关注"],colors:[UIColor.grayColor(),UIColor.redColor(),UIColor.blackColor()],fontSize: 0)
             //self.view.addSubview(weChatAlert)
             controller?.parentViewController!.view.addSubview(weChatAlert)
             

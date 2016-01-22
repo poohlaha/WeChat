@@ -151,7 +151,11 @@ class WeChatCustomNavigationHeaderView: UIView {
     
     //MARKS: 右侧事件
     func rightTap(gestrue: WeChatUITapGestureRecognizer){
-        print("right")
+        
+        let weChatAlert = WeChatBottomAlert(frame: CGRectMake(0,-1,UIScreen.mainScreen().bounds.width,0),titles: ["","发送给朋友","收藏","保存图片","举报","取消"],colors:nil,fontSize: 0)
+        //self.addSubview(weChatAlert)
+        self.navigationController?.parentViewController!.view.addSubview(weChatAlert)
+        //self.bringSubviewToFront(weChatAlert)
     }
 }
 

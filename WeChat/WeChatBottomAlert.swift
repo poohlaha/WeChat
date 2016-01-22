@@ -15,6 +15,7 @@ class WeChatBottomAlert: WeChatDrawView {
     var fontSize:CGFloat = 12//默认字体大小
     var labelHeight:CGFloat = 25//默认标签高度
     var titles = [String]()
+    var colors = [UIColor]()
     let paddintLeft:CGFloat = 30//padding-left
     let paddintTop:CGFloat = 15//padding-top
     let titleFontName:String = "Avenir-Light"//默认标题字体名称
@@ -30,10 +31,14 @@ class WeChatBottomAlert: WeChatDrawView {
         super.init(coder: aDecoder)
     }
     
-    init(frame: CGRect,titles:[String],fontSize:CGFloat) {
+    init(frame: CGRect,titles:[String],colors:[UIColor]?,fontSize:CGFloat) {
         //MARKS: 初始化数据
         if fontSize > 0 {
             self.fontSize = fontSize
+        }
+        
+        if colors != nil {
+            self.colors = colors!
         }
         
         self.titles = titles
@@ -44,7 +49,9 @@ class WeChatBottomAlert: WeChatDrawView {
         //MARKS: 获取Alert总高度
         var totalHeight:CGFloat = 0
         for(var i = 0;i < titles.count;i++){
-            totalHeight += oneBlockHeight
+            if !titles[i].isEmpty {
+                totalHeight += oneBlockHeight
+            }
         }
         
         totalHeight += 5
@@ -82,9 +89,15 @@ class WeChatBottomAlert: WeChatDrawView {
                 return
             }
             
+            
+            
             var _originY:CGFloat = originY
             var size:CGFloat = fontSize
             for(var i = 0;i < titles.count;i++){
+                if titles[i].isEmpty {
+                    continue;
+                }
+                
                 if i == 0 {
                     size = fontSize
                 } else {
@@ -93,11 +106,14 @@ class WeChatBottomAlert: WeChatDrawView {
                 if i != (titles.count - 1) {
                     var color:UIColor
                     var fontName:String = titleFontName
+                    if self.colors.count > 0 {
+                        color = self.colors[i]
+                    } else {
+                        color = UIColor.blackColor()
+                    }
                     if i == 0 {
-                        color = UIColor.grayColor()
                         fontName = titleFontName
                     }else{
-                        color = UIColor.redColor()
                         fontName = self.fontName
                     }
                     
