@@ -348,11 +348,8 @@ class PersonViewController: WeChatTableViewNormalController {
                 photos: photo
             )
             
-            let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
-            if info.isBigPic {
-                tap.data = photo!
-            }
-            customView.addGestureRecognizer(tap)
+            //添加点击事件
+            addTapClick(customView, photo: photo!, isBigPic: info.isBigPic)
             
             cell!.addSubview(customView)
             customViews.append(customView)
@@ -371,14 +368,42 @@ class PersonViewController: WeChatTableViewNormalController {
         return cell!
     }
     
+    //MARKS: 点击事件
+    func addTapClick(customView:PersonCustomView,photo:[Photo],isBigPic:Bool){
+        let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
+        if isBigPic {
+            tap.data = photo
+        }
+        customView.addGestureRecognizer(tap)
+        
+        //长按事件
+        let longTap = UILongPressGestureRecognizer(target: self, action: "viewLongTap:")
+        longTap.minimumPressDuration = 0.1
+        customView.addGestureRecognizer(longTap)
+        //单击手势确定监测失败才会触发长按手势的相应操作
+        tap.requireGestureRecognizerToFail(longTap)
+    }
+    
+    //MARKS: 长按事件
+    func viewLongTap(gestrue:UILongPressGestureRecognizer){
+        let gestureView = gestrue.view as! PersonCustomView
+        if gestrue.state == .Began {
+            gestureView.addSubview(gestureView.bgImageView!)
+            gestureView.sendSubviewToBack(gestureView.bgImageView!)
+        }else if gestrue.state == .Ended{
+            gestureView.bgImageView?.removeFromSuperview()
+        }
+    }
+    
+    //MARKS: 点击事件
     func viewTap(gestrue: WeChatUITapGestureRecognizer){
         for customView in customViews {
             customView.bgImageView?.removeFromSuperview()
         }
         
         let gestureView = gestrue.view as! PersonCustomView
-        gestureView.addSubview(gestureView.bgImageView!)
-        gestureView.sendSubviewToBack(gestureView.bgImageView!)
+        //gestureView.addSubview(gestureView.bgImageView!)
+        //gestureView.sendSubviewToBack(gestureView.bgImageView!)
         
         //photoView.delegate = self
         if gestrue.data != nil {
@@ -389,6 +414,8 @@ class PersonViewController: WeChatTableViewNormalController {
             
             }*/
         }
+        
+        gestureView.bgImageView?.removeFromSuperview()
     }
     
     //创建视图

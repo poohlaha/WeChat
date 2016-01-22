@@ -15,6 +15,7 @@ class PersonCustomView: UIView {
     var color:UIColor?
     var bgColor:UIColor?
     var bgImageView:UIImageView?
+    var photos:[Photo]?
     
     init(frame: CGRect,tableView:UITableView,color:UIColor?) {
         super.init(frame: frame)
@@ -35,5 +36,19 @@ class PersonCustomView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    /*
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.addSubview(self.bgImageView!)
+        self.sendSubviewToBack(self.bgImageView!)
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.bgImageView?.removeFromSuperview()
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.bgImageView?.removeFromSuperview()
+    }*/
 }
 
