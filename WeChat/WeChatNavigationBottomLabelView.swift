@@ -14,7 +14,7 @@ class WeChatNavigationBottomLabelView: UIView {
     var text:String!
     var bgColor:UIColor!
     let fontName:String = "Arial"
-    let fontSize:CGFloat = 12
+    let fontSize:CGFloat = 14
     let labelPadding:CGFloat = 10
     let labelTopBottomPadding:CGFloat = 10
     let maxHeight:CGFloat = 100
@@ -89,7 +89,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     
     var isLayedOut:Bool = false
     let fontName:String = "Arial"
-    let fontSize:CGFloat = 12
+    let fontSize:CGFloat = 14
     let labelPadding:CGFloat = 10//文字中间空白
     let topBottomPadding:CGFloat = 10//底部空白
     var height:CGFloat = 30//view总高度

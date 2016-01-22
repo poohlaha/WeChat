@@ -116,7 +116,6 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         let navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
         self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
-        //self.navigationController?.view.addSubview(navigation)
         self.view.addSubview(self.navigation)
         //self.view.bringSubviewToFront(self.navigation)
     }

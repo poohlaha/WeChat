@@ -121,16 +121,16 @@ class WeChatCustomNavigationHeaderView: UIView {
                 labelText += "\n"
                 labelText += "\(count)/\(totalCount)"
                 centerLabel?.text = labelText
-                centerLabel?.font = UIFont(name: self.fontName, size: 14)
+                centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 14)
                 centerLabel?.numberOfLines = 0//允许换行
             }else{
                if self.centerLabelText!.containsString("\n") {
                     centerLabel = UILabel(frame: CGRectMake(centerLabelX, statusFrame.height + topPadding, centerLabelWidth, self.bounds.height - self.bottomPadding - statusFrame.height))
-                    centerLabel?.font = UIFont(name: self.fontName, size: 14)
+                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 14)
                     centerLabel?.numberOfLines = 0//允许换行
                }else{
                     centerLabel = UILabel(frame: CGRectMake(centerLabelX, beginY, centerLabelWidth, self.bounds.height - self.bottomPadding - statusFrame.height))
-                    centerLabel?.font = UIFont(name: self.fontName, size: 16)
+                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 16)
                }
                 
                 centerLabel?.text = self.centerLabelText
