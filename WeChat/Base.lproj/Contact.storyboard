@@ -29,9 +29,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="left" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hQw-gL-KMW">
-                                                    <rect key="frame" x="8" y="5" width="551" height="44"/>
+                                                    <rect key="frame" x="15" y="5" width="544" height="44"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="ECC55588-EA60-42E1-B5E5-A2A7C1915AD0" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="44" placeholderIntrinsicHeight="44" image="6ECD9134-A2B5-4AF9-9482-F3D874562A4A" translatesAutoresizingMaskIntoConstraints="NO" id="zNg-bN-IaB">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="K21-Rs-4Im"/>
@@ -44,7 +44,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCN-3V-esp">
-                                                            <rect key="frame" x="52" y="0.0" width="499" height="44"/>
+                                                            <rect key="frame" x="52" y="0.0" width="492" height="44"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -56,7 +56,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="hQw-gL-KMW" secondAttribute="bottom" constant="5" id="2K4-ue-j3u"/>
                                                 <constraint firstAttribute="trailing" secondItem="hQw-gL-KMW" secondAttribute="trailing" constant="8" id="Waw-5O-ccE"/>
                                                 <constraint firstItem="hQw-gL-KMW" firstAttribute="top" secondItem="8Bb-JI-rx9" secondAttribute="top" constant="5" id="rWc-IT-EkD"/>
-                                                <constraint firstItem="hQw-gL-KMW" firstAttribute="leading" secondItem="8Bb-JI-rx9" secondAttribute="leading" constant="8" id="xTe-gK-xlO"/>
+                                                <constraint firstItem="hQw-gL-KMW" firstAttribute="leading" secondItem="8Bb-JI-rx9" secondAttribute="leading" constant="15" id="xTe-gK-xlO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -112,7 +112,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ECC55588-EA60-42E1-B5E5-A2A7C1915AD0" width="100" height="100">
+        <image name="6ECD9134-A2B5-4AF9-9482-F3D874562A4A" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

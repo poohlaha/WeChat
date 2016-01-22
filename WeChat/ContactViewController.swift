@@ -13,6 +13,9 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
 
     //@IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    let footerHeight:CGFloat = 40
+    let headerHeight:CGFloat = 40
+    let searchHeight:CGFloat = 40
     
     var totalCount = 0
     //MARKS: 重写协议的属性
@@ -100,7 +103,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //self.view.addSubview(self.tableView!)
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
-        self.edgesForExtendedLayout = .Bottom
+        //self.edgesForExtendedLayout = .Bottom
         
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
@@ -108,6 +111,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         //改变索引的颜色
         //tableView.sectionIndexColor  = UIColor.grayColor()
+        tableView.separatorStyle = .None
         initContactData()
         initSearchBar()
         initTableIndex()
@@ -125,8 +129,8 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tableView.frame.size = self.view.frame.size
         tableView.backgroundColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
         
-        let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,40))
-        searchBar = UISearchBar(frame: CGRectMake(0,0,tableView.frame.size.width,40))
+        let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,headerHeight))
+        searchBar = UISearchBar(frame: CGRectMake(0,0,tableView.frame.size.width,searchHeight))
         
         //设置透明
         searchBar!.placeholder = "搜索"
@@ -134,8 +138,6 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         searchBar!.barStyle = .Default
         searchBar!.showsCancelButton = false
         searchBar!.showsScopeBar = false
-        //searchBar.barTintColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
-        //searchBar.backgroundImage = UIImage(named: "search-bg")
         searchBar!.barStyle = UIBarStyle.Default
         searchBar!.searchBarStyle = UISearchBarStyle.Default
         searchBar!.showsBookmarkButton = false
@@ -169,7 +171,7 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     //MARKS: Add Footer View
     func addFooter(){
-        let footerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,40))
+        let footerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,footerHeight))
         let footerlabel:UILabel = UILabel(frame: footerView.bounds)
         footerlabel.textColor = UIColor.grayColor()
         //footerlabel.backgroundColor = UIColor.clearColor()
@@ -212,6 +214,11 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //MARKS: Get group sesssion
         let session = sessions[indexPath.section]
         let contact = session.contacts[indexPath.row]
+        
+        //画底部线条
+        let shape = WeChatDrawView().drawLine(beginPointX: 15, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1))
+        cell.layer.addSublayer(shape)
+        
         
         //set data
         cell.nameLabel.text = contact.name

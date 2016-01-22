@@ -118,7 +118,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.backgroundColor = UIColor.lightGrayColor()
+        self.backgroundColor = UIColor.darkGrayColor()
         if !isLayedOut {
             createLeft()
             createRight()

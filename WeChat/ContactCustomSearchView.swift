@@ -288,6 +288,12 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
             }
         }
         
+        if cell.layer.sublayers?.count > 0 {
+            for sublayer in cell.layer.sublayers! {
+                sublayer.removeFromSuperlayer()
+            }
+        }
+        
         //画底部线条
         let shape = WeChatDrawView().drawLine(beginPointX: leftPadding, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:arcFillColor)
         cell.layer.addSublayer(shape)
