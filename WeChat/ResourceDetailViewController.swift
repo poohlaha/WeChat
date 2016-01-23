@@ -45,7 +45,7 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
        let indexPath = NSIndexPath(forRow: 1, inSection: 2)
        let cell = tableView.cellForRowAtIndexPath(indexPath)
         
-        let weChatPhotoView = WeChatContactPhotoView(frame: CGRectMake(90, 7, UIScreen.mainScreen().bounds.width - 90, personLabel.frame.height), images: images)
+        let weChatPhotoView = WeChatContactPhotoView(frame: CGRectMake(90, 0, UIScreen.mainScreen().bounds.width - 90 - 30, cell!.frame.height), images: images)
         cell?.addSubview(weChatPhotoView)
         self.navigationController?.tabBarController!.tabBar.hidden = true
     }

@@ -12,13 +12,12 @@ import UIKit
 class WeChatContactPhotoView: WeChatDrawView {
 
     //MARKS: Properties
-    var height:CGFloat = 55//默认视图高度
-    var width:CGFloat = 55//默认视图中每一张图片宽度
     var isLayedOut:Bool = false//是否初始化view
     var images:[UIImage] = [UIImage]()//图片数组
-    var padding:CGFloat = 10//默认间距
     var imageWidth:CGFloat = 40//默认图片宽度
     var imageHeight:CGFloat = 40//默认图片高度
+    var paddingTopOrBottom:CGFloat = 5
+    var paddingLeftOrRight:CGFloat = 5
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,6 +30,7 @@ class WeChatContactPhotoView: WeChatDrawView {
         //设置一些属性
         self.images = images
         self.backgroundColor = UIColor.clearColor()
+        getPicWidth()
     }
 
     override func layoutSubviews() {
@@ -49,19 +49,38 @@ class WeChatContactPhotoView: WeChatDrawView {
     func addImages(){
         var originX:CGFloat = 0
         for(var i = 0;i < images.count;i++){
-            let y = self.frame.origin.y
+            let y = self.paddingTopOrBottom
             imageRectForContentRect(originX, y: y, image: images[i])
             if i != (images.count - 1) {
-                originX += (padding + width)
+                originX += (paddingLeftOrRight + self.imageWidth)
             }
         }
+    }
+    
+    //MARKS: 图片成正比
+    func getPicWidth(){
+        let width = self.frame.width
+        let picWidth = width - paddingLeftOrRight * 3
+        self.imageWidth = picWidth / 4
+        self.imageHeight = self.frame.height
+        if self.imageHeight > self.imageWidth {
+            self.imageHeight = self.imageWidth
+        }
+        
+        if self.imageWidth > self.imageHeight {
+            self.imageWidth = self.imageHeight
+        }
+        
+        //重新计算上边距或左边距
+        self.paddingLeftOrRight = (width - self.imageWidth * 4) / 3
+        self.paddingTopOrBottom = (self.frame.height - self.imageHeight) / 2
     }
     
     //MARKS: 改变图片位置
     func imageRectForContentRect(x:CGFloat,y:CGFloat,image:UIImage){
         let imageView = UIImageView(image: image)
         imageView.userInteractionEnabled = true// 使图片视图支持交互
-        imageView.frame = CGRectMake(x, y, self.width, self.height)
+        imageView.frame = CGRectMake(x, y, self.imageWidth, self.imageHeight)
         self.addSubview(imageView)
     }
     

@@ -378,7 +378,7 @@ class PersonViewController: WeChatTableViewNormalController {
         
         //长按事件
         let longTap = UILongPressGestureRecognizer(target: self, action: "viewLongTap:")
-        longTap.minimumPressDuration = 0.1
+        longTap.minimumPressDuration = 0.2
         customView.addGestureRecognizer(longTap)
         //单击手势确定监测失败才会触发长按手势的相应操作
         tap.requireGestureRecognizerToFail(longTap)
