@@ -16,7 +16,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="VhV-wD-ooQ" kind="relationship" relationship="viewControllers" id="WLq-4Q-jqo"/>
-                        <segue destination="9NF-xB-TTP" kind="relationship" relationship="viewControllers" id="bQl-lR-U5c"/>
+                        <segue destination="wpg-qV-2OM" kind="relationship" relationship="viewControllers" id="W3R-jB-AGm"/>
                         <segue destination="JtT-7D-UO3" kind="relationship" relationship="viewControllers" id="4xs-08-XDG"/>
                         <segue destination="H1f-Qq-Txl" kind="relationship" relationship="viewControllers" id="b5D-p1-iA7"/>
                     </connections>
@@ -34,16 +34,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOk-xR-1t6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1" y="1049"/>
-        </scene>
-        <!--Contact-->
-        <scene sceneID="0s7-bq-iB0">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Contact" id="9NF-xB-TTP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="0V8-4f-POA"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Al-L2-Phj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="59.5" y="1155"/>
         </scene>
         <!--Discover-->
         <scene sceneID="gTp-me-dvt">
@@ -64,6 +54,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uye-Al-lt5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-18.5" y="1448"/>
+        </scene>
+        <!--Contact-->
+        <scene sceneID="xLM-39-q25">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Contact" id="wpg-qV-2OM" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="oqM-eU-kZh"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZFz-Fu-fG7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="453" y="1252"/>
         </scene>
     </scenes>
 </document>

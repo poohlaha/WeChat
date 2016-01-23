@@ -14,7 +14,7 @@ class PersonImageView:WeChatDrawView{
     //MARKS: Properties
     var image:UIImage?
     var color:UIColor = UIColor.whiteColor()
-    var spacePadding:CGFloat = 5
+    var spacePadding:CGFloat = 3
     var isLayedOut:Bool = false
     
     

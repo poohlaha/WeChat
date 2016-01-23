@@ -8,15 +8,16 @@
 
 import UIKit
 
-//联系人页面,这里应该使用UITableViewController
-class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,WeChatPropDelegate {
+//联系人页面
+class ContactViewController: UITableViewController,UISearchBarDelegate{
 
-    //@IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
+    //@IBOutlet weak var tableView: UITableView!
     let footerHeight:CGFloat = 40
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
     let leftPadding:CGFloat = 15
+    
+    var tableViewIndex:TableViewIndex?
     
     var totalCount = 0
     //MARKS: 重写协议的属性
@@ -97,31 +98,37 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tableView.dataSource = self
         
         //MARKS: register table view cell
-        //tableView.registerClass(ContactTableViewCell.self, forCellReuseIdentifier: "ContactTableViewCell")
-        tableView.scrollEnabled = true
-        tableView.showsVerticalScrollIndicator = true
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
         
-        //self.view.addSubview(self.tableView!)
+        //tableView.scrollEnabled = true
+        //tableView.showsVerticalScrollIndicator = true
+        
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
         //self.edgesForExtendedLayout = .Bottom
         
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
-        //self.navigationController?.tabBarController!.tabBar.hidden = false
         
-        //改变索引的颜色
-        //tableView.sectionIndexColor  = UIColor.grayColor()
-        //tableView.separatorStyle = .None
         initContactData()
         initSearchBar()
         initTableIndex()
         addFooter()
     }
     
-    //当视图出现的时候显示tabbar
+    //MARKS: 当视图出现的时候显示tabbar
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.tabBarController!.tabBar.hidden = false
+        if self.tableViewIndex != nil {
+            self.tableViewIndex?.hidden = false
+        }
+    }
+    
+    //MARKS: 当神图消失的时候
+    override func viewWillDisappear(animated: Bool) {
+        if self.tableViewIndex != nil {
+            self.tableViewIndex?.hidden = true
+        }
     }
     
     //MARKS: Init SearchBar And Add Header View
@@ -166,9 +173,8 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let width:CGFloat = 20
         let height:CGFloat = 200
         
-        let tableviewIndex = TableViewIndex(frame: CGRectMake(tableView.frame.width - width,UIScreen.mainScreen().bounds.height / 2 - height,width,UIScreen.mainScreen().bounds.height),tableView: tableView!,datas: sessions)
-        self.view.addSubview(tableviewIndex)
-        
+        self.tableViewIndex = TableViewIndex(frame: CGRectMake(tableView.frame.width - width,UIScreen.mainScreen().bounds.height / 2 - height,width,UIScreen.mainScreen().bounds.height),tableView: tableView!,datas: sessions)
+        self.parentViewController?.parentViewController!.view.addSubview(tableViewIndex!)
     }
     
     //MARKS: Add Footer View
@@ -186,55 +192,98 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     
     /****************************** tableView ***********************************/
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
         return CELL_HEIGHT
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CELL_HEADER_HEIGHT
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CELL_FOOTER_HEIGHT
     }
     
-    //MARKS: 返回分组数
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    //MARKS: 返回分组override 数
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sessions.count
     }
     
     //MARKS: 返回每组行数
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let session = sessions[section] as ContactSession
         return session.contacts.count
     }
     
+    let paddingLeft:CGFloat = 15
+    let imageWidth:CGFloat = 44
+    let imageHeight:CGFloat = 44
+    let topOrBottomPadding:CGFloat = 5
+    let bounds:CGFloat = 4
+    let photoRightPadding:CGFloat = 8
+    let labelHeight:CGFloat = 15
+    
     //MARKS: 返回每行的单元格
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableViewCell", forIndexPath: indexPath) as! ContactTableViewCell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableViewCell", forIndexPath: indexPath) as! ContactTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as UITableViewCell
         
         //MARKS: Get group sesssion
         let session = sessions[indexPath.section]
         let contact = session.contacts[indexPath.row]
         
-        /*if indexPath.row != (session.contacts.count - 1) {
+        //清除旧数据
+        if cell.subviews.count > 0 {
+            for subView in cell.subviews {
+                if subView.isKindOfClass(UILabel) || subView.isKindOfClass(UIImageView) {
+                    subView.removeFromSuperview()
+                }
+                
+            }
+        }
+        
+        /*let section = tableView.numberOfRowsInSection(indexPath.section)
+        let index = tableView.numberOfRowsInSection(section)
+        
+        if indexPath.row != (index - 1) {
             //画底部线条
-            let shape = WeChatDrawView().drawLine(beginPointX: leftPadding, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1))
+            let shape = WeChatDrawView().drawLine(beginPointX: leftPadding, beginPointY: cell.frame.height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: cell.frame.height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
             cell.layer.addSublayer(shape)
         }*/
        
         
-        //set data
-        cell.nameLabel.text = contact.name
-        cell.photoImageView.image = contact.photo
-        
-        //MARKS: 设置分割线到最右边
-        //cell.separatorInset = UIEdgeInsetsZero
-        //cell.selectionStyle = .Blue
-        
         //MARKS:因为cell长度超出竖屏范围,故重新设置其长度
-        cell.resize((searchBar?.frame.width)!)
+        //cell.resize((searchBar?.frame.width)!)
+        
+        //MARKS: Get group sesssion
+        let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: contact.photo!,bounds: bounds)
+        cell.addSubview(photoImageView)
+        
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + labelHeight/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
+        cell.addSubview(textLabel)
+        
         return cell
+    }
+    
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat) -> UILabel{
+        let label = UILabel(frame: frame)
+        label.textAlignment = .Left
+        label.font = UIFont(name: fontName, size: fontSize)
+        label.textColor = color
+        label.numberOfLines = 1
+        label.text = string
+        return label
+    }
+    
+    //创建Photo
+    func createPhotoView(frame:CGRect,image:UIImage,bounds:CGFloat) -> UIImageView{
+        let photoView = UIImageView(frame: frame)
+        photoView.image = image
+        if bounds > 0 {
+            photoView.layer.masksToBounds = true
+            photoView.layer.cornerRadius = bounds
+        }
+        return photoView
     }
     
     //重新设置开始加载section的cell长度
@@ -249,25 +298,25 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
                     break;
                 }
                 
-                (cell as! ContactTableViewCell).resize((searchBar?.frame.width)!)
+                //(cell as! ContactTableViewCell).resize((searchBar?.frame.width)!)
             }
         }
         
     }
     
     //MARKS: 返回每组头标题名称
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sessions[section].key
     }
     
     //MARKS: 开启tableview编辑模式
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
     }
     
     
     //MARKS: 自定义向右滑动菜单
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remarkAction = UITableViewRowAction(style: .Normal, title: "备注") { (action:UITableViewRowAction, index:NSIndexPath) -> Void in
             let session = self.sessions[index.section]
             let contact = session.contacts[indexPath.row]
@@ -286,44 +335,35 @@ class ContactViewController: UIViewController,UITableViewDelegate,UITableViewDat
         return [remarkAction]
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        //根据storyboard获取controller
+        let sb = UIStoryboard(name:"Contact-Detail", bundle: nil)
+        let resourceDetailController = sb.instantiateViewControllerWithIdentifier("ResourceDetail") as! ResourceDetailViewController
+        prepareForData(resourceDetailController,indexPath: indexPath)
+        self.navigationController?.pushViewController(resourceDetailController, animated: true)
+    }
+    
     //MARKS :跳转到下一个页面传值
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowResourceDetail" {
              if let indexPath = self.tableView.indexPathForSelectedRow{
                 let destinationController = segue.destinationViewController as! ResourceDetailViewController
-                let session = sessions[indexPath.section]
-                let contact = session.contacts[indexPath.row]
-                destinationController.indexPath = indexPath
-                destinationController.parentController = self
-                destinationController.photoImage = contact.photo
-                destinationController.nameText = contact.name
-                destinationController.weChatNumberText = "微信号:  test00\(indexPath.row + 1)"
-                destinationController.photoNumberText = contact.phone
-                //MARKS: 跳转视图后取消tableviewcell选中事件
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                prepareForData(destinationController,indexPath: indexPath)
             }
             
         }
     }
     
-    /******************************orignal index ***********************************/
-    //MARKS: 实现索引数据源代理方法
-    /*func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        return UILocalizedIndexedCollation.currentCollation().sectionIndexTitles
-    }*/
-    
-    //MARKS: 响应点击索引时的委托方法
-    /*func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        var index:Int = 0
-        for i in UILocalizedIndexedCollation.currentCollation().sectionTitles {
-            //判断索引值和组名称相等,返回坐标
-            if i == title {
-                return index
-            }
-            
-            index++
-        }
-        
-        return 0
-    }*/
+    func prepareForData(destinationController:ResourceDetailViewController,indexPath:NSIndexPath){
+        let session = sessions[indexPath.section]
+        let contact = session.contacts[indexPath.row]
+        destinationController.indexPath = indexPath
+        destinationController.parentController = self
+        destinationController.photoImage = contact.photo
+        destinationController.nameText = contact.name
+        destinationController.weChatNumberText = "微信号:  test00\(indexPath.row + 1)"
+        destinationController.photoNumberText = contact.phone
+        //MARKS: 跳转视图后取消tableviewcell选中事件
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
 }

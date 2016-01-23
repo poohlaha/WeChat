@@ -38,7 +38,13 @@ class TableViewIndex:UIView {
                 }
             }
         }
-        super.init(frame: frame)
+        
+        let height:CGFloat = self.letterHeight! * CGFloat(datas.count)
+        //重新计算位置
+        let beginY:CGFloat = (tableView.bounds.height - height) / 2
+        super.init(frame: CGRectMake(frame.origin.x, beginY, frame.width, height))
+
+        //super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
     }
 
@@ -128,7 +134,7 @@ class TableViewIndex:UIView {
     }
     
     func didSelectSectionAtIndex(index:Int,withTitle title:String){
-        if (index > -1){   // for safety, should always be YES
+        if (index > -1){
             for(var i = 0; i < tableView!.numberOfSections;i++) {
                 let key = datas[i].key
                 if key == title {
