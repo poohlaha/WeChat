@@ -225,6 +225,11 @@ class PersonViewController: WeChatTableViewNormalController {
     override func viewWillAppear(animated: Bool) {
         //显示隐藏的导航条
         self.navigationController?.navigationBar.hidden = false
+        
+        //清空选中状态
+        for customView in customViews {
+            customView.bgImageView?.removeFromSuperview()
+        }
     }
     
     //MARKS: 返回cell行数
@@ -402,8 +407,8 @@ class PersonViewController: WeChatTableViewNormalController {
         }
         
         let gestureView = gestrue.view as! PersonCustomView
-        //gestureView.addSubview(gestureView.bgImageView!)
-        //gestureView.sendSubviewToBack(gestureView.bgImageView!)
+        gestureView.addSubview(gestureView.bgImageView!)
+        gestureView.sendSubviewToBack(gestureView.bgImageView!)
         
         //photoView.delegate = self
         if gestrue.data != nil {
@@ -415,7 +420,6 @@ class PersonViewController: WeChatTableViewNormalController {
             }*/
         }
         
-        gestureView.bgImageView?.removeFromSuperview()
     }
     
     //创建视图
