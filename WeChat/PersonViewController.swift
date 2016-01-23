@@ -349,7 +349,7 @@ class PersonViewController: WeChatTableViewNormalController {
             )
             
             //添加点击事件
-            addTapClick(customView, photo: photo!, isBigPic: info.isBigPic)
+            addTapClick(customView, photo: photo, isBigPic: info.isBigPic)
             
             cell!.addSubview(customView)
             customViews.append(customView)
@@ -369,9 +369,9 @@ class PersonViewController: WeChatTableViewNormalController {
     }
     
     //MARKS: 点击事件
-    func addTapClick(customView:PersonCustomView,photo:[Photo],isBigPic:Bool){
+    func addTapClick(customView:PersonCustomView,photo:[Photo]?,isBigPic:Bool){
         let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
-        if isBigPic {
+        if isBigPic && photo != nil {
             tap.data = photo
         }
         customView.addGestureRecognizer(tap)
