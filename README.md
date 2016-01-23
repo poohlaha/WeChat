@@ -11,6 +11,7 @@
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1220.PNG)<br/>
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1233.PNG)<br/>
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1240.PNG)<br/>
+![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1246.PNG)<br/>
 
 <br/><br/>
 3.发现:<br/>
