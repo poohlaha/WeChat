@@ -69,11 +69,7 @@ class TableViewIndex:UIView {
         if !isLayedOut {
             shapeLayer?.frame.origin = CGPointZero
             shapeLayer?.frame.size = self.layer.frame.size
-            
-            //let bezierPath:UIBezierPath = UIBezierPath();
-            //bezierPath.moveToPoint(CGPointZero)
-            //bezierPath.addLineToPoint(CGPointMake(0, self.frame.size.height))
-            
+
             var count:CGFloat = 0
             for i in self.letters{
                 if !letters.contains(i){
@@ -83,9 +79,6 @@ class TableViewIndex:UIView {
                 let originY = count * self.letterHeight!
                 let text = textLayerWithSize(fontSize!, string: i, frame: CGRectMake(0, originY, self.frame.size.width, self.letterHeight!))
                 self.layer.addSublayer(text)
-                
-                //bezierPath.moveToPoint(CGPointMake(0, originY))
-                //bezierPath.addLineToPoint(CGPointMake(text.frame.size.width,originY))
                 
                 count++
             }
