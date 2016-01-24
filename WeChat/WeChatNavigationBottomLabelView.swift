@@ -131,31 +131,39 @@ class WeChatNavigationBottomLabelBottomView:UIView {
         let leftView = UIView()
         leftView.frame = CGRectMake(labelPadding, 0, leftWidth, self.frame.height)
         
-        let likeImageView = UIImageView(frame: CGRectMake(0,topBottomPadding,likeWidth,labelHeight))
+        let likeView = UIView()
+        likeView.frame = CGRectMake(0, topBottomPadding, likeWidth + likeLabelWidth + padding, labelHeight)
+        
+        let likeImageView = UIImageView(frame: CGRectMake(0,0,likeWidth,likeView.frame.height))
         likeImageView.image = self.likeImage
-        leftView.addSubview(likeImageView)
+        likeView.addSubview(likeImageView)
         
         let zanLabel = UILabel()
-        zanLabel.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, likeImageView.frame.origin.y, likeLabelWidth, likeImageView.frame.height)
+        zanLabel.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, 0, likeLabelWidth, likeView.frame.height)
         zanLabel.text = "赞"
         zanLabel.textColor = UIColor.whiteColor()
         zanLabel.font = UIFont(name: self.fontName, size: self.fontSize)
-        leftView.addSubview(zanLabel)
+        likeView.addSubview(zanLabel)
+        leftView.addSubview(likeView)
         
         let lineBeginX:CGFloat = zanLabel.frame.origin.x + likeLabelWidth + labelPadding
-        let line1Shape = WeChatDrawView().drawLine(beginPointX: lineBeginX, beginPointY: likeImageView.frame.origin.y - 2, endPointX: lineBeginX, endPointY:self.frame.height - topBottomPadding + 2,color:UIColor.lightTextColor())
+        let line1Shape = WeChatDrawView().drawLine(beginPointX: lineBeginX, beginPointY: likeView.frame.origin.y - 2, endPointX: lineBeginX, endPointY:self.frame.height - topBottomPadding + 2,color:UIColor.lightTextColor())
         leftView.layer.addSublayer(line1Shape)
         
-        let commentImageView = UIImageView(frame: CGRectMake(lineBeginX + labelPadding, likeImageView.frame.origin.y, commentWidth, labelHeight))
+        let commentView = UIView()
+        commentView.frame = CGRectMake(lineBeginX + labelPadding, likeView.frame.origin.y, commentWidth + padding + commentLabelWidth, labelHeight)
+        
+        let commentImageView = UIImageView(frame: CGRectMake(0, 0, commentWidth, labelHeight))
         commentImageView.image = self.commentImage
-        leftView.addSubview(commentImageView)
+        commentView.addSubview(commentImageView)
         
         let commentLabel = UILabel()
-        commentLabel.frame = CGRectMake(commentImageView.frame.origin.x + commentWidth + padding, commentImageView.frame.origin.y, commentLabelWidth, labelHeight)
+        commentLabel.frame = CGRectMake(commentImageView.frame.origin.x + commentWidth + padding, 0, commentLabelWidth, labelHeight)
         commentLabel.text = "评论"
         commentLabel.textColor = UIColor.whiteColor()
         commentLabel.font = UIFont(name: self.fontName, size: self.fontSize)
-        leftView.addSubview(commentLabel)
+        commentView.addSubview(commentLabel)
+        leftView.addSubview(commentView)
         self.addSubview(leftView)
     }
     

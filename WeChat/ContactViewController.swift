@@ -15,7 +15,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     let footerHeight:CGFloat = 40
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
-    let leftPadding:CGFloat = 15
+    let leftPadding:CGFloat = 20
     
     var tableViewIndex:TableViewIndex?
     
@@ -221,7 +221,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     let topOrBottomPadding:CGFloat = 5
     let bounds:CGFloat = 4
     let photoRightPadding:CGFloat = 8
-    let labelHeight:CGFloat = 15
+    let labelHeight:CGFloat = 20
     
     //MARKS: 返回每行的单元格
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -259,7 +259,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: contact.photo!,bounds: bounds)
         cell.addSubview(photoImageView)
         
-        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + labelHeight/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + 5, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, self.labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
         cell.addSubview(textLabel)
         
         return cell
