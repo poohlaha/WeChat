@@ -83,7 +83,6 @@ class TableViewIndex:UIView {
                 count++
             }
             
-            //shapeLayer?.path = bezierPath.CGPath;
             self.layer.addSublayer(shapeLayer!)
             
             isLayedOut = true
