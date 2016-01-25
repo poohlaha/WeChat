@@ -43,20 +43,20 @@ class WeChatTableViewController: UITableViewController {
     func loadSampleDatas(){
         for i in 0 ..< 20 {
             if i % 2 == 0 {
-                var content = "http://www.apple.com/cn/iphone-6s/technology/"
+                let content = "http://www.apple.com/cn/iphone-6s/technology/"
                 let count = content.characters.count
-                if count > 32 {
+                /*if count > 32 {
                     content = content[0 ..< 20] + "..."
-                }
+                }*/
                 let photo = UIImage(named: "image1")!
                 let chat = WeChat(title: "银行信用卡中心", content: content, photo: photo)!
                 chats.append(chat)
             } else {
-                var content = "HI 尊贵哒VIP会员小伙伴,终于等到你了!欢就别走,有事没事来聊天呀~"
+                let content = "HI 尊贵哒VIP会员小伙伴,终于等到你了!欢就别走,有事没事来聊天呀~"
                 let count = content.characters.count
-                if count > 32 {
+                /*if count > 32 {
                     content = content[0 ..< 20] + "..."
-                }
+                }*/
                 let photo = UIImage(named: "image2")!
                 let chat = WeChat(title: "WeChat运动指南", content: content, photo: photo)!
                 chats.append(chat)
@@ -89,7 +89,7 @@ class WeChatTableViewController: UITableViewController {
         cell.title.text = chat.title
         cell.content.text = chat.content
         cell.time.text = chat.time
-
+        cell.title.lineBreakMode = .ByTruncatingTail
         return cell
     }
     
