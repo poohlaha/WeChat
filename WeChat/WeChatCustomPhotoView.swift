@@ -23,43 +23,13 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     var navigation:WeChatCustomNavigationHeaderView!
     var statusBarFrame:CGRect!
     var navigationBottom:WeChatCustomNavigationBottomView!
+    var navigationHeight:CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initFrame()
         self.navigationController?.tabBarController!.tabBar.hidden = true
+        initFrame()
         initNavigation()
-        
-        //添加点击事件
-        let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
-        self.view.addGestureRecognizer(tap)
-    }
-    
-    func viewTap(gestrue: WeChatUITapGestureRecognizer){
-        UIView.animateWithDuration(1, delay:0.1,
-            options:UIViewAnimationOptions.TransitionNone, animations:
-            {
-                ()-> Void in
-                
-                /*if self.navigationController?.navigationBar.hidden == true {
-                    self.navigationController?.navigationBar.hidden = false
-                } else {
-                    self.navigationController?.navigationBar.hidden = true
-                }
-                if self.navigationController?.view.frame.origin.y > 0 {
-                    self.navigationController?.view.frame = CGRectMake(0, -(self.navigationController?.navigationBar.frame.height)!, (self.navigationController?.navigationBar.frame.width)!, (self.navigationController?.navigationBar.frame.height)!)
-                } else {
-                    self.navigationController?.view.frame = CGRectMake(0, (self.navigationController?.navigationBar.frame.height)!, (self.navigationController?.navigationBar.frame.width)!, (self.navigationController?.navigationBar.frame.height)!)
-                }*/
-                //self.navigationController?.navigationBar.alpha = 0.0;
-            },
-            completion:{
-                (finished:Bool) -> Void in
-                UIView.animateWithDuration(1, animations:{
-                    ()-> Void in
-                })
-        })
-        
     }
     
     func initFrame(){
@@ -72,11 +42,49 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         self.scrollView.maximumZoomScale = 2
         self.scrollView.zoomScale = 1.0
         self.scrollView.backgroundColor = UIColor.blackColor()
-        //delegate.images = self.images
     
         addImages()
         self.view.addSubview(self.scrollView)
         createPageControl()
+        
+        //添加点击事件
+        let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
+        self.scrollView.addGestureRecognizer(tap)
+    }
+    
+    func viewTap(gestrue: WeChatUITapGestureRecognizer){
+        UIView.animateWithDuration(0.5, delay:0.1,
+            options:UIViewAnimationOptions.TransitionNone, animations:
+            {
+                ()-> Void in
+                
+                if self.navigation.frame.origin.y >= 0 {
+                    //隐藏导航条
+                    self.navigation.frame.origin = CGPoint(x: 0, y: -self.navigationHeight)
+                    
+                    //下移底部Label
+                    self.navigationBottom.labelView?.frame.origin = CGPoint(x: 0, y: UIScreen.mainScreen().bounds.height - self.navigationBottom.labelView!.frame.height)
+                    
+                    //隐藏底部点赞
+                    self.navigationBottom.bottomView.frame = CGRectMake(self.navigationBottom.bottomView.frame.origin.x, UIScreen.mainScreen().bounds.height, self.navigationBottom.bottomView.frame.width, 0)
+                } else {
+                    //隐藏导航条
+                    self.navigation.frame.origin = CGPoint(x: 0, y: 0)
+                    
+                    //下移底部Label
+                    self.navigationBottom.labelView?.frame.origin = CGPoint(x: 0, y: UIScreen.mainScreen().bounds.height - self.navigationBottom.labelView!.frame.height - self.navigationBottom.bottomHeight)
+                    
+                    //隐藏底部点赞
+                    self.navigationBottom.bottomView.frame = CGRectMake(self.navigationBottom.bottomView.frame.origin.x, UIScreen.mainScreen().bounds.height - self.navigationBottom.bottomHeight, self.navigationBottom.bottomView.frame.width, self.navigationBottom.bottomHeight)
+                }
+            },
+            completion:{
+                (finished:Bool) -> Void in
+                UIView.animateWithDuration(1, animations:{
+                    ()-> Void in
+                })
+        })
+        
     }
     
     //MARKS: 创建PageControl
@@ -89,8 +97,6 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     
     //MARKS: 初始化导航条
     func initNavigation(){
-        //WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
-        //createTitle(1)
         createNavigation()
     }
     
@@ -106,7 +112,10 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         
         self.view.addSubview(navigationBottom.bottomView)
         self.view.bringSubviewToFront(navigationBottom.bottomView)
-
+        
+        //添加点击事件
+        let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
+        self.navigationBottom.labelView?.addGestureRecognizer(tap)
     }
     
     func createNavigationHeaderView(){
@@ -119,10 +128,10 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         }
         //获取状态栏
         statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        let navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
+        self.navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
         self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
         self.view.addSubview(self.navigation)
-        //self.view.bringSubviewToFront(self.navigation)
+        self.view.bringSubviewToFront(self.navigation)
     }
     
     override func viewWillAppear(animated: Bool) {

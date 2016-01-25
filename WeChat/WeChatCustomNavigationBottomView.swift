@@ -16,7 +16,7 @@ class WeChatCustomNavigationBottomView {
     var labelText:String?
     var labelView:UIView?
     var bottomView:UIView!
-    var labelHeight:CGFloat = 30
+    var labelHeight:CGFloat = 0
     var bottomHeight:CGFloat = 40
     
     func initData(text:String?){
@@ -33,7 +33,7 @@ class WeChatCustomNavigationBottomView {
         if self.labelText != nil {
             if !self.labelText!.isEmpty {
                 labelView = WeChatNavigationBottomLabelView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - labelHeight - bottomHeight, UIScreen.mainScreen().bounds.width, labelHeight), text: self.labelText!,bgColor:UIColor.blackColor(),bottomHeight:bottomHeight)
-               
+               self.labelHeight = labelView!.frame.height
             }
         }
         
