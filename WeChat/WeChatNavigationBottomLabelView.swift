@@ -106,6 +106,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     var likeImage:UIImage!
     var commentImage:UIImage!
     var isLiked:Bool = false
+    var isLeftMove:Bool = false
     
     var leftView:UIView!
     var likeView:UIView!
@@ -114,6 +115,12 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     var lineShape:CALayer!
     var rightView:UIView!
     var commentView:UIView!
+    var rightLikeLabel:UILabel!
+    var commentImageView:UIImageView!
+    var rightLikeLabelWidth:CGFloat = 5
+    var rightViewBeginX:CGFloat = 0
+    
+    var likeCount:Int = 0//点赞数
     
     init(height:CGFloat){
         super.init(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height))
@@ -181,23 +188,62 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     }
     
     func createRight(){
-        rightView = UIView()
-        rightView.frame = CGRectMake(self.frame.width - labelPadding - likeWidth - commentWidth - padding, topBottomPadding, likeWidth + commentWidth + padding, labelHeight)
-        
-        rightView.userInteractionEnabled = true
-        
         let likeImageView = UIImageView(frame: CGRectMake(0,0,likeWidth,labelHeight))
         likeImageView.image = self.likeImage
         
-        let commentImageView = UIImageView(frame: CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, likeImageView.frame.origin.y, commentWidth, labelHeight))
+        //点赞数量,重新设置其宽度
+        let rightLikeWidth = getLikeLabelWidth()
+        self.rightLikeLabel = UILabel()
+        self.rightLikeLabel.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, likeImageView.frame.origin.y, rightLikeWidth, likeImageView.frame.height)
+        self.rightLikeLabel.textColor = UIColor.whiteColor()
+        self.rightLikeLabel.font = UIFont(name: self.fontName, size: self.fontSize)
+        
+        self.commentImageView = UIImageView()
+        if rightLikeWidth > 0 {
+            commentImageView.frame =  CGRectMake(rightLikeLabel.frame.origin.x + self.rightLikeLabel.frame.width + padding, rightLikeLabel.frame.origin.y, commentWidth + padding, labelHeight)
+        } else {
+            commentImageView.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, likeImageView.frame.origin.y, commentWidth, labelHeight)
+        }
         commentImageView.image = self.commentImage
+        
+        //创建右侧视图
+        rightView = UIView()
+        var rightPadding:CGFloat = 0
+        if rightLikeWidth > 0 {
+            rightPadding = rightLikeWidth + padding
+            isLeftMove = true
+        }
+        self.rightViewBeginX = self.frame.width - labelPadding - likeWidth - commentWidth - padding - rightPadding
+        let rightViewWidth:CGFloat = likeWidth + commentWidth + padding + rightPadding
+        rightView.frame = CGRectMake(self.rightViewBeginX, topBottomPadding, rightViewWidth, labelHeight)
+        rightView.userInteractionEnabled = true
+        
+        rightView.addSubview(self.rightLikeLabel)
         rightView.addSubview(likeImageView)
         rightView.addSubview(commentImageView)
         
+        //添加点击事件
         rightView.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "rightTap:"))
         self.addSubview(rightView)
     }
     
+    //MARKS: 获取点赞数量Label宽度
+    func getLikeLabelWidth() -> CGFloat {
+        var rightLikeWidth:CGFloat = 0
+        if likeCount > 0 {
+            if likeCount < 10 {
+                rightLikeWidth = rightLikeLabelWidth
+            }else if likeCount >= 10 && likeCount < 100 {
+                rightLikeWidth = rightLikeLabelWidth * 2
+            }else {
+                rightLikeWidth = rightLikeLabelWidth * 3
+            }
+        }
+        
+        return rightLikeWidth
+    }
+    
+    //MARKS: 重绘框架
     func reDrawLeftView(_leftPadding:CGFloat,cancelPadding:CGFloat,text:String,zanCancelLabelPadding:CGFloat){
         leftView.frame = CGRectMake(_leftPadding, 0, likeWidth + likeLabelWidth + padding + cancelPadding, self.frame.height)
         
@@ -209,6 +255,25 @@ class WeChatNavigationBottomLabelBottomView:UIView {
         self.lineShape = WeChatDrawView().drawLine(beginPointX: lineBeginX, beginPointY: likeView.frame.origin.y - 2, endPointX: lineBeginX, endPointY:self.frame.height - topBottomPadding + 2,color:UIColor.lightTextColor())
         leftView.layer.addSublayer(lineShape)
         self.commentView.frame.origin = CGPointMake(lineBeginX + labelPadding, self.commentView.frame.origin.y)
+    }
+    
+    //MARKS: 重绘右边视图
+    func reDrawRightView(rightPadding:CGFloat){
+        let rightLikeWidth = self.getLikeLabelWidth()
+        self.rightView.frame = CGRectMake(self.rightViewBeginX - rightPadding, self.rightView.frame.origin.y, self.rightView.frame.width + rightPadding, self.rightView.frame.height)
+        self.isLeftMove = true
+        
+        if rightLikeWidth > 0 {
+            self.rightLikeLabel.frame.size = CGSize(width: rightLikeWidth, height: self.rightLikeLabel.frame.height)
+            self.commentImageView.frame =  CGRectMake(self.rightLikeLabel.frame.origin.x + rightLikeWidth + self.padding * 2, self.rightLikeLabel.frame.origin.y, self.commentWidth, self.labelHeight)
+            self.rightLikeLabel.text = "\(self.likeCount)"
+        } else {
+            self.rightLikeLabel.frame.size = CGSize(width: 0, height: self.rightLikeLabel.frame.height)
+            self.commentImageView.frame =  CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, self.likeImageView.frame.origin.y, self.commentWidth, self.labelHeight)
+            self.rightLikeLabel.text = ""
+
+        }
+
     }
     
     //MARKS: 赞点击效果
@@ -223,11 +288,28 @@ class WeChatNavigationBottomLabelBottomView:UIView {
                 let cancelPadding:CGFloat = self.cancelLabelWidth - self.likeLabelWidth
                 self.reDrawLeftView(self.labelPadding/2, cancelPadding: cancelPadding, text: "取消", zanCancelLabelPadding: self.cancelLabelWidth - self.likeLabelWidth)
                 self.isLiked = true
+                self.likeCount++
             } else {
                 self.leftView.frame = CGRectMake(self.labelPadding, 0, self.leftWidth, self.frame.height)
                 self.reDrawLeftView(self.labelPadding, cancelPadding: 0, text: "赞", zanCancelLabelPadding: 0)
                 self.isLiked = false
+                self.likeCount--
             }
+            
+            let rightLikeWidth = self.getLikeLabelWidth()
+            if !self.isLeftMove {//向左移动rightLikeWidth + padding的距离
+                var rightPadding:CGFloat = 0
+                if rightLikeWidth > 0 {
+                    rightPadding = rightLikeWidth + self.padding
+                }
+                
+                self.reDrawRightView(rightPadding)
+                self.isLeftMove = true
+            } else {
+                self.reDrawRightView(0)
+                self.isLeftMove = false
+            }
+            
         }
     }
  
