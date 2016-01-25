@@ -16,6 +16,7 @@ protocol WeChatCustomPhotoViewDelegate {
 class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationControllerDelegate {
 
     var scrollView:UIScrollView!
+    var pageControl:UIPageControl!
     //var images:[UIImage] = [UIImage]()
     var photos:[Photo] = [Photo]()
     //var delegate:WeChatCustomPhotoViewDelegate!
@@ -69,18 +70,22 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         self.scrollView.scrollsToTop = false
         self.scrollView.contentMode = .Center
         self.scrollView.maximumZoomScale = 2
-        scrollView.backgroundColor = UIColor.blackColor()
+        self.scrollView.zoomScale = 1.0
+        self.scrollView.backgroundColor = UIColor.blackColor()
         //delegate.images = self.images
-        
-        //为了让内容横向滚动，设置横向内容宽度为N个页面的宽度总和
-        scrollView.contentSize = CGSizeMake(CGFloat(UIScreen.mainScreen().bounds.width * CGFloat(photos.count)), self.scrollView.frame.height)
-        self.scrollView.delegate = self
-        self.scrollView.pagingEnabled = true
+    
         addImages()
         self.view.addSubview(self.scrollView)
+        createPageControl()
     }
     
-    
+    //MARKS: 创建PageControl
+    func createPageControl(){
+        self.pageControl = UIPageControl()
+        self.pageControl.frame = CGRectZero
+        self.pageControl.numberOfPages = photos.count
+        self.view.addSubview(self.pageControl)
+    }
     
     //MARKS: 初始化导航条
     func initNavigation(){
@@ -147,24 +152,25 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     }
     
     func addImages(){
-        for photo in photos {
+        for(var i = 0;i < photos.count;i++){
+            let photo = photos[i]
             //计算图片大小,确定其显示位置
             let image = photo.photoImage!
             let imageSize = image.size
             let bounds = UIScreen.mainScreen().bounds
-            var width:CGFloat = 0
+            let width:CGFloat = bounds.width
             var height:CGFloat = 0
-            let x:CGFloat = 0
+            let x:CGFloat = width * CGFloat(i)
             var y:CGFloat = 0
             //如果图片宽度>屏幕宽度
-            if imageSize.width >= bounds.width {
+            /*if imageSize.width > bounds.width {
                 width = bounds.width
             } else {
                 width = imageSize.width
-            }
+            }*/
             
             //如果图片的高度 > 屏幕高度
-            if imageSize.height >= bounds.height {
+            if imageSize.height > bounds.height {
                 height = bounds.height
             }else{
                 height = imageSize.height
@@ -175,15 +181,51 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
             let imageView = UIImageView(frame: CGRectMake(x, y, width, height))
             imageView.image = image
             //设置图片自适应
-            imageView.contentMode = .ScaleAspectFill
+            //imageView.contentMode = .ScaleAspectFill
             //imageView.autoresizesSubviews = true
             //imageView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin,UIViewAutoresizing.FlexibleTopMargin,UIViewAutoresizing.FlexibleWidth,UIViewAutoresizing.FlexibleHeight]
             self.scrollView.addSubview(imageView)
+            self.scrollView.sendSubviewToBack(imageView)
         }
+        
+        //为了让内容横向滚动，设置横向内容宽度为N个页面的宽度总和
+        //不允许在垂直方向上进行滚动
+        self.scrollView.contentSize = CGSizeMake(CGFloat(UIScreen.mainScreen().bounds.width * CGFloat(photos.count)), 0)
+        self.scrollView.pagingEnabled = true
+        self.scrollView.delegate = self
+        self.scrollView.userInteractionEnabled = true
     }
     
     //MARKS: 缩放
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return self.scrollView.subviews[0]
+        for subview : AnyObject in scrollView.subviews {
+            if subview.isKindOfClass(UIImageView) {
+                return subview as? UIView
+            }
+        }
+        
+        return nil
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+    }
+    
+    //MARKS: 停止移动
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        // 记录scrollView 的当前位置，因为已经设置了分页效果，所以：位置/屏幕大小 = 第几页
+        let current:Int = Int(scrollView.contentOffset.x / UIScreen.mainScreen().bounds.size.width)
+        //根据scrollView 的位置对page 的当前页赋值
+        self.pageControl.currentPage = current
+        
+        self.navigation.resetTitle(current + 1)
+        
+        let x:CGFloat = CGFloat(current) * self.scrollView.frame.size.width;
+        self.scrollView.contentOffset = CGPointMake(x, 0);
+        
+        //当显示到最后一页时，让滑动图消失
+        if self.pageControl.currentPage == (photos.count - 1) {
+            
+        }
     }
 }

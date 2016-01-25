@@ -34,6 +34,8 @@ class WeChatCustomNavigationHeaderView: UIView {
     var navigationController:UINavigationController!
     var leftWidth:CGFloat = 70
     
+    var centerLabel:UILabel?
+    
     let fontName:String = "Arial"
     
     init(frame: CGRect,photoCount count:Int,photoTotalCount totalCount:Int,backImage:UIImage?,backTitle:String?,
@@ -110,7 +112,6 @@ class WeChatCustomNavigationHeaderView: UIView {
         }
         
         //添加中间文字
-        var centerLabel:UILabel?
         if self.centerLabelText != nil {
             let centerLabelWidth = UIScreen.mainScreen().bounds.width - self.leftOrRightPadding * 2 - leftView.bounds.width - rightWidth
             let centerLabelX:CGFloat = leftView.frame.width
@@ -139,6 +140,16 @@ class WeChatCustomNavigationHeaderView: UIView {
             centerLabel?.textAlignment = .Center
             centerLabel?.textColor = UIColor.whiteColor()
             self.addSubview(centerLabel!)
+        }
+    }
+    
+    //MARKS: 重新给导航条标题设值
+    func resetTitle(currentCount:Int){
+        if self.centerLabelText!.containsString("\n") {
+            let strs:[String] = self.centerLabelText!.componentsSeparatedByString("\n")
+            let str = strs[0] + "\n\(currentCount)/\(self.totalCount)"
+            self.centerLabel!.text = str
+            updateConstraints()
         }
     }
     
