@@ -11,7 +11,7 @@ import UIKit
 //添加评论页面
 class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDelegate{
 
-    var textField:UITextField!
+    var textView:UITextView!
     var navigation:WeChatCustomNavigationHeaderView!
     var navigationHeight:CGFloat = 44
     
@@ -20,7 +20,6 @@ class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDel
         self.view.backgroundColor = UIColor.whiteColor()
         
         initNavigationBar()
-        //createTextField()
     }
     
     func initNavigationBar(){
@@ -31,17 +30,21 @@ class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDel
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
         self.navigation.delegate = self
+        
+        createTextField(self.navigation.frame.height)
     }
     
-    func createTextField(){
-        textField = UITextField()
-        textField.frame = UIScreen.mainScreen().bounds
-        textField.textAlignment = .Left
-        //textField.borderStyle = .None//去掉边框
-        textField.becomeFirstResponder()//添加键盘
+    func createTextField(topPadding:CGFloat){
+        textView = UITextView()
+        textView.frame = CGRectMake(10, topPadding, UIScreen.mainScreen().bounds.width - 10, UIScreen.mainScreen().bounds.height - topPadding)
+        textView.returnKeyType = .Done
+        textView.becomeFirstResponder()
+        textView.font = UIFont(name: "Arial", size: 16)
+        self.view.addSubview(textView)
     }
     
     func leftBarClick() {
+        self.textView.resignFirstResponder()
         self.dismissViewControllerAnimated(true) { () -> Void in
             let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
             rootController.selectedIndex = 1

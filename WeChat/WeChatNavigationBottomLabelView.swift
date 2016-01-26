@@ -85,6 +85,11 @@ class WeChatNavigationBottomLabelView: UIView {
     }
 }
 
+protocol WeChatNavigationBottomLabelBottomViewDelegate{
+    func commentcick()
+    func bottomRightClick()
+}
+
 class WeChatNavigationBottomLabelBottomView:UIView {
     
     var isLayedOut:Bool = false
@@ -122,6 +127,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     var parentViewController:UIViewController!
     
     var likeCount:Int = 0//点赞数
+    var delegate:WeChatNavigationBottomLabelBottomViewDelegate!
     
     init(height:CGFloat,parentViewController:UIViewController){
         super.init(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height))
@@ -327,13 +333,11 @@ class WeChatNavigationBottomLabelBottomView:UIView {
  
     //MARKS: 右侧事件
     func rightTap(gestrue: WeChatUITapGestureRecognizer){
-        print("rightTap")
+        delegate.bottomRightClick()
     }
     
     //MARKS: 添加评论
     func addCommentView(){
-        self.parentViewController.presentViewController(AddCommentViewController(), animated: true) { () -> Void in
-            
-        }
+        delegate.commentcick()
     }
 }

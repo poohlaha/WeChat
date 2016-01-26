@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol WeChatCustomNavigationHeaderDelegate{
+@objc protocol WeChatCustomNavigationHeaderDelegate{
     func leftBarClick()//左侧事件
-    func rightBarClick()//右侧事件
+    optional func rightBarClick()//右侧事件
 }
 
 //自定义导航条头部
@@ -225,7 +225,7 @@ class WeChatCustomNavigationHeaderView: UIView {
     
     //MARKS: 右侧事件
     func rightTap(gestrue: WeChatUITapGestureRecognizer){
-        delegate.rightBarClick()
+        delegate.rightBarClick!()
     }
 }
 

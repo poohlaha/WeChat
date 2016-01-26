@@ -13,7 +13,7 @@ protocol WeChatCustomPhotoViewDelegate {
 }
 
 //自定义图片相册
-class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationControllerDelegate,WeChatCustomNavigationHeaderDelegate {
+class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationControllerDelegate,WeChatCustomNavigationHeaderDelegate,WeChatNavigationBottomLabelBottomViewDelegate {
 
     var scrollView:UIScrollView!
     var pageControl:UIPageControl!
@@ -113,6 +113,8 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         self.view.addSubview(navigationBottom.bottomView)
         self.view.bringSubviewToFront(navigationBottom.bottomView)
         
+        self.navigationBottom.bottomView.delegate = self
+        
         //添加点击事件
         let tap = WeChatUITapGestureRecognizer(target: self, action: "viewTap:")
         self.navigationBottom.labelView?.addGestureRecognizer(tap)
@@ -136,6 +138,25 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         self.navigation.delegate = self
     }
     
+    //MARKS: 底部右侧点击事件,翻转动画
+    func bottomRightClick() {
+        let fromView = self.view
+        let commentDetailController = CommentDetailViewController()
+        let toView = commentDetailController.view
+        
+        CATransaction.flush()
+        UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromRight,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
+            commentDetailController.parentView = fromView
+        }
+    }
+    
+    //MARKS: 底部Comment点击事件
+    func commentcick() {
+        self.presentViewController(AddCommentViewController(), animated: true) { () -> Void in
+            
+        }
+    }
+    
     //MARKS: 导航条左侧点击事件
     func leftBarClick() {
         self.navigationController!.popViewControllerAnimated(true)
@@ -152,27 +173,6 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     override func viewWillAppear(animated: Bool) {
         self.navigation.removeFromSuperview()
         createNavigationHeaderView()
-    }
-    
-    func createTitle(index:Int){
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "MM月dd日 HH:mm"
-        var sysTime = dateFormat.stringFromDate(NSDate())
-        if photos.count > 1 {
-            sysTime += "\n\(index)/\(photos.count)"
-        }
-        
-        self.navigationItem.title = sysTime
-        //设置标题字体和颜色
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont(name: "Arial-BoldMT", size: 15)!]
-        
-        //设置右侧按钮文字为三个点
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "● ● ●", style: UIBarButtonItemStyle.Plain, target: self, action: "rightBtnClick")
-        self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont(name: "Arial-BoldMT", size: 10)!], forState: UIControlState.Normal)
-    }
-    
-    func rightBtnClick(){
-        
     }
     
     func addImages(){
