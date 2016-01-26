@@ -9,9 +9,11 @@
 import UIKit
 
 //添加评论页面
-class AddCommentViewController: UIViewController{
+class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDelegate{
 
     var textField:UITextField!
+    var navigation:WeChatCustomNavigationHeaderView!
+    var navigationHeight:CGFloat = 44
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +24,13 @@ class AddCommentViewController: UIViewController{
     }
     
     func initNavigationBar(){
-        self.navigationController?.navigationBarHidden = false
-        self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancel")
-        self.navigationController?.title = "评论"
-        self.navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "发送", style: UIBarButtonItemStyle.Plain, target: self, action: "send")
-        //MARKS: 设置导航行背景及字体颜色
-        WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
+        //获取状态栏
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        self.navigationHeight += statusBarFrame.height
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "取消", centerLabel: "评论", rightButtonText: "发送", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(), leftLabelColor: nil, rightLabelColor: UIColor.greenColor())
+        self.view.addSubview(self.navigation)
+        self.view.bringSubviewToFront(self.navigation)
+        self.navigation.delegate = self
     }
     
     func createTextField(){
@@ -38,11 +41,15 @@ class AddCommentViewController: UIViewController{
         textField.becomeFirstResponder()//添加键盘
     }
     
-    func cancel(){
-        print("cancel")
+    func leftBarClick() {
+        self.dismissViewControllerAnimated(true) { () -> Void in
+            let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
+            rootController.selectedIndex = 1
+        }
     }
     
-    func send(){
-        print("send")
+    func rightBarClick() {
+        leftBarClick()
     }
+    
 }

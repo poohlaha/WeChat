@@ -8,13 +8,18 @@
 
 import UIKit
 
+protocol WeChatCustomNavigationHeaderDelegate{
+    func leftBarClick()//左侧事件
+    func rightBarClick()//右侧事件
+}
+
 //自定义导航条头部
 class WeChatCustomNavigationHeaderView: UIView {
 
     //MARKS: Properties
     var count:Int = 0//导航条上label显示数目
     var totalCount:Int = 0//导航条上label显示的总数
-    var backImage:UIImage!//左侧返回图片
+    var backImage:UIImage?//左侧返回图片
     var backTitle:String?//左侧返回图片后的文字
     var rightBtn:UIButton!//右侧按钮图标
     var rightBtnText:String?//右侧按钮文字
@@ -31,15 +36,17 @@ class WeChatCustomNavigationHeaderView: UIView {
     var topPadding:CGFloat = 5
     var rightBtnTextHeight:CGFloat = 0
     var statusFrame:CGRect!
-    var navigationController:UINavigationController!
     var leftWidth:CGFloat = 70
     
     var centerLabel:UILabel?
-    
     let fontName:String = "Arial"
+    var leftLabelColor:UIColor?
+    var rightLabelColor:UIColor?
+    
+    var delegate:WeChatCustomNavigationHeaderDelegate!
     
     init(frame: CGRect,photoCount count:Int,photoTotalCount totalCount:Int,backImage:UIImage?,backTitle:String?,
-        centerLabel centerLabelText:String?,rightButtonText rightBtnText:String?,rightButtonImage rightBtnImage:UIImage?,backgroundColor bgColor:UIColor?,navigationController:UINavigationController) {
+        centerLabel centerLabelText:String?,rightButtonText rightBtnText:String?,rightButtonImage rightBtnImage:UIImage?,backgroundColor bgColor:UIColor?) {
         super.init(frame: frame)
             
         //init properties
@@ -48,28 +55,75 @@ class WeChatCustomNavigationHeaderView: UIView {
         if backImage != nil {
             self.backImage = backImage
         }
+            
         if backTitle != nil {
             self.backTitle = backTitle
         }
+            
         if centerLabelText != nil {
             self.centerLabelText = centerLabelText
         }
+            
         if rightBtnText != nil {
             self.rightBtnText = rightBtnText
         }
+            
         if rightBtnImage != nil {
             self.rightBtnImage = rightBtnImage
         }
+            
         if bgColor != nil {
             self.bgColor = bgColor
             self.backgroundColor = self.bgColor
         }else{
             self.backgroundColor = UIColor.blackColor()
         }
-           
-        self.navigationController = navigationController
+        
         self.statusFrame = UIApplication.sharedApplication().statusBarFrame
     }
+    
+    init(frame: CGRect,backImage:UIImage?,backTitle:String?,
+        centerLabel centerLabelText:String?,rightButtonText rightBtnText:String?,
+        rightButtonImage rightBtnImage:UIImage?,backgroundColor bgColor:UIColor?,leftLabelColor:UIColor?,rightLabelColor:UIColor?) {
+            super.init(frame: frame)
+            if backImage != nil {
+                self.backImage = backImage
+            }
+            
+            if backTitle != nil {
+                self.backTitle = backTitle
+            }
+            
+            if centerLabelText != nil {
+                self.centerLabelText = centerLabelText
+            }
+            
+            if rightBtnText != nil {
+                self.rightBtnText = rightBtnText
+            }
+            
+            if rightBtnImage != nil {
+                self.rightBtnImage = rightBtnImage
+            }
+            
+            if bgColor != nil {
+                self.bgColor = bgColor
+                self.backgroundColor = self.bgColor
+            }else{
+                self.backgroundColor = UIColor.blackColor()
+            }
+            
+            if leftLabelColor != nil {
+                self.leftLabelColor = leftLabelColor
+            }
+            
+            if rightLabelColor != nil {
+                self.rightLabelColor = rightLabelColor
+            }
+            
+            self.statusFrame = UIApplication.sharedApplication().statusBarFrame
+    }
+
 
     required init?(coder aDecoder: NSCoder) {
        super.init(coder: aDecoder)
@@ -88,18 +142,29 @@ class WeChatCustomNavigationHeaderView: UIView {
         //添加左侧View
         let centerHeight = self.bounds.height - bottomPadding - statusFrame.height - topPadding
         let beginY = statusFrame.height + topPadding
-        let leftView = LeftView(frame: CGRectMake(self.leftOrRightPadding,beginY,leftWidth,centerHeight), labelText: self.backTitle, backImage: self.backImage)
+        let leftView = LeftView(frame: CGRectMake(self.leftOrRightPadding,beginY,leftWidth,centerHeight), labelText: self.backTitle, backImage: self.backImage,leftLabelColor:self.leftLabelColor)
         leftView.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "leftTap:"))
         self.addSubview(leftView)
         
         //添加右侧按钮
         var rightBtn:UIButton?
         if rightBtnText != nil || rightBtnImage != nil {
-            rightBtn = UIButton(frame: CGRectMake(self.bounds.width - leftOrRightPadding - rightWidth, beginY, rightWidth, centerHeight))
             if rightBtnText != nil {
+                if self.rightBtnText == "● ● ●"{
+                    rightBtn = UIButton(frame: CGRectMake(self.bounds.width - leftOrRightPadding - rightWidth, beginY, rightWidth, centerHeight))
+                    rightBtn?.titleLabel?.font = UIFont(name: self.fontName, size: 10)
+                } else {
+                    rightBtn = UIButton(frame: CGRectMake(self.bounds.width - leftOrRightPadding - rightWidth - 10, beginY, rightWidth + 10, centerHeight))
+                    rightBtn?.titleLabel?.font = UIFont(name: self.fontName, size: 16)
+                }
+                
+                if self.rightLabelColor != nil {
+                    rightBtn?.setTitleColor(self.rightLabelColor, forState: .Normal)
+                }else{
+                    rightBtn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                }
+                
                 rightBtn?.setTitle(self.rightBtnText, forState: .Normal)
-                rightBtn?.titleLabel?.font = UIFont(name: self.fontName, size: 10)
-                rightBtn?.titleLabel!.tintColor = UIColor.whiteColor()
                 rightBtn?.titleLabel?.textAlignment = .Center
             }
             
@@ -122,16 +187,16 @@ class WeChatCustomNavigationHeaderView: UIView {
                 labelText += "\n"
                 labelText += "\(count)/\(totalCount)"
                 centerLabel?.text = labelText
-                centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 14)
+                centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 16)
                 centerLabel?.numberOfLines = 0//允许换行
             }else{
                if self.centerLabelText!.containsString("\n") {
                     centerLabel = UILabel(frame: CGRectMake(centerLabelX, statusFrame.height + topPadding, centerLabelWidth, self.bounds.height - self.bottomPadding - statusFrame.height))
-                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 14)
+                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 16)
                     centerLabel?.numberOfLines = 0//允许换行
                }else{
                     centerLabel = UILabel(frame: CGRectMake(centerLabelX, beginY, centerLabelWidth, self.bounds.height - self.bottomPadding - statusFrame.height))
-                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 16)
+                    centerLabel?.font = UIFont(name: "Arial-BoldMT", size: 18)
                }
                 
                 centerLabel?.text = self.centerLabelText
@@ -155,18 +220,12 @@ class WeChatCustomNavigationHeaderView: UIView {
     
     //MARKS: 左侧事件
     func leftTap(gestrue: WeChatUITapGestureRecognizer){
-        self.navigationController.popViewControllerAnimated(true)
-        //显示隐藏的导航条
-        //self.navigationController?.navigationBar.hidden = false
+        delegate.leftBarClick()
     }
     
     //MARKS: 右侧事件
     func rightTap(gestrue: WeChatUITapGestureRecognizer){
-        
-        let weChatAlert = WeChatBottomAlert(frame: CGRectMake(0,-1,UIScreen.mainScreen().bounds.width,0),titles: ["","发送给朋友","收藏","保存图片","举报","取消"],colors:nil,fontSize: 0)
-        //self.addSubview(weChatAlert)
-        self.navigationController?.parentViewController!.view.addSubview(weChatAlert)
-        //self.bringSubviewToFront(weChatAlert)
+        delegate.rightBarClick()
     }
 }
 
@@ -179,8 +238,9 @@ class LeftView:UIView {
     var backImageWidth:CGFloat = 18
     let leftBackTitlePadding:CGFloat = 4//文字左边距离图片空白
     let fontName:String = "Arial"
+    var leftLabelColor:UIColor?
     
-    init(frame: CGRect,labelText:String?,backImage:UIImage?) {
+    init(frame: CGRect,labelText:String?,backImage:UIImage?,leftLabelColor:UIColor?) {
         super.init(frame: frame)
         if labelText != nil {
             if !labelText!.isEmpty {
@@ -190,6 +250,10 @@ class LeftView:UIView {
         
         if backImage != nil {
             self.backImage = backImage
+        }
+        
+        if leftLabelColor != nil {
+            self.leftLabelColor = leftLabelColor
         }
         
         self.backgroundColor = UIColor.clearColor()
@@ -221,13 +285,21 @@ class LeftView:UIView {
         if self.labelText != nil {
             if leftBackImageView != nil {
                 backLabel = UILabel(frame: CGRectMake(leftBackImageView!.frame.origin.x + backImageWidth, leftBackImageView!.frame.origin.y, self.frame.width - backImageWidth, self.frame.height))
+                backLabel?.font = UIFont(name: self.fontName, size: 16)
             }else{
-                backLabel = UILabel(frame: self.frame)
+                backLabel = UILabel()
+                backLabel?.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
+                backLabel?.font = UIFont(name: self.fontName, size: 16)
             }
             
-            backLabel?.textColor = UIColor.whiteColor()
+            if self.leftLabelColor != nil {
+                backLabel?.textColor = self.leftLabelColor
+            }else{
+                backLabel?.textColor = UIColor.whiteColor()
+            }
+            
             backLabel?.text = self.labelText
-            backLabel?.font = UIFont(name: self.fontName, size: 18)
+            
             self.addSubview(backLabel!)
         }
 

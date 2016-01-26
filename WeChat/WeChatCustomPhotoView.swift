@@ -13,7 +13,7 @@ protocol WeChatCustomPhotoViewDelegate {
 }
 
 //自定义图片相册
-class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationControllerDelegate {
+class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationControllerDelegate,WeChatCustomNavigationHeaderDelegate {
 
     var scrollView:UIScrollView!
     var pageControl:UIPageControl!
@@ -129,9 +129,24 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         //获取状态栏
         statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         self.navigationHeight = self.navigationController!.navigationBar.bounds.height + statusBarFrame.height
-        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(),navigationController:self.navigationController!)
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,(self.navigationController?.navigationBar.bounds.width)!, navigationHeight), photoCount: 1, photoTotalCount: photos.count, backImage: UIImage(named: "back"), backTitle: "返回", centerLabel: sysTime, rightButtonText: "● ● ●", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor())
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
+        
+        self.navigation.delegate = self
+    }
+    
+    //MARKS: 导航条左侧点击事件
+    func leftBarClick() {
+        self.navigationController!.popViewControllerAnimated(true)
+    }
+    
+    //MARKS: 导航条右侧点击事件
+    func rightBarClick() {
+        let weChatAlert = WeChatBottomAlert(frame: CGRectMake(0,-1,UIScreen.mainScreen().bounds.width,0),titles: ["","发送给朋友","收藏","保存图片","举报","取消"],colors:nil,fontSize: 0)
+        //self.addSubview(weChatAlert)
+        self.navigationController?.parentViewController!.view.addSubview(weChatAlert)
+        //self.bringSubviewToFront(weChatAlert)
     }
     
     override func viewWillAppear(animated: Bool) {

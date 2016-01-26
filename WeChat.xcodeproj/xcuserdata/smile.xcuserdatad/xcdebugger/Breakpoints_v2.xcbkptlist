@@ -70,16 +70,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WeChat/AddCommentViewController.swift"
-            timestampString = "475470971.832062"
+            filePath = "WeChat/WeChatCustomNavigationHeaderView.swift"
+            timestampString = "475479958.05614"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "initNavigationBar()"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "layoutSubviews()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/WeChatCustomNavigationHeaderView.swift"
+            timestampString = "475479958.05614"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "createControl()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
