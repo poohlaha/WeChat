@@ -49,6 +49,7 @@
 		76A9FA1A1C43FEDD00E244D3 /* WeChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */; };
 		76B965FC1C467A3300678AE5 /* WeChatDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */; };
 		76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */; };
+		76D0E2A01C570D970074C0A5 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0E29F1C570D970074C0A5 /* AddCommentViewController.swift */; };
 		76DBE5151C4B2A4600D77289 /* LastCellCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +119,7 @@
 		76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationController.swift; sourceTree = "<group>"; };
 		76B965FB1C467A3300678AE5 /* WeChatDrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatDrawView.swift; sourceTree = "<group>"; };
 		76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatContactPhotoView.swift; sourceTree = "<group>"; };
+		76D0E29F1C570D970074C0A5 /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastCellCustomView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,6 +179,7 @@
 				7610D87E1C47BB98003D012D /* PersonInfo.swift */,
 				76189CFF1C4A8F9300D88842 /* PersonCustomView.swift */,
 				76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */,
+				76D0E29F1C570D970074C0A5 /* AddCommentViewController.swift */,
 			);
 			name = Person;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				7610D87F1C47BB98003D012D /* PersonInfo.swift in Sources */,
 				761513101C3F5C7600DE8B2A /* ContactViewController.swift in Sources */,
 				76A9FA1A1C43FEDD00E244D3 /* WeChatNavigationController.swift in Sources */,
+				76D0E2A01C570D970074C0A5 /* AddCommentViewController.swift in Sources */,
 				761513141C3F840C00DE8B2A /* Contact.swift in Sources */,
 				76A9FA171C43F8A400E244D3 /* WeChatTableController.swift in Sources */,
 				765A61D21C4C7A3D004F7A3D /* ContactCustomSearchView.swift in Sources */,

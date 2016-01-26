@@ -99,7 +99,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     var commentWidth:CGFloat = 22
     var labelHeight:CGFloat = 0//文字的高度和图片一样
     let likeLabelWidth:CGFloat = 15
-    var cancelLabelWidth:CGFloat = 30
+    var cancelLabelWidth:CGFloat = 28
     let commentLabelWidth:CGFloat = 30
     var leftWidth:CGFloat = 0
     
@@ -119,15 +119,17 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     var commentImageView:UIImageView!
     var rightLikeLabelWidth:CGFloat = 5
     var rightViewBeginX:CGFloat = 0
+    var parentViewController:UIViewController!
     
     var likeCount:Int = 0//点赞数
     
-    init(height:CGFloat){
+    init(height:CGFloat,parentViewController:UIViewController){
         super.init(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height))
         self.height = height
         self.likeImage = UIImage(named: "like")
         self.commentImage = UIImage(named: "comment")
         self.labelHeight = self.frame.height - topBottomPadding * 2
+        self.parentViewController = parentViewController
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -145,46 +147,57 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     }
 
     func createLeft(){
-        self.leftWidth = likeWidth + padding + likeLabelWidth + labelPadding + 1 + labelPadding + commentWidth + padding + commentLabelWidth
-        self.leftView = UIView()
-        leftView.frame = CGRectMake(labelPadding, 0, leftWidth, self.frame.height)
-        
+        //点赞视图
         self.likeView = UIView()
         likeView.frame = CGRectMake(0, topBottomPadding, likeWidth + likeLabelWidth + padding, labelHeight)
         
+        //点赞图片
         self.likeImageView = UIImageView(frame: CGRectMake(0,0,likeWidth,likeView.frame.height))
         likeImageView.image = self.likeImage
         likeView.addSubview(likeImageView)
         
+        //点赞Label
         self.zanLabel = UILabel()
         zanLabel.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, 0, likeLabelWidth, likeView.frame.height)
         zanLabel.text = "赞"
         zanLabel.textColor = UIColor.whiteColor()
         zanLabel.font = UIFont(name: self.fontName, size: self.fontSize)
         likeView.addSubview(zanLabel)
-        leftView.addSubview(likeView)
         
+        //分割线
         let lineBeginX:CGFloat = zanLabel.frame.origin.x + likeLabelWidth + labelPadding
         self.lineShape = WeChatDrawView().drawLine(beginPointX: lineBeginX, beginPointY: likeView.frame.origin.y - 2, endPointX: lineBeginX, endPointY:self.frame.height - topBottomPadding + 2,color:UIColor.lightTextColor())
-        leftView.layer.addSublayer(lineShape)
         
+        //评论视图
         self.commentView = UIView()
         commentView.frame = CGRectMake(lineBeginX + labelPadding, likeView.frame.origin.y, commentWidth + padding + commentLabelWidth, labelHeight)
         
+        //评论图片
         let commentImageView = UIImageView(frame: CGRectMake(0, 0, commentWidth, labelHeight))
         commentImageView.image = self.commentImage
         commentView.addSubview(commentImageView)
         
+        //评论Label
         let commentLabel = UILabel()
         commentLabel.frame = CGRectMake(commentImageView.frame.origin.x + commentWidth + padding, 0, commentLabelWidth, labelHeight)
         commentLabel.text = "评论"
         commentLabel.textColor = UIColor.whiteColor()
         commentLabel.font = UIFont(name: self.fontName, size: self.fontSize)
         commentView.addSubview(commentLabel)
-        leftView.addSubview(commentView)
-        self.addSubview(leftView)
         
-        leftView.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "likeViewTap:"))
+        commentView.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "addCommentView"))
+        likeView.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "likeViewTap:"))
+        
+        self.leftWidth = likeWidth + padding + likeLabelWidth + labelPadding + 1 + labelPadding + commentWidth + padding + commentLabelWidth
+        //左侧视图
+        self.leftView = UIView()
+        self.leftView.frame = CGRectMake(labelPadding, 0, leftWidth, self.frame.height)
+        
+        self.leftView.addSubview(likeView)
+        self.leftView.layer.addSublayer(lineShape)
+        self.leftView.addSubview(commentView)
+        self.leftView.bringSubviewToFront(commentView)
+        self.addSubview(self.leftView)
     }
     
     func createRight(){
@@ -204,6 +217,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
         } else {
             commentImageView.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, likeImageView.frame.origin.y, commentWidth, labelHeight)
         }
+        
         commentImageView.image = self.commentImage
         
         //创建右侧视图
@@ -245,7 +259,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     
     //MARKS: 重绘框架
     func reDrawLeftView(_leftPadding:CGFloat,cancelPadding:CGFloat,text:String,zanCancelLabelPadding:CGFloat){
-        leftView.frame = CGRectMake(_leftPadding, 0, likeWidth + likeLabelWidth + padding + cancelPadding, self.frame.height)
+        //leftView.frame = CGRectMake(_leftPadding, 0, likeWidth + likeLabelWidth + padding + cancelPadding, self.frame.height)
         
         self.zanLabel.text = text
         self.zanLabel.frame = CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, 0, likeLabelWidth + zanCancelLabelPadding, likeView.frame.height)
@@ -271,9 +285,7 @@ class WeChatNavigationBottomLabelBottomView:UIView {
             self.rightLikeLabel.frame.size = CGSize(width: 0, height: self.rightLikeLabel.frame.height)
             self.commentImageView.frame =  CGRectMake(likeImageView.frame.origin.x + likeWidth + padding, self.likeImageView.frame.origin.y, self.commentWidth, self.labelHeight)
             self.rightLikeLabel.text = ""
-
         }
-
     }
     
     //MARKS: 赞点击效果
@@ -316,5 +328,12 @@ class WeChatNavigationBottomLabelBottomView:UIView {
     //MARKS: 右侧事件
     func rightTap(gestrue: WeChatUITapGestureRecognizer){
         print("rightTap")
+    }
+    
+    //MARKS: 添加评论
+    func addCommentView(){
+        self.parentViewController.presentViewController(AddCommentViewController(), animated: true) { () -> Void in
+            
+        }
     }
 }

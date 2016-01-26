@@ -15,17 +15,18 @@ class WeChatCustomNavigationBottomView {
     
     var labelText:String?
     var labelView:UIView?
-    var bottomView:UIView!
+    var bottomView:WeChatNavigationBottomLabelBottomView!
     var labelHeight:CGFloat = 0
     var bottomHeight:CGFloat = 40
+    var parentViewController:UIViewController!
     
-    func initData(text:String?){
+    func initData(text:String?,parentViewController:UIViewController){
         if text != nil {
             if !text!.isEmpty{
                 self.labelText = text
             }
         }
-        
+        self.parentViewController = parentViewController
         createLabel()
     }
     
@@ -37,7 +38,7 @@ class WeChatCustomNavigationBottomView {
             }
         }
         
-        self.bottomView = WeChatNavigationBottomLabelBottomView(height: bottomHeight)
+        self.bottomView = WeChatNavigationBottomLabelBottomView(height: bottomHeight,parentViewController:self.parentViewController)
     }
     
 }

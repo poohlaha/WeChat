@@ -104,7 +104,7 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         createNavigationHeaderView()
         
         navigationBottom = WeChatCustomNavigationBottomView()
-        navigationBottom.initData("时间，让深的，东西越来越深让浅的东西越来越浅。看的淡一点，伤的就会少一点，时间过了，爱情淡了，也就散了。别等不该等的人，别伤不该伤的心。我们真的要过了很久很久，才能够明白，自己真正怀念的，到底是怎样的人，怎样的事。")
+        navigationBottom.initData("时间，让深的，东西越来越深让浅的东西越来越浅。看的淡一点，伤的就会少一点，时间过了，爱情淡了，也就散了。别等不该等的人，别伤不该伤的心。我们真的要过了很久很久，才能够明白，自己真正怀念的，到底是怎样的人，怎样的事。",parentViewController: self)
         if navigationBottom.labelView != nil {
             self.view.addSubview(navigationBottom.labelView!)
             self.view.bringSubviewToFront(navigationBottom.labelView!)
