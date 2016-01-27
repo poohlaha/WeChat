@@ -92,16 +92,11 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     }*/
     
     func initFrame(){
-        //tableView = UITableView(frame: UIScreen.mainScreen().bounds,style:UITableViewStyle.Grouped)
-        
         tableView.delegate = self
         tableView.dataSource = self
         
         //MARKS: register table view cell
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
-        
-        //tableView.scrollEnabled = true
-        //tableView.showsVerticalScrollIndicator = true
         
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
@@ -186,6 +181,11 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         footerlabel.font = UIFont.systemFontOfSize(16)
         footerlabel.text = "共\(totalCount)位联系人"
         footerlabel.textAlignment = .Center
+        
+        //画底部线条
+        let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: 0, endPointX: UIScreen.mainScreen().bounds.width, endPointY: 0,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 0.8))
+        footerView.layer.addSublayer(shape)
+        
         footerView.addSubview(footerlabel)
         footerView.backgroundColor = UIColor.whiteColor()
         tableView.tableFooterView = footerView
@@ -286,22 +286,9 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         return photoView
     }
     
-    //重新设置开始加载section的cell长度
+    
     override func viewDidAppear(animated: Bool) {
-        let sections = tableView.numberOfSections
-        for(var i = 0; i < sections; i++){
-            let rows = tableView.numberOfRowsInSection(i)
-            for(var j = 0;j < rows;j++){
-                let indexPath = NSIndexPath(forRow: j, inSection: i)
-                let cell = tableView.cellForRowAtIndexPath(indexPath)
-                if cell == nil {
-                    break;
-                }
-                
-                //(cell as! ContactTableViewCell).resize((searchBar?.frame.width)!)
-            }
-        }
-        
+    
     }
     
     //MARKS: 返回每组头标题名称
@@ -354,6 +341,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         }
     }
     
+    //MARKS :跳转到下一个页面传值(手动)
     func prepareForData(destinationController:ResourceDetailViewController,indexPath:NSIndexPath){
         let session = sessions[indexPath.section]
         let contact = session.contacts[indexPath.row]

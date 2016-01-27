@@ -21,6 +21,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         initNavigation()
     }
     
+    //MARKS: 初始化自定义导航条
     func initNavigation(){
         //获取状态栏
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
@@ -31,6 +32,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         self.navigation.delegate = self
     }
     
+    //导航条左侧事件,翻转动画
     func leftBarClick() {
         let fromView = self.view
         let toView = parentView
@@ -40,5 +42,6 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
             
         }
     }
+    
     
 }
