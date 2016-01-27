@@ -18,7 +18,12 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
+        initFrame()
+    }
+    
+    func initFrame(){
         initNavigation()
+        createKeyBord()
     }
     
     //MARKS: 初始化自定义导航条
@@ -37,11 +42,28 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         let fromView = self.view
         let toView = parentView
         
-        CATransaction.flush()
-        UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromLeft,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
-            
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.weChatKeyBord.navigationBackClick()
+            }) { (Bool) -> Void in
+                CATransaction.flush()
+                UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromLeft,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
+                    
+                }
         }
+        
+        
     }
     
+
+    let keyBordDefaultHeight:CGFloat = 40
+    var weChatKeyBord:WeChatCustomKeyBordView!
+    //MARKS: 添加底部输入框
+    func createKeyBord(){
+        let frame = CGRectMake(0, UIScreen.mainScreen().bounds.height - keyBordDefaultHeight, UIScreen.mainScreen().bounds.width, keyBordDefaultHeight)
+        
+        self.weChatKeyBord = WeChatCustomKeyBordView(frame: frame, bgColor: UIColor.whiteColor())
+        self.view.addSubview(self.weChatKeyBord)
+        self.view.bringSubviewToFront(self.weChatKeyBord)
+    }
     
 }

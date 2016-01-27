@@ -183,7 +183,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         footerlabel.textAlignment = .Center
         
         //画底部线条
-        let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: 0, endPointX: UIScreen.mainScreen().bounds.width, endPointY: 0,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 0.8))
+        let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: 0, endPointX: UIScreen.mainScreen().bounds.width, endPointY: 0,color:UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1))
+        shape.lineWidth = 0.2
         footerView.layer.addSublayer(shape)
         
         footerView.addSubview(footerlabel)
