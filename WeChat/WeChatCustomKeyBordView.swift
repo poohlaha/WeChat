@@ -26,7 +26,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         }
         
         //定义通知,获取键盘高度
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillAppear:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillAppear:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -39,15 +39,16 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     func keyboardWillAppear(notification: NSNotification) {
         let keyboardInfo = notification.userInfo![UIKeyboardFrameEndUserInfoKey]
         let keyboardHeight:CGFloat = (keyboardInfo?.CGRectValue.size.height)!
-        /*let keyboardBeginInfo = notification.userInfo![UIKeyboardFrameBeginUserInfoKey]
-        let beginY:CGFloat = (keyboardBeginInfo?.CGRectValue.origin.y)!
         
-        let keyboardEndInfo = notification.userInfo![UIKeyboardFrameEndUserInfoKey]
-        let endY:CGFloat = (keyboardEndInfo?.CGRectValue.origin.y)!
-        
-        let keyboardHeight = endY - beginY*/
-        
-        animation(self.frame.origin.x, y: self.frame.height + keyboardHeight)
+        /*
+        //键盘偏移量
+        let userInfo = notification.userInfo!
+        let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey]?.floatValue
+        let beginKeyboardRect = userInfo[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue
+        let endKeyboardRect = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue
+        let yOffset = endKeyboardRect!.origin.y - beginKeyboardRect!.origin.y*/
+
+        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.frame.height - keyboardHeight)
     }
     
     //MARKS: 键盘落下事件
@@ -72,7 +73,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         if !isLayedOut {
-            self.backgroundColor = UIColor.greenColor()
+            self.backgroundColor = self.bgColor
             createLineOnTop()
             createTextView()
             self.textView.resignFirstResponder()
@@ -90,7 +91,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         self.textView.selectable = true//是否可选
         self.textView.dataDetectorTypes = .None//给文字中的电话号码和网址自动加链接,这里不需要添加
         self.textView.returnKeyType = .Send
-        self.textView.font = UIFont(name: "AlNile", size: 12)
+        self.textView.font = UIFont(name: "AlNile", size: 14)
         //设置圆角
         self.textView.layer.cornerRadius = 4
         self.textView.layer.masksToBounds = true
@@ -110,21 +111,6 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         
     }
     
-    /*
-    func textViewDidChange(textView: UITextView) {
-        let line = textView.caretRectForPosition(textView.selectedTextRange!.start)
-        let overflow = line.origin.y + line.size.height
-            - ( textView.contentOffset.y + textView.bounds.size.height
-                - textView.contentInset.bottom - textView.contentInset.top )
-        if ( overflow > 0 ) {
-            var offset = textView.contentOffset
-            offset.y += overflow + 7; // leave 7 pixels margin
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                textView.setContentOffset(offset, animated: true)
-            })
-        }
-    }*/
-    
     //MARSK: 去掉回车
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
@@ -140,7 +126,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         self.textView.resignFirstResponder()
     }
     
-    
+    //MARKS: 当空字符的时候重绘placeholder
     func textViewDidChange(textView: UITextView) {
         if textView.text.isEmpty {
             //self.textView.resetCur(textView.caretRectForPosition(textView.selectedTextRange!.start))
@@ -194,6 +180,17 @@ class PlaceholderTextView:UITextView {
         placeholderLabel?.text = self.placeholder
         placeholderLabel?.font = self.font
         placeholderLabel?.textColor = self.color
+        //根据字体的高度,计算上下空白
+        var labelHeight:CGFloat = 0
+        let labelWidth:CGFloat = self.frame.width - labelLeftPadding * 2
+        let maxSize = CGSizeMake(labelWidth,CGFloat(MAXFLOAT))
+        
+        let options : NSStringDrawingOptions = [.UsesLineFragmentOrigin,.UsesFontLeading]
+        labelHeight = self.placeholder!.boundingRectWithSize(maxSize, options: options, attributes: [NSFontAttributeName:self.font!], context: nil).size.height
+        
+        self.labelTopPadding = (self.frame.height - labelHeight) / 2
+        self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelLeftPadding,labelWidth , labelHeight)
+        
         self.addSubview(placeholderLabel!)
         
         //监听文字变化
@@ -216,17 +213,6 @@ class PlaceholderTextView:UITextView {
             }
             
             initFrame()
-            //根据字体的高度,计算上下空白
-            var labelHeight:CGFloat = 0
-            let labelWidth:CGFloat = self.frame.width - labelLeftPadding * 2
-            let maxSize = CGSizeMake(labelWidth,CGFloat(MAXFLOAT))
-            
-            let options : NSStringDrawingOptions = [.UsesLineFragmentOrigin,.UsesFontLeading]
-            labelHeight = self.placeholder!.boundingRectWithSize(maxSize, options: options, attributes: [NSFontAttributeName:self.font!], context: nil).size.height
-            
-            self.labelTopPadding = (self.frame.height - labelHeight) / 2
-            
-            self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, labelTopPadding,labelWidth , labelHeight)
             isLayedOut = true
         }
     }
