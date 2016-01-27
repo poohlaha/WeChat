@@ -55,13 +55,10 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
     }
     
 
-    let keyBordDefaultHeight:CGFloat = 40
     var weChatKeyBord:WeChatCustomKeyBordView!
     //MARKS: 添加底部输入框
     func createKeyBord(){
-        let frame = CGRectMake(0, UIScreen.mainScreen().bounds.height - keyBordDefaultHeight, UIScreen.mainScreen().bounds.width, keyBordDefaultHeight)
-        
-        self.weChatKeyBord = WeChatCustomKeyBordView(frame: frame, bgColor: UIColor.whiteColor())
+        self.weChatKeyBord = WeChatCustomKeyBordView()
         self.view.addSubview(self.weChatKeyBord)
         self.view.bringSubviewToFront(self.weChatKeyBord)
     }

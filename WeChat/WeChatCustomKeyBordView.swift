@@ -18,12 +18,16 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     let topOrBottomPadding:CGFloat = 7//上边空白
     let leftPadding:CGFloat = 10//左边空白
     let kAnimationDuration:NSTimeInterval = 0.2//动画时间
+    var biaoQing:UIImageView!
+    let biaoQingPadding:CGFloat = 15
+    var isBiaoQingDialogShow:Bool = false
+    var biaoQingDialog:WeChatEmojiDialogView?
+    var defaultHeight:CGFloat = 45
+    let biaoQingHeight:CGFloat = 200
     
-    init(frame: CGRect,bgColor:UIColor?) {
+    init(){
+        let frame = CGRectMake(0, UIScreen.mainScreen().bounds.height - defaultHeight, UIScreen.mainScreen().bounds.width, defaultHeight)
         super.init(frame: frame)
-        if bgColor != nil {
-            self.bgColor = bgColor!
-        }
         
         //定义通知,获取键盘高度
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillAppear:", name: UIKeyboardWillChangeFrameNotification, object: nil)
@@ -70,12 +74,20 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         UIView.commitAnimations()
     }
     
+    func animation(rect:CGRect){
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(kAnimationDuration)
+        self.frame = rect
+        UIView.commitAnimations()
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         if !isLayedOut {
-            self.backgroundColor = self.bgColor
+            self.backgroundColor = UIColor.whiteColor()
             createLineOnTop()
             createTextView()
+            createBiaoQing()
             self.textView.resignFirstResponder()
             self.isLayedOut = true
         }
@@ -83,7 +95,9 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     
     //MARKS: 创建输入框
     func createTextView(){
-        let frame = CGRectMake(leftPadding, topOrBottomPadding, UIScreen.mainScreen().bounds.width - leftPadding * 2, self.frame.height - topOrBottomPadding * 2)
+        let height:CGFloat = self.frame.height - topOrBottomPadding * 2
+        let width = UIScreen.mainScreen().bounds.width - leftPadding - biaoQingPadding * 2 - height
+        let frame = CGRectMake(leftPadding, topOrBottomPadding,width, height)
         self.textView = PlaceholderTextView(frame: frame,placeholder: "评论",color: nil,font: nil)
         self.textView.layer.borderWidth = 0.5  //边框粗细
         self.textView.layer.borderColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1).CGColor //边框颜色
@@ -91,12 +105,43 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         self.textView.selectable = true//是否可选
         self.textView.dataDetectorTypes = .None//给文字中的电话号码和网址自动加链接,这里不需要添加
         self.textView.returnKeyType = .Send
-        self.textView.font = UIFont(name: "AlNile", size: 14)
+        self.textView.font = UIFont(name: "AlNile", size: 15)
         //设置圆角
         self.textView.layer.cornerRadius = 4
         self.textView.layer.masksToBounds = true
         self.textView.delegate = self
         self.addSubview(textView)
+    }
+    
+    //MARKS: 创建输入框边上的表情
+    func createBiaoQing(){
+        self.biaoQing = UIImageView()
+        self.biaoQing.frame = CGRectMake(self.textView.frame.origin.x + self.textView.frame.width + self.biaoQingPadding, self.textView.frame.origin.y, self.textView.frame.height, self.textView.frame.height)
+        self.biaoQing.image = UIImage(named: "rightImg")
+        self.biaoQing.userInteractionEnabled = true
+        self.addSubview(self.biaoQing)
+        self.bringSubviewToFront(self.biaoQing)
+        
+        self.biaoQing.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "createBiaoQing:"))
+    }
+    
+    //MARKS: 表情点击事件
+    func createBiaoQing(gestrue: WeChatUITapGestureRecognizer){
+        if !isBiaoQingDialogShow {
+            self.biaoQing.image = UIImage(named: "rightImgChange")
+            isBiaoQingDialogShow = true
+            self.textView.resignFirstResponder()
+            //添加表情对话框
+            biaoQingDialog = WeChatEmojiDialogView(frame: CGRectMake(0, self.textView.frame.origin.y + self.topOrBottomPadding * 2 , UIScreen.mainScreen().bounds.width, biaoQingHeight))
+            self.addSubview(biaoQingDialog!)
+            self.bringSubviewToFront(biaoQingDialog!)
+            
+            animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.defaultHeight - (biaoQingDialog?.frame.height)!, UIScreen.mainScreen().bounds.width, self.defaultHeight + (biaoQingDialog?.frame.height)!))
+        } else {
+            self.biaoQing.image = UIImage(named: "rightImg")
+            isBiaoQingDialogShow = false
+            self.textView.becomeFirstResponder()
+        }
     }
     
     //MARKS: 顶部画线
@@ -122,9 +167,6 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     }
     
     //触摸空白处隐藏键盘
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.textView.resignFirstResponder()
-    }
     
     //MARKS: 当空字符的时候重绘placeholder
     func textViewDidChange(textView: UITextView) {
@@ -137,12 +179,130 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     }
 }
 
+//表情对话框
+class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
+
+    var isLayedOut:Bool = false
+    var dialogLeftPadding:CGFloat = 25
+    var dialogTopPadding:CGFloat = 15
+    var emojiWidth:CGFloat = 30
+    var emojiHeight:CGFloat = 30
+    var emoji:Emoji!
+    var scrollView:UIScrollView!
+    var pageControl:UIPageControl!
+    var pageCount:Int = 0
+    let pageControlHeight:CGFloat = 10
+    let onePageCount:Int = 23
+    let pageControlWidth:CGFloat = 40
+    let bottomHeight:CGFloat = 30
+    let bottomTopHeight:CGFloat = 10
+
+    override init(frame:CGRect){
+        super.init(frame: frame)
+        self.emoji = Emoji()
+        //获取页数,向上取整数,如果直接用/会截断取整,需要转成Float
+        self.pageCount = Int(ceilf(Float(self.emoji.emojiArray.count) / 23.0))
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if !isLayedOut {
+            createScrollView()
+            isLayedOut = true
+        }
+    }
+    
+    func createScrollView(){
+        self.scrollView = UIScrollView()
+        self.scrollView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.width, self.frame.height - self.bottomHeight)
+        self.scrollView.showsHorizontalScrollIndicator = false
+        self.scrollView.showsVerticalScrollIndicator = false
+        self.scrollView.scrollsToTop = false
+        self.scrollView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 244/255, alpha: 0.2)
+        
+        createDialog()
+        self.addSubview(self.scrollView)
+        createPageControl()
+    }
+    
+    //MARKS: 创建PageControl
+    func createPageControl(){
+        self.pageControl = UIPageControl()
+        self.pageControl.frame = CGRectMake((self.frame.width - pageControlWidth) / 2, self.frame.height - bottomHeight - pageControlHeight - bottomTopHeight, pageControlWidth, pageControlHeight)
+        self.pageControl.frame = CGRectZero
+        self.pageControl.numberOfPages = self.pageCount
+        self.addSubview(self.pageControl)
+    }
+    
+    func createDialog(){
+        //计算padding
+        let leftPadding:CGFloat = (self.frame.width - emojiWidth * 8 - dialogLeftPadding * 2) / 7
+        let topPadding:CGFloat = (self.scrollView.frame.height - emojiHeight * 3 - dialogTopPadding * 2 - self.bottomTopHeight - self.pageControlHeight) / 2
+        var originX:CGFloat = self.dialogLeftPadding
+        var originY:CGFloat = self.dialogTopPadding
+        let totalCount:Int = emoji.emojiArray.count
+        
+        var x:CGFloat = 0
+        for(var i = 0;i < pageCount;i++){
+            let view = UIView()
+            view.frame = CGRectMake(x, 0, self.frame.width, self.frame.height - pageControlHeight)
+            for(var j = 0;j < totalCount - 1;j++){
+                if i * onePageCount + j > (totalCount - 1) {
+                    break
+                }
+                
+                let weChatEmoji = emoji.emojiArray[i * onePageCount + j]
+                
+                let imageView = UIImageView()
+                if j % 8 == 0  && j != 0{
+                    originY += (emojiHeight + topPadding)
+                    originX =  self.dialogLeftPadding
+                }
+                
+                if j != 0 && j % 8 != 0{
+                    originX += (emojiWidth + leftPadding)
+                }
+                
+                imageView.frame = CGRectMake(originX,originY,emojiWidth,emojiHeight)
+                
+                
+                if j % onePageCount == 0  && j != 0 {
+                    imageView.image = UIImage(named: "key-delete")
+                    originX = self.dialogLeftPadding
+                    originY = self.dialogTopPadding
+                    view.addSubview(imageView)
+                    break
+                } else {
+                    imageView.image = weChatEmoji.image
+                }
+                
+                view.addSubview(imageView)
+            }
+            
+            x += self.frame.width
+            self.scrollView.addSubview(view)
+        }
+    
+        
+        //为了让内容横向滚动，设置横向内容宽度为N个页面的宽度总和
+        //不允许在垂直方向上进行滚动
+        self.scrollView.contentSize = CGSizeMake(CGFloat(UIScreen.mainScreen().bounds.width * CGFloat(self.pageCount)), 0)
+        self.scrollView.pagingEnabled = true//滚动时只能停留到某一页
+        self.scrollView.delegate = self
+        self.scrollView.userInteractionEnabled = true
+    }
+}
+
 //自定义TextView Placeholder类
 class PlaceholderTextView:UITextView {
     
     var placeholder:String?
     var color:UIColor?
-    var fontSize:CGFloat = 14
+    var fontSize:CGFloat = 15
     
     var placeholderLabel:UILabel?
     var placeholderFont:UIFont?
