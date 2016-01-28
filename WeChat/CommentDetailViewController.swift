@@ -37,6 +37,11 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         self.navigation.delegate = self
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.navigation.removeFromSuperview()
+        initNavigation()
+    }
+    
     //导航条左侧事件,翻转动画
     func leftBarClick() {
         let fromView = self.view

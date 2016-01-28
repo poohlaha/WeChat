@@ -23,7 +23,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     var isBiaoQingDialogShow:Bool = false
     var biaoQingDialog:WeChatEmojiDialogView?
     var defaultHeight:CGFloat = 45
-    let biaoQingHeight:CGFloat = 200
+    let biaoQingHeight:CGFloat = 220
     
     init(){
         let frame = CGRectMake(0, UIScreen.mainScreen().bounds.height - defaultHeight, UIScreen.mainScreen().bounds.width, defaultHeight)
@@ -140,7 +140,12 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         } else {
             self.biaoQing.image = UIImage(named: "rightImg")
             isBiaoQingDialogShow = false
-            self.textView.becomeFirstResponder()
+            //self.textView.becomeFirstResponder()
+            if self.biaoQingDialog != nil {
+                self.biaoQingDialog?.removeFromSuperview()
+            }
+            
+            animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.defaultHeight, UIScreen.mainScreen().bounds.width, self.defaultHeight))
         }
     }
     
@@ -193,9 +198,10 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     var pageCount:Int = 0
     let pageControlHeight:CGFloat = 10
     let onePageCount:Int = 23
-    let pageControlWidth:CGFloat = 40
+    let pageControlWidth:CGFloat = 100
     let bottomHeight:CGFloat = 30
     let bottomTopHeight:CGFloat = 10
+    var pageControlBeginY:CGFloat = 0
 
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -232,10 +238,12 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     //MARKS: 创建PageControl
     func createPageControl(){
         self.pageControl = UIPageControl()
-        self.pageControl.frame = CGRectMake((self.frame.width - pageControlWidth) / 2, self.frame.height - bottomHeight - pageControlHeight - bottomTopHeight, pageControlWidth, pageControlHeight)
-        self.pageControl.frame = CGRectZero
+        self.pageControl.frame = CGRectMake((self.frame.width - pageControlWidth) / 2, self.frame.height - bottomHeight - pageControlHeight + bottomTopHeight, pageControlWidth, pageControlHeight)
+        self.pageControl.currentPageIndicatorTintColor = UIColor.darkGrayColor()
+        self.pageControl.pageIndicatorTintColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1)
         self.pageControl.numberOfPages = self.pageCount
         self.addSubview(self.pageControl)
+        self.bringSubviewToFront(self.pageControl)
     }
     
     func createDialog(){
@@ -272,6 +280,11 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                 
                 if j % onePageCount == 0  && j != 0 {
                     imageView.image = UIImage(named: "key-delete")
+                    
+                    if self.pageControlBeginY == 0 {
+                        self.pageControlBeginY = originY
+                    }
+                    
                     originX = self.dialogLeftPadding
                     originY = self.dialogTopPadding
                     view.addSubview(imageView)
@@ -294,6 +307,14 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
         self.scrollView.pagingEnabled = true//滚动时只能停留到某一页
         self.scrollView.delegate = self
         self.scrollView.userInteractionEnabled = true
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if (self.scrollView == scrollView){
+            let current:Int = Int(scrollView.contentOffset.x / UIScreen.mainScreen().bounds.size.width)
+            //根据scrollView 的位置对page 的当前页赋值
+             self.pageControl.currentPage = current
+        }
     }
 }
 
