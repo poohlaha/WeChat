@@ -120,7 +120,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         self.addSubview(topView)
     }
     
-    
+    //MARKS: 创建TextView
     func createTextView(){
         let height:CGFloat = defaultHeight - topOrBottomPadding * 2
         let width = UIScreen.mainScreen().bounds.width - leftPadding - biaoQingPadding * 2 - height
@@ -133,6 +133,12 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         self.textView.dataDetectorTypes = .None//给文字中的电话号码和网址自动加链接,这里不需要添加
         self.textView.returnKeyType = .Send
         self.textView.font = UIFont(name: "AlNile", size: 15)
+        //设置不可以滚动
+        self.textView.showsVerticalScrollIndicator = false
+        self.textView.showsHorizontalScrollIndicator = false
+        self.textView.autoresizingMask = .FlexibleHeight
+        self.textView.scrollEnabled = false
+        self.textView.scrollsToTop = false
         //设置圆角
         self.textView.layer.cornerRadius = 4
         self.textView.layer.masksToBounds = true
@@ -410,11 +416,13 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
             return
         }
         
-        if text.characters.count > 2 {
+        let count:Int = text.characters.count
+        
+        if count > 2 {
             if text.hasSuffix("]"){
-                let count:Int = text.characters.count
                 var index:Int = 3
                 
+                var isDeleted:Bool = false
                 for(var i = 0;i < 3;i++){
                     if i != 0 {
                         index++
@@ -422,16 +430,31 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                     
                     let flag = getEmoji(text, count: count, index: index)
                     if flag {
+                        isDeleted = true
                         break
                     }
                 }
                 
+                //以上都不匹配,则删除最后一个字符
+                if !isDeleted {
+                    deleteLastOneChar(text, count: count)
+                }
+                
+            }else{
+                deleteLastOneChar(text, count: count)
             }
+        }else{
+            deleteLastOneChar(text, count: count)
         }
         
         if self.keyboardView.textView.text.isEmpty {
             self.keyboardView.textView.placeholderLabel!.hidden = false
         }
+    }
+    
+    func deleteLastOneChar(text:String,count:Int){
+        let oneCharIndex:Int = count - 1
+        self.keyboardView.textView.text = (text as NSString).substringWithRange(NSMakeRange(0, oneCharIndex))
     }
     
     func getEmoji(text:String,count:Int,index:Int) -> Bool{
