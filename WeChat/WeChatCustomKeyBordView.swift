@@ -43,7 +43,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         super.init(coder: aDecoder)
     }
     
-    //MARKS: 键盘弹起事件
+    //MARKS: 键盘弹起事件的时候隐藏表情对话框
     func keyboardWillAppear(notification: NSNotification) {
         let keyboardInfo = notification.userInfo![UIKeyboardFrameEndUserInfoKey]
         let keyboardHeight:CGFloat = (keyboardInfo?.CGRectValue.size.height)!
@@ -56,12 +56,19 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         let endKeyboardRect = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue
         let yOffset = endKeyboardRect!.origin.y - beginKeyboardRect!.origin.y*/
 
-        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.frame.height - keyboardHeight)
+        //隐藏表情对话框
+        if self.biaoQingDialog != nil {
+            self.biaoQingDialog?.removeFromSuperview()
+            self.biaoQing.image = UIImage(named: "rightImg")
+            isBiaoQingDialogShow = false
+        }
+        
+        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.defaultHeight - keyboardHeight)
     }
     
     //MARKS: 键盘落下事件
     func keyboardWillDisappear(notification:NSNotification){
-        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.frame.height)
+        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.defaultHeight)
     }
     
     //MARKS: 导航行返回
@@ -98,7 +105,6 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     func create(){
         createLineOnTop()
         createTopView()
-        createBiaoQing()
     }
     
     //MARKS: 创建顶部view
@@ -144,8 +150,9 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     
     //MARKS: 表情点击事件
     func createBiaoQing(gestrue: WeChatUITapGestureRecognizer){
+        let imageView = gestrue.view as! UIImageView
         if !isBiaoQingDialogShow {
-            self.biaoQing.image = UIImage(named: "rightImgChange")
+            imageView.image = UIImage(named: "rightImgChange")
             isBiaoQingDialogShow = true
             self.textView.resignFirstResponder()
             
@@ -160,9 +167,9 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
             self.biaoQingDialog?.delegate = self.delegate
             
         } else {
-            self.biaoQing.image = UIImage(named: "rightImg")
+            imageView.image = UIImage(named: "rightImg")
             isBiaoQingDialogShow = false
-            //self.textView.becomeFirstResponder()
+            self.textView.resignFirstResponder()
             if self.biaoQingDialog != nil {
                 self.biaoQingDialog?.removeFromSuperview()
             }
@@ -221,8 +228,8 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     var isLayedOut:Bool = false
     var dialogLeftPadding:CGFloat = 25
     var dialogTopPadding:CGFloat = 15
-    var emojiWidth:CGFloat = 30
-    var emojiHeight:CGFloat = 30
+    var emojiWidth:CGFloat = 32
+    var emojiHeight:CGFloat = 32
     var emoji:Emoji!
     var scrollView:UIScrollView!
     var pageControl:UIPageControl!
