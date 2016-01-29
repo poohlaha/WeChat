@@ -14,6 +14,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     var bgColor:UIColor!
     var isLayedOut:Bool = false
     
+    var topView:UIView!
     var textView:PlaceholderTextView!//多行输入
     let topOrBottomPadding:CGFloat = 7//上边空白
     let leftPadding:CGFloat = 10//左边空白
@@ -106,7 +107,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         createTextView()
         //创建输入框边上的表情
         createBiaoQing()
-        let topView = UIView()
+        self.topView = UIView()
         topView.frame = CGRectMake(0, 0, self.frame.width, defaultHeight)
         topView.addSubview(self.textView)
         topView.addSubview(self.biaoQing)
@@ -198,16 +199,14 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     //MARKS: 当空字符的时候重绘placeholder
     func textViewDidChange(textView: UITextView) {
         if textView.text.isEmpty {
-            resetTextView()
+            //self.textView.resetCur(self.textView.caretRectForPosition(textView.selectedTextRange!.start))
+            self.textView.removeFromSuperview()
+            createTextView()
+            self.topView.addSubview(self.textView)
+            self.textView.becomeFirstResponder()
         }
     }
-    
-    func resetTextView(){
-        //self.textView.resetCur(textView.caretRectForPosition(textView.selectedTextRange!.start))
-        self.textView.removeFromSuperview()
-        createTextView()
-        self.textView.becomeFirstResponder()
-    }
+
 
 }
 
@@ -424,7 +423,7 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
         }
         
         if self.keyboardView.textView.text.isEmpty {
-            
+            self.keyboardView.textView.placeholderLabel!.hidden = false
         }
     }
     
@@ -534,4 +533,5 @@ class PlaceholderTextView:UITextView {
         let curHeight:CGFloat = self.frame.height - curTopPadding * 2
         return CGRectMake(rect.origin.x, curTopPadding, rect.width, curHeight)
     }
+    
 }
