@@ -153,7 +153,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
             
             //添加表情对话框
             let beginY:CGFloat = self.textView.frame.origin.y + self.textView.frame.height - self.topOrBottomPadding * 2
-            biaoQingDialog = WeChatEmojiDialogView(frame: CGRectMake(0,beginY, UIScreen.mainScreen().bounds.width,biaoQingHeight))
+            biaoQingDialog = WeChatEmojiDialogView(frame: CGRectMake(0,beginY, UIScreen.mainScreen().bounds.width,biaoQingHeight),keyboardView:self)
             self.addSubview(biaoQingDialog!)
             self.bringSubviewToFront(biaoQingDialog!)
             self.biaoQingDialog?.delegate = self.delegate
@@ -198,12 +198,17 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     //MARKS: 当空字符的时候重绘placeholder
     func textViewDidChange(textView: UITextView) {
         if textView.text.isEmpty {
-            //self.textView.resetCur(textView.caretRectForPosition(textView.selectedTextRange!.start))
-            self.textView.removeFromSuperview()
-            createTextView()
-            self.textView.becomeFirstResponder()
+            resetTextView()
         }
     }
+    
+    func resetTextView(){
+        //self.textView.resetCur(textView.caretRectForPosition(textView.selectedTextRange!.start))
+        self.textView.removeFromSuperview()
+        createTextView()
+        self.textView.becomeFirstResponder()
+    }
+
 }
 
 
@@ -231,12 +236,14 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     var pageControlBeginY:CGFloat = 0
     var delegate:WeChatEmojiDialogBottomDelegate!
     var bottomView:UIView!
+    var keyboardView:WeChatCustomKeyBordView!
     
-    override init(frame:CGRect){
+    init(frame:CGRect,keyboardView:WeChatCustomKeyBordView){
         super.init(frame: frame)
         self.emoji = Emoji()
         //获取页数,向上取整数,如果直接用/会截断取整,需要转成Float
         self.pageCount = Int(ceilf(Float(self.emoji.emojiArray.count) / 23.0))
+        self.keyboardView = keyboardView
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -297,6 +304,8 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                 let weChatEmoji = emoji.emojiArray[i * onePageCount + j]
                 
                 let imageView = UIImageView()
+                imageView.userInteractionEnabled = true
+                
                 if j % 8 == 0  && j != 0{
                     originY += (emojiHeight + topPadding)
                     originX =  self.dialogLeftPadding
@@ -308,11 +317,10 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                 
                 imageView.frame = CGRectMake(originX,originY,emojiWidth,emojiHeight)
                 
-                
                 if (j % onePageCount == 0  && j != 0){
                     
                     imageView.image = UIImage(named: "key-delete")
-                    
+                    addDeleteViewTap(imageView)
                     if self.pageControlBeginY == 0 {
                         self.pageControlBeginY = originY
                     }
@@ -329,6 +337,7 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                     }
                 }
                 
+                addImageViewTap(weChatEmoji, imageView: imageView)
                 view.addSubview(imageView)
             }
             
@@ -344,6 +353,24 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
         self.scrollView.delegate = self
         self.scrollView.userInteractionEnabled = true
     }
+
+    //MARKS: 图片添加点击事件
+    func addImageViewTap(weChatEmoji:WeChatEmoji,imageView:UIImageView){
+        let tap = WeChatUITapGestureRecognizer(target:self,action: "imageViewTap:")
+        tap.data = []
+        tap.data?.append(weChatEmoji.image)
+        tap.data?.append(weChatEmoji.key)
+        imageView.addGestureRecognizer(tap)
+    }
+    
+    //MARKS:删除事件
+    func addDeleteViewTap(imageView:UIImageView){
+        let tap = WeChatUITapGestureRecognizer(target:self,action: "imageViewTap:")
+        tap.data = []
+        tap.data?.append(imageView.image!)
+        tap.data?.append("emoji_delete")
+        imageView.addGestureRecognizer(tap)
+    }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if (self.scrollView == scrollView){
@@ -351,6 +378,65 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
             //根据scrollView 的位置对page 的当前页赋值
              self.pageControl.currentPage = current
         }
+    }
+    
+    //MARKS: 图片点击事件
+    func imageViewTap(gestrue:WeChatUITapGestureRecognizer){
+        //let gestureView = gestrue.view as! UIImageView
+        //查找数据
+        let weChatView = gestrue.data
+        if weChatView != nil && weChatView?.count > 0{
+            //let image = weChatView![0]
+            let key = weChatView![1] as! String
+            if key == "emoji_delete" {//删除键
+                deleteText()
+            }else {
+                self.keyboardView.textView.insertText(key)
+            }
+            
+        }
+    }
+    
+    //删除文本
+    func deleteText(){
+        let text = self.keyboardView.textView.text
+        if text.isEmpty {
+            return
+        }
+        
+        if text.characters.count > 2 {
+            if text.hasSuffix("]"){
+                let count:Int = text.characters.count
+                var index:Int = 3
+                
+                for(var i = 0;i < 3;i++){
+                    if i != 0 {
+                        index++
+                    }
+                    
+                    let flag = getEmoji(text, count: count, index: index)
+                    if flag {
+                        break
+                    }
+                }
+                
+            }
+        }
+        
+        if self.keyboardView.textView.text.isEmpty {
+            
+        }
+    }
+    
+    func getEmoji(text:String,count:Int,index:Int) -> Bool{
+        let oneCharIndex:Int = count - index
+        let oneChar = (text as NSString).substringFromIndex(oneCharIndex)
+        if emoji.keys.indexOf(oneChar) != nil {
+            self.keyboardView.textView.text = (text as NSString).substringWithRange(NSMakeRange(0, oneCharIndex))
+            return true
+        }
+        
+        return false
     }
 }
 
