@@ -9,7 +9,7 @@
 import UIKit
 
 //自定义聊天键盘
-class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
+class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
 
     var bgColor:UIColor!
     var isLayedOut:Bool = false
@@ -24,9 +24,12 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     var biaoQingDialog:WeChatEmojiDialogView?
     var defaultHeight:CGFloat = 45
     let biaoQingHeight:CGFloat = 220
+    var delegate:WeChatEmojiDialogBottomDelegate?
+    var height:CGFloat = 0
     
     init(){
-        let frame = CGRectMake(0, UIScreen.mainScreen().bounds.height - defaultHeight, UIScreen.mainScreen().bounds.width, defaultHeight)
+        self.height = UIScreen.mainScreen().bounds.height - defaultHeight
+        let frame = CGRectMake(0, self.height, UIScreen.mainScreen().bounds.width, defaultHeight)
         super.init(frame: frame)
         
         //定义通知,获取键盘高度
@@ -85,17 +88,34 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         super.layoutSubviews()
         if !isLayedOut {
             self.backgroundColor = UIColor.whiteColor()
-            createLineOnTop()
-            createTextView()
-            createBiaoQing()
+            create()
             self.textView.resignFirstResponder()
             self.isLayedOut = true
         }
     }
     
-    //MARKS: 创建输入框
+    func create(){
+        createLineOnTop()
+        createTopView()
+        createBiaoQing()
+    }
+    
+    //MARKS: 创建顶部view
+    func createTopView(){
+        //创建输入框
+        createTextView()
+        //创建输入框边上的表情
+        createBiaoQing()
+        let topView = UIView()
+        topView.frame = CGRectMake(0, 0, self.frame.width, defaultHeight)
+        topView.addSubview(self.textView)
+        topView.addSubview(self.biaoQing)
+        self.addSubview(topView)
+    }
+    
+    
     func createTextView(){
-        let height:CGFloat = self.frame.height - topOrBottomPadding * 2
+        let height:CGFloat = defaultHeight - topOrBottomPadding * 2
         let width = UIScreen.mainScreen().bounds.width - leftPadding - biaoQingPadding * 2 - height
         let frame = CGRectMake(leftPadding, topOrBottomPadding,width, height)
         self.textView = PlaceholderTextView(frame: frame,placeholder: "评论",color: nil,font: nil)
@@ -110,7 +130,6 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         self.textView.layer.cornerRadius = 4
         self.textView.layer.masksToBounds = true
         self.textView.delegate = self
-        self.addSubview(textView)
     }
     
     //MARKS: 创建输入框边上的表情
@@ -119,9 +138,6 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
         self.biaoQing.frame = CGRectMake(self.textView.frame.origin.x + self.textView.frame.width + self.biaoQingPadding, self.textView.frame.origin.y, self.textView.frame.height, self.textView.frame.height)
         self.biaoQing.image = UIImage(named: "rightImg")
         self.biaoQing.userInteractionEnabled = true
-        self.addSubview(self.biaoQing)
-        self.bringSubviewToFront(self.biaoQing)
-        
         self.biaoQing.addGestureRecognizer(WeChatUITapGestureRecognizer(target: self, action: "createBiaoQing:"))
     }
     
@@ -131,12 +147,17 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
             self.biaoQing.image = UIImage(named: "rightImgChange")
             isBiaoQingDialogShow = true
             self.textView.resignFirstResponder()
+            
+            let frameBeginY:CGFloat = UIScreen.mainScreen().bounds.height - self.biaoQingHeight - self.defaultHeight
+            animation(CGRectMake(self.frame.origin.x,frameBeginY , UIScreen.mainScreen().bounds.width, self.defaultHeight + biaoQingHeight))
+            
             //添加表情对话框
-            biaoQingDialog = WeChatEmojiDialogView(frame: CGRectMake(0, self.textView.frame.origin.y + self.topOrBottomPadding * 2 , UIScreen.mainScreen().bounds.width, biaoQingHeight))
+            let beginY:CGFloat = self.textView.frame.origin.y + self.textView.frame.height - self.topOrBottomPadding * 2
+            biaoQingDialog = WeChatEmojiDialogView(frame: CGRectMake(0,beginY, UIScreen.mainScreen().bounds.width,biaoQingHeight))
             self.addSubview(biaoQingDialog!)
             self.bringSubviewToFront(biaoQingDialog!)
+            self.biaoQingDialog?.delegate = self.delegate
             
-            animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.defaultHeight - (biaoQingDialog?.frame.height)!, UIScreen.mainScreen().bounds.width, self.defaultHeight + (biaoQingDialog?.frame.height)!))
         } else {
             self.biaoQing.image = UIImage(named: "rightImg")
             isBiaoQingDialogShow = false
@@ -148,6 +169,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
             animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.defaultHeight, UIScreen.mainScreen().bounds.width, self.defaultHeight))
         }
     }
+    
     
     //MARKS: 顶部画线
     func createLineOnTop(){
@@ -184,6 +206,11 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate {
     }
 }
 
+
+protocol WeChatEmojiDialogBottomDelegate {
+    func addBottom() -> UIView
+}
+
 //表情对话框
 class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
 
@@ -199,10 +226,12 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     let pageControlHeight:CGFloat = 10
     let onePageCount:Int = 23
     let pageControlWidth:CGFloat = 100
-    let bottomHeight:CGFloat = 30
-    let bottomTopHeight:CGFloat = 10
+    let bottomHeight:CGFloat = 40
+    let bottomTopPadding:CGFloat = 10
     var pageControlBeginY:CGFloat = 0
-
+    var delegate:WeChatEmojiDialogBottomDelegate!
+    var bottomView:UIView!
+    
     override init(frame:CGRect){
         super.init(frame: frame)
         self.emoji = Emoji()
@@ -218,6 +247,8 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
         super.layoutSubviews()
         if !isLayedOut {
             createScrollView()
+            self.bottomView = delegate.addBottom()
+            self.addSubview(self.bottomView)
             isLayedOut = true
         }
     }
@@ -238,7 +269,7 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     //MARKS: 创建PageControl
     func createPageControl(){
         self.pageControl = UIPageControl()
-        self.pageControl.frame = CGRectMake((self.frame.width - pageControlWidth) / 2, self.frame.height - bottomHeight - pageControlHeight + bottomTopHeight, pageControlWidth, pageControlHeight)
+        self.pageControl.frame = CGRectMake((self.frame.width - pageControlWidth) / 2, self.scrollView.frame.origin.y + self.scrollView.frame.height - bottomTopPadding - pageControlHeight, pageControlWidth, pageControlHeight)
         self.pageControl.currentPageIndicatorTintColor = UIColor.darkGrayColor()
         self.pageControl.pageIndicatorTintColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1)
         self.pageControl.numberOfPages = self.pageCount
@@ -249,7 +280,7 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     func createDialog(){
         //计算padding
         let leftPadding:CGFloat = (self.frame.width - emojiWidth * 8 - dialogLeftPadding * 2) / 7
-        let topPadding:CGFloat = (self.scrollView.frame.height - emojiHeight * 3 - dialogTopPadding * 2 - self.bottomTopHeight - self.pageControlHeight) / 2
+        let topPadding:CGFloat = (self.scrollView.frame.height - emojiHeight * 3 - dialogTopPadding * 2 - self.bottomTopPadding - self.pageControlHeight) / 2
         var originX:CGFloat = self.dialogLeftPadding
         var originY:CGFloat = self.dialogTopPadding
         let totalCount:Int = emoji.emojiArray.count
