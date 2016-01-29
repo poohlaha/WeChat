@@ -25,7 +25,12 @@ class Emoji {
         for(var i = 1;i <= 100;i++){
             emojiArray.append(WeChatEmoji(image: UIImage(named: "Expression_\(i)")!, key: keys[i - 1]))
         }
+        
+        for(var i = 1;i <= 21;i++){
+            emojiArray.append(WeChatEmoji(image: UIImage(named: "emoji_\(i)")!, key: "emoji_\(i)"))
+        }
     }
+    
     
     func initKeys(){
         keys.append("[微笑]")

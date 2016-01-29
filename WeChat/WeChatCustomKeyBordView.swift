@@ -309,7 +309,8 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                 imageView.frame = CGRectMake(originX,originY,emojiWidth,emojiHeight)
                 
                 
-                if j % onePageCount == 0  && j != 0 {
+                if (j % onePageCount == 0  && j != 0){
+                    
                     imageView.image = UIImage(named: "key-delete")
                     
                     if self.pageControlBeginY == 0 {
@@ -321,7 +322,11 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
                     view.addSubview(imageView)
                     break
                 } else {
-                    imageView.image = weChatEmoji.image
+                    if (i == pageCount - 1) && (i * onePageCount + j) == (totalCount - 1){
+                        imageView.image = UIImage(named: "key-delete")
+                    }else{
+                        imageView.image = weChatEmoji.image
+                    }
                 }
                 
                 view.addSubview(imageView)
