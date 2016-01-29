@@ -21,12 +21,15 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     let kAnimationDuration:NSTimeInterval = 0.2//动画时间
     var biaoQing:UIImageView!
     let biaoQingPadding:CGFloat = 15
-    var isBiaoQingDialogShow:Bool = false
+    var isBiaoQingDialogShow:Bool = false//是否显示表情对话框
     var biaoQingDialog:WeChatEmojiDialogView?
-    var defaultHeight:CGFloat = 45
-    let biaoQingHeight:CGFloat = 220
+    var defaultHeight:CGFloat = 50//默认高度
+    let biaoQingHeight:CGFloat = 220//表情对话框高度
     var delegate:WeChatEmojiDialogBottomDelegate?
-    var height:CGFloat = 0
+    var height:CGFloat = 0//总高度
+    var textViewHeight:CGFloat = 0//textView高度
+    var textViewWidth:CGFloat = 0//textView宽度
+    let defaultLine:Int = 4
     
     init(){
         self.height = UIScreen.mainScreen().bounds.height - defaultHeight
@@ -122,9 +125,9 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     
     //MARKS: 创建TextView
     func createTextView(){
-        let height:CGFloat = defaultHeight - topOrBottomPadding * 2
-        let width = UIScreen.mainScreen().bounds.width - leftPadding - biaoQingPadding * 2 - height
-        let frame = CGRectMake(leftPadding, topOrBottomPadding,width, height)
+        self.textViewHeight = defaultHeight - topOrBottomPadding * 2
+        self.textViewWidth = UIScreen.mainScreen().bounds.width - leftPadding - biaoQingPadding * 2 - self.textViewHeight
+        let frame = CGRectMake(leftPadding, topOrBottomPadding,self.textViewWidth, textViewHeight)
         self.textView = PlaceholderTextView(frame: frame,placeholder: "评论",color: nil,font: nil)
         self.textView.layer.borderWidth = 0.5  //边框粗细
         self.textView.layer.borderColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1).CGColor //边框颜色
@@ -132,11 +135,12 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         self.textView.selectable = true//是否可选
         self.textView.dataDetectorTypes = .None//给文字中的电话号码和网址自动加链接,这里不需要添加
         self.textView.returnKeyType = .Send
-        self.textView.font = UIFont(name: "AlNile", size: 15)
+        self.textView.font = UIFont(name: "AlNile", size: 16)
         //设置不可以滚动
         self.textView.showsVerticalScrollIndicator = false
         self.textView.showsHorizontalScrollIndicator = false
         self.textView.autoresizingMask = .FlexibleHeight
+        //不允许滚动，当textview的大小足以容纳它的text的时候，需要设置scrollEnabed为NO，否则会出现光标乱滚动的情况
         self.textView.scrollEnabled = false
         self.textView.scrollsToTop = false
         //设置圆角
@@ -197,10 +201,22 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         
     }
     
-    //MARSK: 去掉回车
+    func getOneCharHeight() ->CGFloat{
+        return getTextViewTextBoundingHeight("我")
+    }
+    
+    //MARSK: 去掉回车,限制UITextView的行数
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             self.textView.resignFirstResponder()
+            return false
+        }
+        
+        let labelHeight:CGFloat = getTextViewTextBoundingHeight(self.textView.text + text)
+        
+        let numLine:Int = Int(ceil(labelHeight / getOneCharHeight()))
+        if numLine > defaultLine {
+            self.textView.text = (self.textView.text as NSString).substringToIndex(self.textView.text.characters.count)
             return false
         }
         
@@ -214,12 +230,47 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         if textView.text.isEmpty {
             //self.textView.resetCur(self.textView.caretRectForPosition(textView.selectedTextRange!.start))
             self.textView.removeFromSuperview()
-            createTextView()
+            //createTextView()
             self.topView.addSubview(self.textView)
             self.textView.becomeFirstResponder()
         }
+        
+        //自动增加textView高度
+        getTextViewHeight(textView.text)
     }
-
+    
+    //MARKS: 获取文字高度
+    func getTextViewTextBoundingHeight(text:String) -> CGFloat{
+        let contentSize = CGSizeMake(self.textView.frame.width,CGFloat(MAXFLOAT))
+        let options : NSStringDrawingOptions = [.UsesLineFragmentOrigin,.UsesFontLeading]
+        let labelHeight = text.boundingRectWithSize(contentSize, options: options, attributes: [NSFontAttributeName:self.textView.font!], context: nil).size.height
+        return labelHeight
+    }
+    
+    var originHeight:CGFloat = 0
+    var beginY:CGFloat = 0
+    
+    //MARKS: 自动增加textView高度
+    func getTextViewHeight(text:String){
+        if originHeight == 0 {
+            originHeight = self.frame.height
+            beginY = self.frame.origin.y
+        }
+        
+        let contentSize = CGSizeMake(self.textView.frame.width,CGFloat(MAXFLOAT))
+        let labelHeight:CGFloat = getTextViewTextBoundingHeight(text)
+        var numLine:Int = 1//显示行数
+        numLine = Int(ceil(labelHeight / self.textViewHeight))
+        
+        var size = self.textView.sizeThatFits(contentSize)
+        if numLine > 4 {
+            size.height = labelHeight
+        }
+       
+        textView.frame = CGRectMake(leftPadding, topOrBottomPadding, textViewWidth, size.height)
+        let _padding:CGFloat = size.height - self.textViewHeight
+        self.frame = CGRectMake(self.frame.origin.x, beginY - _padding, self.frame.width, originHeight + _padding)
+    }
 
 }
 
@@ -474,11 +525,13 @@ class PlaceholderTextView:UITextView {
     
     var placeholder:String?
     var color:UIColor?
-    var fontSize:CGFloat = 15
+    var fontSize:CGFloat = 18
     
     var placeholderLabel:UILabel?
     var placeholderFont:UIFont?
     var isLayedOut:Bool = false
+    var placeholderLabelHeight:CGFloat = 0
+    var frameHeight:CGFloat = 0
     
     init(frame:CGRect,placeholder:String?,color:UIColor?,font:UIFont?){
         super.init(frame: frame, textContainer: nil)
@@ -498,6 +551,8 @@ class PlaceholderTextView:UITextView {
         } else {
             self.font = UIFont.systemFontOfSize(fontSize)
         }
+        
+        self.frameHeight = frame.height
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -520,9 +575,9 @@ class PlaceholderTextView:UITextView {
         let options : NSStringDrawingOptions = [.UsesLineFragmentOrigin,.UsesFontLeading]
         labelHeight = self.placeholder!.boundingRectWithSize(maxSize, options: options, attributes: [NSFontAttributeName:self.font!], context: nil).size.height
         
-        self.labelTopPadding = (self.frame.height - labelHeight) / 2
-        self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelLeftPadding,labelWidth , labelHeight)
-        
+        self.labelTopPadding = (self.frame.height - labelHeight) / 2 + 3
+        self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelTopPadding,labelWidth , labelHeight)
+        placeholderLabelHeight = labelHeight
         self.addSubview(placeholderLabel!)
         
         //监听文字变化
@@ -549,18 +604,22 @@ class PlaceholderTextView:UITextView {
         }
     }
     
-    let curTopPadding:CGFloat = 3
     
     //MARKS: 设置光标
-    override func caretRectForPosition(position: UITextPosition) -> CGRect {
+   /* override func caretRectForPosition(position: UITextPosition) -> CGRect {
         let originalRect = super.caretRectForPosition(position)
         return resetCur(originalRect)
-    }
+    }*/
     
     //MARKS: 重置光标
     func resetCur(originalRect:CGRect) -> CGRect{
+        var curTopPadding:CGFloat = 7
         let rect = originalRect
-        let curHeight:CGFloat = self.frame.height - curTopPadding * 2
+        let curHeight:CGFloat = self.frameHeight - curTopPadding * 2
+        if self.frame.height != self.frameHeight {
+            curTopPadding = self.frame.height - curHeight - curTopPadding
+        }
+        
         return CGRectMake(rect.origin.x, curTopPadding, rect.width, curHeight)
     }
     
