@@ -25,6 +25,7 @@ class WeChatTableViewController: UITableViewController {
     
     //MARKS: Properties
     var chats = [WeChat]()
+    let CELL_HEIGHT:CGFloat = 71
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +86,11 @@ class WeChatTableViewController: UITableViewController {
         return cell
     }
     
-
+    //MARKS: 设置每列高度
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return CELL_HEIGHT
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

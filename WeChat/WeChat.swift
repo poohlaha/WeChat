@@ -23,7 +23,7 @@ class WeChat {
         
         let date = NSDate()
         let timeFormatter = NSDateFormatter()
-        timeFormatter.dateFormat = "yyy-MM-dd HH:mm"
+        timeFormatter.dateFormat = "yy/MM/dd"
         let strNowTime = timeFormatter.stringFromDate(date) as String
         self.time = strNowTime
         

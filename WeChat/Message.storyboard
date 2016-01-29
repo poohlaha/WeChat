@@ -23,13 +23,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8rH-1R-I1i">
-                                            <rect key="frame" x="16" y="8" width="576" height="44"/>
+                                            <rect key="frame" x="16" y="-4" width="576" height="55"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="sZC-g1-ucq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="55" height="55"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="0hH-Vx-fRJ"/>
-                                                        <constraint firstAttribute="height" constant="44" id="g44-3N-l5a"/>
+                                                        <constraint firstAttribute="width" constant="55" id="0hH-Vx-fRJ"/>
+                                                        <constraint firstAttribute="height" constant="55" id="g44-3N-l5a"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -37,20 +37,20 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="44" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="4a9-Vd-6FO">
-                                                    <rect key="frame" x="52" y="0.0" width="524" height="44"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="4a9-Vd-6FO">
+                                                    <rect key="frame" x="63" y="0.0" width="513" height="55"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="18" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rfm-7d-Tld">
-                                                            <rect key="frame" x="0.0" y="0.0" width="524" height="18"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="513" height="30"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="18" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4IB-x7-WZS">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="488" height="18"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="477" height="30"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ovp-Af-BIS">
-                                                                    <rect key="frame" x="493" y="0.0" width="31" height="18"/>
+                                                                    <rect key="frame" x="482" y="0.0" width="31" height="30"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
@@ -59,6 +59,7 @@
                                                             <constraints>
                                                                 <constraint firstItem="ovp-Af-BIS" firstAttribute="top" secondItem="4IB-x7-WZS" secondAttribute="bottom" constant="-18" id="GVZ-Fh-CSV"/>
                                                                 <constraint firstItem="ovp-Af-BIS" firstAttribute="leading" secondItem="4IB-x7-WZS" secondAttribute="trailing" id="XCD-rb-FUw"/>
+                                                                <constraint firstAttribute="height" constant="30" id="a4y-IP-QRf"/>
                                                                 <constraint firstItem="ovp-Af-BIS" firstAttribute="leading" secondItem="4IB-x7-WZS" secondAttribute="trailing" constant="10" id="m9a-Sh-4qZ"/>
                                                             </constraints>
                                                             <variation key="default">
@@ -68,22 +69,62 @@
                                                                 </mask>
                                                             </variation>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHU-k4-Dhn">
-                                                            <rect key="frame" x="0.0" y="26" width="524" height="18"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHU-k4-Dhn">
+                                                            <rect key="frame" x="0.0" y="31" width="513" height="24"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="rfm-7d-Tld" firstAttribute="top" secondItem="4a9-Vd-6FO" secondAttribute="top" constant="7" id="LLN-Kg-efJ"/>
+                                                        <constraint firstItem="vHU-k4-Dhn" firstAttribute="top" secondItem="rfm-7d-Tld" secondAttribute="bottom" constant="5" id="SFO-n9-WZt"/>
+                                                        <constraint firstItem="rfm-7d-Tld" firstAttribute="top" secondItem="4a9-Vd-6FO" secondAttribute="top" constant="5" id="Xzd-43-nXn"/>
+                                                        <constraint firstAttribute="height" constant="51" id="grM-vr-Ffj"/>
+                                                        <constraint firstItem="vHU-k4-Dhn" firstAttribute="bottom" secondItem="4a9-Vd-6FO" secondAttribute="bottomMargin" constant="7" id="p4Q-bF-oCH"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="LLN-Kg-efJ"/>
+                                                            <exclude reference="Xzd-43-nXn"/>
+                                                            <exclude reference="SFO-n9-WZt"/>
+                                                            <exclude reference="p4Q-bF-oCH"/>
+                                                        </mask>
+                                                    </variation>
                                                 </stackView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="PEF-67-r1w"/>
+                                                <constraint firstItem="4a9-Vd-6FO" firstAttribute="top" secondItem="8rH-1R-I1i" secondAttribute="topMargin" constant="10" id="XeY-KQ-O19"/>
+                                                <constraint firstItem="4a9-Vd-6FO" firstAttribute="bottom" secondItem="8rH-1R-I1i" secondAttribute="bottomMargin" constant="10" id="Z4A-JJ-9E0"/>
+                                                <constraint firstAttribute="bottom" secondItem="4a9-Vd-6FO" secondAttribute="bottom" constant="7" id="bwD-fI-HmO"/>
+                                                <constraint firstItem="4a9-Vd-6FO" firstAttribute="top" secondItem="8rH-1R-I1i" secondAttribute="top" constant="7" id="rRP-29-MQU"/>
+                                                <constraint firstItem="4a9-Vd-6FO" firstAttribute="top" secondItem="8rH-1R-I1i" secondAttribute="topMargin" constant="7" id="y2t-OY-U3Z"/>
+                                                <constraint firstItem="4a9-Vd-6FO" firstAttribute="bottom" secondItem="8rH-1R-I1i" secondAttribute="bottomMargin" constant="7" id="zWw-el-7ra"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="bwD-fI-HmO"/>
+                                                    <exclude reference="rRP-29-MQU"/>
+                                                    <exclude reference="y2t-OY-U3Z"/>
+                                                    <exclude reference="zWw-el-7ra"/>
+                                                </mask>
+                                            </variation>
                                         </stackView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="8rH-1R-I1i" secondAttribute="bottom" constant="8" id="0Q6-xm-JXr"/>
+                                        <constraint firstAttribute="bottom" secondItem="8rH-1R-I1i" secondAttribute="bottom" constant="8" id="9w9-MW-lEw"/>
                                         <constraint firstAttribute="trailing" secondItem="8rH-1R-I1i" secondAttribute="trailing" constant="8" id="Fbx-vH-Fc4"/>
                                         <constraint firstItem="8rH-1R-I1i" firstAttribute="leading" secondItem="EQh-5T-gib" secondAttribute="leadingMargin" constant="8" id="n0y-oP-HVT"/>
+                                        <constraint firstAttribute="bottom" secondItem="8rH-1R-I1i" secondAttribute="bottom" constant="8" id="rbE-2K-IID"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="0Q6-xm-JXr"/>
+                                            <exclude reference="rbE-2K-IID"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="content" destination="vHU-k4-Dhn" id="3b1-uD-LXw"/>
