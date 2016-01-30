@@ -58,8 +58,8 @@ class PersonViewController: WeChatTableViewNormalController {
     let lastCellBottomPadding:CGFloat = 50//最后view距离线条高度
     let lastDrawHeight:CGFloat = 5//最后线条高度
     
-    let titleFontSize:CGFloat = 14//标题字体大小
-    let textColor = UIColor.darkGrayColor()//字体颜色
+    var titleFontSize:CGFloat = 14//标题字体大小
+    let textColor = UIColor.blackColor()//字体颜色
     
     
     var personInfos:[PersonInfo] = [PersonInfo]()
@@ -330,6 +330,7 @@ class PersonViewController: WeChatTableViewNormalController {
             let photo = info.photo
             let title = info.title
             let content = info.content
+            let isBigPic = info.isBigPic
             
             var infoHeight:CGFloat = 0
             if title != nil && photo != nil {//当有标题和图片和内容,图片为小图
@@ -350,7 +351,8 @@ class PersonViewController: WeChatTableViewNormalController {
                 color: personInfo.color,
                 title: title,
                 content: content,
-                photos: photo
+                photos: photo,
+                isBigPic:isBigPic
             )
             
             //添加点击事件
@@ -423,7 +425,7 @@ class PersonViewController: WeChatTableViewNormalController {
     }
     
     //创建视图
-    func createControlView(rect:CGRect,color:UIColor,title:Title?,content:Content?,photos:[Photo]?) -> PersonCustomView{
+    func createControlView(rect:CGRect,color:UIColor,title:Title?,content:Content?,photos:[Photo]?,isBigPic:Bool) -> PersonCustomView{
         let controlView = PersonCustomView(frame: rect, tableView: self.tableView, color: color)
         
         //title
@@ -465,7 +467,7 @@ class PersonViewController: WeChatTableViewNormalController {
             } else {
                 let photoPadding:CGFloat = 2
                 let _width = width / 2 - photoPadding
-                let _height = height / 2 - photoPadding
+                let _height = height / 2 - photoPadding / 2
                 for(var i = 0;i < photos?.count;i++){
                     let photo = photos![i]
                     
@@ -536,21 +538,46 @@ class PersonViewController: WeChatTableViewNormalController {
             var beginX:CGFloat = photoLeftPadding
             var beginY:CGFloat = titleTopPadding
             var width:CGFloat = controlView.frame.width
-            let height:CGFloat = self.contentHeight
+            var height:CGFloat = self.contentHeight
+            let litterHeight:CGFloat = 8
             
-            if photoImages.count > 0 && titleLabel == nil{
+            if photoImages.count > 0 && titleLabel == nil{//当没有标题,只有图片或图片和内容
                 beginX += photos![0].height + photoRightPadding * 2
                 beginY = photoImages[0].frame.origin.y + contentTopPadding * 2
                 width = width - (photos![0].width + photoLeftPadding + photoRightPadding) - contentRightPadding
+                if photoImages.count >= 1 {//如果有一张以上图片,则显示共多少张label
+                    if isBigPic{
+                        let spadding:CGFloat = 5
+                        height = photoImages[0].frame.height / 2 + litterHeight + spadding
+                        beginY = photoImages[0].frame.origin.y
+                        //self.titleFontSize = 15
+                        if photoImages.count > 1 {
+                            beginY = spadding
+                            height -= spadding
+                            let totalLabel = createLabel(
+                                CGRectMake(beginX, photoImages[0].frame.height - litterHeight + spadding, width, litterHeight),
+                                string: "共\(photoImages.count)张",
+                                color: UIColor.lightGrayColor(),
+                                fontName: "AlNile",
+                                fontSize: 14,
+                                isAllowNext:false
+                            )
+                            
+                            controlView.addSubview(totalLabel)
+                        }
+                        
+                    }
+                }
             }else if photoImages.count > 0 && titleLabel != nil {//有标题和图片,图片为小图
                 beginX += photos![0].height + photoRightPadding * 2
                 beginY = photoImages[0].frame.origin.y + contentTopPadding
                 width = width - (photos![0].width + photoLeftPadding + photoRightPadding) - contentRightPadding
-            }else if photoImages.count < 0 && titleLabel == nil {
+            }else if photoImages.count < 0 && titleLabel == nil {//没图片没标题
                 beginX += photos![0].height + photoRightPadding * 2
                 beginY = photoBottomPadding + contentTopPadding
                 width = width - photoLeftPadding - contentRightPadding
             }
+            
             
             contentLabel = createLabel(
                 CGRectMake(beginX, beginY, width, height),
