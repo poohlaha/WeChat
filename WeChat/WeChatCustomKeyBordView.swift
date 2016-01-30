@@ -37,7 +37,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         super.init(frame: frame)
         
         //定义通知,获取键盘高度
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillAppear:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillAppear:", name: UIKeyboardWillShowNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillDisappear:", name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -61,17 +61,20 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
 
         //隐藏表情对话框
         if self.biaoQingDialog != nil {
-            self.biaoQingDialog?.removeFromSuperview()
-            self.biaoQing.image = UIImage(named: "rightImg")
-            isBiaoQingDialogShow = false
+            if isBiaoQingDialogShow {
+                self.biaoQingDialog?.removeFromSuperview()
+                self.biaoQing.image = UIImage(named: "rightImg")
+                isBiaoQingDialogShow = false
+            }
+            
         }
         
-        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.defaultHeight - keyboardHeight)
+        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.topOrBottomPadding * 2 - self.textView.frame.height - keyboardHeight)
     }
     
     //MARKS: 键盘落下事件
     func keyboardWillDisappear(notification:NSNotification){
-        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.defaultHeight)
+        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.topOrBottomPadding * 2 - self.textView.frame.height)
     }
     
     //MARKS: 导航行返回
@@ -184,7 +187,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
                 self.biaoQingDialog?.removeFromSuperview()
             }
             
-            animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.defaultHeight, UIScreen.mainScreen().bounds.width, self.defaultHeight))
+            animation(CGRectMake(self.frame.origin.x, UIScreen.mainScreen().bounds.height - self.topOrBottomPadding * 2 - self.textView.frame.height, UIScreen.mainScreen().bounds.width, self.textView.frame.height + self.topOrBottomPadding * 2))
         }
     }
     
@@ -267,9 +270,15 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
             size.height = labelHeight
         }
        
+        //重新设置textView
         textView.frame = CGRectMake(leftPadding, topOrBottomPadding, textViewWidth, size.height)
+        
+        //重新设置框架frame
         let _padding:CGFloat = size.height - self.textViewHeight
         self.frame = CGRectMake(self.frame.origin.x, beginY - _padding, self.frame.width, originHeight + _padding)
+        
+        //重新设置biaoQing
+        self.biaoQing.frame = CGRectMake(self.biaoQing.frame.origin.x, self.frame.height - self.topOrBottomPadding - self.biaoQing.frame.height, self.biaoQing.frame.width, self.biaoQing.frame.height)
     }
 
 }
