@@ -56,6 +56,10 @@ class WeChatTableViewController: UITableViewController {
             }
         }
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.tabBarController!.tabBar.hidden = false
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -136,6 +140,18 @@ class WeChatTableViewController: UITableViewController {
         
         //from right to left
         return [deleteAction,cancelUnfllowAction]
+    }
+    
+    //MARKS: tableViewCell选中事件
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        //set data
+        let chat = chats[indexPath.row]
+        let weChatChatViewController = WeChatChatViewController()
+        weChatChatViewController.nagTitle = chat.title
+        
+        //取消选中状态
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+        self.navigationController?.pushViewController(weChatChatViewController, animated: true)
     }
 
     /*

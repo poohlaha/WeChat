@@ -119,7 +119,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         }
     }
     
-    //MARKS: 当神图消失的时候
+    //MARKS: 当视图消失的时候
     override func viewWillDisappear(animated: Bool) {
         if self.tableViewIndex != nil {
             self.tableViewIndex?.hidden = true

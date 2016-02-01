@@ -1,69 +1,62 @@
 //
-//  CommentDetailViewController.swift
+//  WeChatChatViewController.swift
 //  WeChat
 //
-//  Created by Smile on 16/1/26.
+//  Created by Smile on 16/2/1.
 //  Copyright © 2016年 smile.love.tao@gmail.com. All rights reserved.
 //
 
 import UIKit
 
-//评论详情页面
-class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeaderDelegate,WeChatEmojiDialogBottomDelegate {
-
-    var navigation:WeChatCustomNavigationHeaderView!
-    var navigationHeight:CGFloat = 44
-    var parentView:UIView!
+//自定义聊天界面
+class WeChatChatViewController: UIViewController,WeChatEmojiDialogBottomDelegate {
     
+    var nagTitle:String!
+    var weChatKeyBord:WeChatCustomKeyBordView!
+    var tableView:UITableView!
+    var nagHeight:CGFloat = 0//导航条高度
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
         initFrame()
     }
     
+    //MARKS: 初始化
     func initFrame(){
-        initNavigation()
+        //MARKS: 设置导航行背景及字体颜色
+        WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
+        //隐藏底部tabbar
+        self.navigationController?.tabBarController!.tabBar.hidden = true
+        self.nagHeight = self.navigationController!.navigationBar.frame.height
+        self.navigationItem.title = self.nagTitle
+        self.view.backgroundColor = UIColor.whiteColor()
+        //创建键盘
         createKeyBord()
+        //createTableView()
+        self.view.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "tableViewTap:"))
     }
     
-    //MARKS: 初始化自定义导航条
-    func initNavigation(){
-        //获取状态栏
-        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        self.navigationHeight += statusBarFrame.height
-        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "完成", centerLabel: "详情", rightButtonText: nil, rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(), leftLabelColor: UIColor.greenColor(), rightLabelColor: nil)
-        self.view.addSubview(self.navigation)
-        self.view.bringSubviewToFront(self.navigation)
-        self.navigation.delegate = self
+    //MARKS: 创建tableView
+    func createTableView(){
+        self.tableView = UITableView()
+        let tableViewHeight = UIScreen.mainScreen().bounds.height - self.nagHeight - self.weChatKeyBord.defaultHeight
+        self.tableView.frame = CGRectMake(0, self.nagHeight, UIScreen.mainScreen().bounds.width, tableViewHeight)
+        self.tableView.separatorStyle = .None
+        self.tableView.scrollEnabled = true
+        self.tableView.showsVerticalScrollIndicator = true
+        self.tableView.backgroundColor = UIColor.whiteColor()
+        self.tableView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "tableViewTap:"))
+        self.view.addSubview(self.tableView)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.navigation.removeFromSuperview()
-        initNavigation()
+    //MARKS: tableView点击事件,隐藏键盘
+    func tableViewTap(gesture:WeChatUITapGestureRecognizer){
+        self.weChatKeyBord.textView.resignFirstResponder()
     }
     
-    //导航条左侧事件,翻转动画
-    func leftBarClick() {
-        let fromView = self.view
-        let toView = parentView
-        
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.weChatKeyBord.navigationBackClick()
-            }) { (Bool) -> Void in
-                CATransaction.flush()
-                UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromLeft,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
-                    
-                }
-        }
-        
-        
-    }
-    
-
-    var weChatKeyBord:WeChatCustomKeyBordView!
     //MARKS: 添加底部输入框
     func createKeyBord(){
-        self.weChatKeyBord = WeChatCustomKeyBordView(placeholderText: "评论")
+        self.weChatKeyBord = WeChatCustomKeyBordView(placeholderText: nil)
         self.view.addSubview(self.weChatKeyBord)
         self.view.bringSubviewToFront(self.weChatKeyBord)
         self.weChatKeyBord.delegate = self
