@@ -95,13 +95,13 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         searchBar!.delegate = self
         
         //设置背景
-        searchBar!.backgroundColor = UIColor.clearColor()
+        /*searchBar!.backgroundColor = UIColor.clearColor()
         //searchBar!.subviews[0].removeFromSuperview()
         let imageView = UIImageView()
         imageView.frame = searchBar!.frame
         imageView.image = UIImage(named: "searchBarBg")
         searchBar!.insertSubview(imageView, atIndex: 1)
-        self.view.addSubview(searchBar!)
+        self.view.addSubview(searchBar!)*/
         
         //获取键盘
         searchBar!.becomeFirstResponder()
