@@ -21,6 +21,10 @@ class WeChatChatViewController: UIViewController,WeChatEmojiDialogBottomDelegate
         initFrame()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.tabBarController!.tabBar.hidden = true
+    }
+    
     //MARKS: 初始化
     func initFrame(){
         //MARKS: 设置导航行背景及字体颜色
