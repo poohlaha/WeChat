@@ -32,6 +32,7 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         initNavigation()
     }
     
+    
     func initFrame(){
         self.automaticallyAdjustsScrollViewInsets = false
         self.scrollView = UIScrollView(frame:UIScreen.mainScreen().bounds)
@@ -204,6 +205,7 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
     override func viewWillAppear(animated: Bool) {
         self.navigation.removeFromSuperview()
         createNavigationHeaderView()
+        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     func addImages(){

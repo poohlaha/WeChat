@@ -95,7 +95,7 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     //MARKS: 取消tableview cell选中状态,使用尾部闭包
     override func viewWillAppear(animated: Bool) {
         setCellStyleNone()
-        
+        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     func setCellStyleNone(){
