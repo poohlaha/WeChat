@@ -23,7 +23,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     let biaoQingPadding:CGFloat = 15
     var isBiaoQingDialogShow:Bool = false//是否显示表情对话框
     var biaoQingDialog:WeChatEmojiDialogView?
-    var defaultHeight:CGFloat = 50//默认高度
+    var defaultHeight:CGFloat = 47//默认高度
     let biaoQingHeight:CGFloat = 220//表情对话框高度
     var delegate:WeChatEmojiDialogBottomDelegate?
     var height:CGFloat = 0//总高度
@@ -158,7 +158,13 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         self.textView.layer.cornerRadius = 4
         self.textView.layer.masksToBounds = true
         self.textView.delegate = self
-        self.textView.selectedRange = NSMakeRange(0,0) ;   //起始位置
+        //self.textView.selectedRange = NSMakeRange(0,0) ;   //起始位置
+        
+        //设置行距
+        /*let style = NSMutableParagraphStyle()
+        style.lineSpacing = 8//行距
+        let attributes:NSDictionary = NSDictionary(object: style, forKey: NSParagraphStyleAttributeName)
+        self.textView.attributedText = NSAttributedString(string: self.textView.text, attributes: attributes as? [String : AnyObject])*/
     }
     
     //MARKS: 创建输入框边上的表情
@@ -291,7 +297,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
             size.height = labelHeight
         }
         
-        if labelHeight != self.textView.frame.height {
+        if labelHeight != self.textView.frame.height && labelHeight > self.textViewHeight{
             //重新设置textView
             textView.frame = CGRectMake(leftPadding, topOrBottomPadding, textViewWidth, size.height)
             
@@ -583,10 +589,12 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
     var placeholderFont:UIFont?
     var isLayedOut:Bool = false
     var placeholderLabelHeight:CGFloat = 0
-    var frameHeight:CGFloat = 0
+    var defaultHeight:CGFloat = 0
     
     init(frame:CGRect,placeholder:String?,color:UIColor?,font:UIFont?){
         super.init(frame: frame, textContainer: nil)
+        
+        self.defaultHeight = frame.height
         
         if placeholder != nil {
             self.placeholder = placeholder
@@ -603,8 +611,6 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
         } else {
             self.font = UIFont.systemFontOfSize(fontSize)
         }
-        
-        self.frameHeight = frame.height
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -659,23 +665,25 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
     }
     
     
+    var curTopPadding:CGFloat = 5
     //MARKS: 设置光标
-   /* override func caretRectForPosition(position: UITextPosition) -> CGRect {
+    override func caretRectForPosition(position: UITextPosition) -> CGRect {
         let originalRect = super.caretRectForPosition(position)
-        return resetCur(originalRect)
-    }*/
+        let curHeight:CGFloat = self.defaultHeight - curTopPadding * 3 + 0.5
+        return CGRectMake(originalRect.origin.x, originalRect.origin.y, originalRect.width,curHeight)
+    }
     
     //MARKS: 重置光标
-    func resetCur(originalRect:CGRect) -> CGRect{
-        var curTopPadding:CGFloat = 7
+    /*func resetCur(originalRect:CGRect) -> CGRect{
+        var curTopPadding:CGFloat = 5
         let rect = originalRect
-        let curHeight:CGFloat = self.frameHeight - curTopPadding * 2
-        if self.frame.height != self.frameHeight {
+        let curHeight:CGFloat = self.defaultHeight - curTopPadding * 2
+        if self.frame.height != self.defaultHeight {
             curTopPadding = self.frame.height - curHeight - curTopPadding
         }
         
         return CGRectMake(rect.origin.x, curTopPadding, rect.width, curHeight)
-    }
+    }*/
     
     
     func textViewDidBeginEditing(textView: UITextView) {

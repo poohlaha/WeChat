@@ -36,6 +36,8 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
         self.navigation.delegate = self
+        
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     override func viewWillAppear(animated: Bool) {
