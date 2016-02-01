@@ -145,9 +145,9 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         let toView = commentDetailController.view
         
         CATransaction.flush()
+        self.navigationController?.pushViewController(commentDetailController, animated: false)
         UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromRight,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
             commentDetailController.parentView = fromView
-            self.navigationController?.pushViewController(commentDetailController, animated: false)
         }
     }
     
