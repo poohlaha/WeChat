@@ -147,7 +147,38 @@ class WeChatCustomPhotoView: UIViewController,UIScrollViewDelegate,UINavigationC
         CATransaction.flush()
         UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromRight,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
             commentDetailController.parentView = fromView
+            self.navigationController?.pushViewController(commentDetailController, animated: false)
         }
+    }
+    
+    //MARKS: 设置翻转动画
+    func fanZhuan() {
+        //let content = UIGraphicsGetCurrentContext()
+        let parentView = UIView(frame: self.view.frame)
+        parentView.tag = 1000
+        
+        let fromView = self.view
+        fromView.tag = 1001
+        
+        let commentDetailController = CommentDetailViewController()
+        let toView = commentDetailController.view
+        toView.tag = 1002
+        parentView.addSubview(fromView)
+        parentView.addSubview(toView)
+        self.view.addSubview(parentView)
+        
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationCurve(.EaseInOut)//设置动画曲线
+        UIView.setAnimationDuration(1)//设置动画时长
+        UIView.setAnimationTransition(.FlipFromLeft, forView: parentView, cache: true)
+        
+        let purple = parentView.subviews.indexOf(parentView.viewWithTag(1002)!)
+        let maroon = parentView.subviews.indexOf(parentView.viewWithTag(1001)!)
+        parentView.exchangeSubviewAtIndex(purple!, withSubviewAtIndex: maroon!)
+        
+        UIView.setAnimationDelegate(self)//设置动画委托
+        //UIView.setAnimationDidStopSelector("")//当动画执行结束，执行方法
+        UIView.commitAnimations()//提交动画
     }
     
     //MARKS: 底部Comment点击事件

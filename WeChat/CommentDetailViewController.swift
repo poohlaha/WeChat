@@ -12,7 +12,7 @@ import UIKit
 class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeaderDelegate,WeChatEmojiDialogBottomDelegate {
 
     var navigation:WeChatCustomNavigationHeaderView!
-    var navigationHeight:CGFloat = 44
+    var navigationHeight:CGFloat = 0
     var parentView:UIView!
     
     override func viewDidLoad() {
@@ -20,6 +20,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         self.view.backgroundColor = UIColor.whiteColor()
         initFrame()
     }
+
     
     func initFrame(){
         initNavigation()
@@ -30,7 +31,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
     func initNavigation(){
         //获取状态栏
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        self.navigationHeight += statusBarFrame.height
+        self.navigationHeight = statusBarFrame.height + 44
         self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "完成", centerLabel: "详情", rightButtonText: nil, rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(), leftLabelColor: UIColor.greenColor(), rightLabelColor: nil)
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
@@ -52,7 +53,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
             }) { (Bool) -> Void in
                 CATransaction.flush()
                 UIView.transitionFromView(fromView, toView: toView, duration: 1, options: [UIViewAnimationOptions.TransitionFlipFromLeft,UIViewAnimationOptions.CurveEaseInOut]) { (Bool) -> Void in
-                    
+                    self.navigationController?.popViewControllerAnimated(false)
                 }
         }
         
