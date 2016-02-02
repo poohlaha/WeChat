@@ -416,7 +416,7 @@ class PersonViewController: WeChatTableViewNormalController {
         if gestrue.data != nil {
             let photoView = WeChatCustomPhotoView()
             photoView.photos = gestrue.data as! [Photo]
-            self.navigationController?.pushViewController(photoView, animated: false)
+            self.navigationController?.pushViewController(photoView, animated: true)
             /*presentViewController(photoView, animated: true) { () -> Void in
             
             }*/
