@@ -9,7 +9,7 @@
 import UIKit
 
 //自定义search视图,用于当用户开始输入数据的时候显示,以及显示搜索结果
-class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
+class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewDataSource,WeChatSearchBarDelegate {
     
     //MARKS: Properties
     let searchBarHeight:CGFloat = 40
@@ -23,9 +23,10 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     let labelWidth:CGFloat = 45
     let labelHeight:CGFloat = 20
     var tableView:UITableView?
-    var searchBar:UISearchBar?
+    var customSearchBar:WeChatSearchBar!
     var customView:UIView?
     var frame:CGRect?
+    var textFiled:UITextField!
     
     var sessions = [ContactSession]()
     var index:Int = -1
@@ -54,9 +55,10 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "touming-bg")!)
         self.view.backgroundColor = UIColor.whiteColor()
         getStatusHeight()
-        createSearchBar()
-        self.frame = CGRectMake(0, searchBar!.frame.origin.y + searchBar!.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBarHeight - topPadding!)
-        //self.edgesForExtendedLayout = .Bottom
+        //createSearchBar()
+        createCustomSearchBar()
+        self.frame = CGRectMake(0, customSearchBar.frame.origin.y + customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBarHeight - topPadding!)
+        self.edgesForExtendedLayout = .None
         addTableView()
         createThreeArc()
     }
@@ -80,31 +82,15 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         topPadding  = statusBarFrame.height
     }
     
-    //MARKS: 创建搜索框
-    func createSearchBar(){
-        searchBar = UISearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight))
-        searchBar!.translucent = true
-        searchBar!.placeholder = "搜索"
-        searchBar!.barStyle = .Default
-        searchBar!.showsCancelButton = true
-        searchBar!.showsScopeBar = false
-        searchBar!.barStyle = UIBarStyle.Default
-        searchBar!.searchBarStyle = UISearchBarStyle.Default
-        searchBar!.showsBookmarkButton = false
-        searchBar!.showsSearchResultsButton = false
-        searchBar!.delegate = self
+    //MARKS: 创建自定义searchBar
+    func createCustomSearchBar(){
+        customSearchBar = WeChatSearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1))
+        self.view.addSubview(customSearchBar)
         
-        //设置背景
-        searchBar!.backgroundColor = UIColor.clearColor()
-        //searchBar!.subviews[0].removeFromSuperview()
-        let imageView = UIImageView()
-        imageView.frame = CGRectMake(0, 0, searchBar!.frame.width, searchBar!.frame.height)
-        imageView.image = UIImage(named: "searchBarBg")
-        searchBar!.insertSubview(imageView, atIndex: 1)
-        
-        self.view.addSubview(searchBar!)
-        //获取键盘
-        searchBar!.becomeFirstResponder()
+        self.textFiled = self.customSearchBar.textSearchView.textField
+        self.customSearchBar.delegate = self
+        self.customSearchBar.textSearchView.delegate = self
+        self.textFiled.becomeFirstResponder()//获取键盘
     }
 
     //MARKS: 画三个圆
@@ -209,31 +195,32 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     //MARKS: 取消事件
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-       dismissViewControllerAnimated(false) { () -> Void in
-        if self.index >= 0 {
-            let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
-            rootController.selectedIndex = self.index
-        }
-       }
-    }
-    
-    
-    //MARKS: 事件
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        self.data = [Contact]()
-        if searchBar.text!.isEmpty {
-            customView!.hidden = false
-        } else {
-            //如果是英文,则根据key搜索
-            if judgeIsEnglish(searchBar.text!) {
-                getContainsDataByEnglish()
-            } else {
-                getContainsData()
+    func cancelClick() {
+        dismissViewControllerAnimated(false) { () -> Void in
+            if self.index >= 0 {
+                let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
+                rootController.selectedIndex = self.index
             }
-            
-            self.tableView?.reloadData()
-            customView!.hidden = true
+        }
+    }
+
+    func textFieldChange() {
+        let selectedRange = self.textFiled.markedTextRange
+        if selectedRange == nil || selectedRange!.empty {
+            self.data = [Contact]()
+            if textFiled.text!.isEmpty {
+                customView!.hidden = false
+            } else {
+                //如果是英文,则根据key搜索
+                if judgeIsEnglish(textFiled.text!) {
+                    getContainsDataByEnglish()
+                } else {
+                    getContainsData()
+                }
+                
+                self.tableView?.reloadData()
+                customView!.hidden = true
+            }
         }
     }
     
@@ -317,13 +304,17 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         let photoImageView = createPhotoView(CGRectMake(leftPadding, tableCellPadding, tableCellImage, tableCellImage), image: contact.photo!,bounds: 4)
         cell.addSubview(photoImageView)
         
-        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,char:searchBar!.text!)
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,char:textFiled.text!)
         cell.addSubview(textLabel)
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchBar!.text!.isEmpty {
+        /*if searchBar!.text!.isEmpty {
+            return 0
+        }*/
+        
+        if textFiled.text!.isEmpty {
             return 0
         }
         
@@ -336,7 +327,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS:计算包含数据
     func getContainsData(){
-        let str = searchBar!.text
+        let str = textFiled.text
         for contactSession in sessions {
             for contact in contactSession.contacts{
                 if contact.name.containsString(str!){
@@ -348,7 +339,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 计算英文数据
     func getContainsDataByEnglish(){
-        let str = searchBar!.text
+        let str = textFiled.text
         for contactSession in sessions {
             let key = contactSession.key
             if key.uppercaseString == str?.uppercaseString {
