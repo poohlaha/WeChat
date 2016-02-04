@@ -30,6 +30,8 @@ class WeChatSearchBar: UIView {
     let cancelTextFontName:String = "AlNile"
     let cancelTextFontSize:CGFloat = 18
     var delegate:WeChatSearchBarDelegate? = nil
+    var searchLabelView:WeChatSearchLabelView!
+    var statusHeight:CGFloat = 0
     
     //MARKS: Init
     init(frame:CGRect,placeholder:String?,cancelBtnText:String?,cancelBtnColor:UIColor?){
@@ -48,6 +50,9 @@ class WeChatSearchBar: UIView {
         } else {
             self.cancelBtnColor = UIColor.blueColor()//默认蓝色
         }
+        
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        self.statusHeight  = statusBarFrame.height
         
         initFrame()
     }
@@ -80,6 +85,12 @@ class WeChatSearchBar: UIView {
         self.addSubview(textSearchView)
     }
     
+    //MARKS: 设置遮罩层
+    func createTextSearchLabelView() -> WeChatSearchLabelView{
+        self.textSearchView.textField.resignFirstResponder()
+        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, self.statusHeight + topOrBottomPadding, self.textSearchView.frame.width, self.textSearchView.frame.height), textSearchView: self.textSearchView)
+        return searchLabelView
+    }
     
     //MARKS: 创建searchButton
     func createSearchButton(){
@@ -142,16 +153,20 @@ class TextSearchView:UIView,UITextFieldDelegate {
     }
     
     func initFrame(){
-        //设置圆角等属性
+        setLayout()
+        
+        createSearchImageView()
+        createTextField()
+        createSpeakImageView()
+    }
+    
+    //MARKS: 设置圆角等属性
+    func setLayout(){
         self.layer.borderWidth = 1
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 6
         self.layer.borderColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1).CGColor
         self.backgroundColor = UIColor.whiteColor()
-        
-        createSearchImageView()
-        createTextField()
-        createSpeakImageView()
     }
     
     //MARKS: 创建textField

@@ -26,7 +26,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     var customSearchBar:WeChatSearchBar!
     var customView:UIView?
     var frame:CGRect?
-    var textFiled:UITextField!
+    var textField:UITextField!
     
     var sessions = [ContactSession]()
     var index:Int = -1
@@ -45,6 +45,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     let fontName = "AlNile"
     var data = [Contact]()
     var navigationHeight:CGFloat = 0
+    var searchLabelView:WeChatSearchLabelView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,9 +62,31 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         createCustomSearchBar()
         self.frame = CGRectMake(0, customSearchBar.frame.origin.y + customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBarHeight - topPadding!)
         self.edgesForExtendedLayout = .None
+        
+        self.view.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action:"viewTap:"))
         addTableView()
         createThreeArc()
     }
+    
+    //MARKS: 视图触摸事件
+    func viewTap(view:WeChatUITapGestureRecognizer){
+        self.searchLabelView = self.customSearchBar.createTextSearchLabelView()
+        searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
+        self.view.addSubview(searchLabelView!)
+    }
+    
+    //MARKS: searchView点击事件
+    func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
+        if searchLabelView != nil {
+            for subView in self.view.subviews {
+                if subView.isKindOfClass(WeChatSearchLabelView){
+                    subView.removeFromSuperview()
+                }
+            }
+        }
+        self.textField.becomeFirstResponder()
+    }
+    
     
     func addTableView(){
         self.tableView = UITableView(frame: self.frame!)
@@ -75,12 +98,14 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView?.separatorStyle = .None
         //self.automaticallyAdjustsScrollViewInsets = false
         self.view.addSubview(self.tableView!)
+        self.view.bringSubviewToFront(self.tableView!)
         self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CustomTableCell")
     }
     
     override func viewWillAppear(animated: Bool) {
         //hideNavigationBar()
         self.navigationController?.navigationBar.hidden = true
+        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     //MARKS: 隐藏导航条动画
@@ -104,15 +129,15 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         customSearchBar = WeChatSearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1))
         self.view.addSubview(customSearchBar)
         
-        self.textFiled = self.customSearchBar.textSearchView.textField
+        self.textField = self.customSearchBar.textSearchView.textField
         self.customSearchBar.delegate = self
         self.customSearchBar.textSearchView.delegate = self
-        self.textFiled.becomeFirstResponder()//获取键盘
+        self.textField.becomeFirstResponder()//获取键盘
     }
     
     //MARKS: 滚动的时候取消键盘
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        self.textFiled.resignFirstResponder()
+        self.textField.resignFirstResponder()
     }
 
     //MARKS: 画三个圆
@@ -226,14 +251,14 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     }
 
     func textFieldChange() {
-        let selectedRange = self.textFiled.markedTextRange
+        let selectedRange = self.textField.markedTextRange
         if selectedRange == nil || selectedRange!.empty {
             self.data = [Contact]()
-            if textFiled.text!.isEmpty {
+            if textField.text!.isEmpty {
                 customView!.hidden = false
             } else {
                 //如果是英文,则根据key搜索
-                if judgeIsEnglish(textFiled.text!) {
+                if judgeIsEnglish(textField.text!) {
                     getContainsDataByEnglish()
                 } else {
                     getContainsData()
@@ -339,7 +364,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         let photoImageView = createPhotoView(CGRectMake(leftPadding, tableCellPadding, tableCellImage, tableCellImage), image: contact.photo!,bounds: 4)
         cell.addSubview(photoImageView)
         
-        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,char:textFiled.text!)
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, (photoImageView.frame.height)/2, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: self.fontName, fontSize: 17, isAllowNext: false,char:textField.text!)
         cell.addSubview(textLabel)
         return cell
     }
@@ -349,7 +374,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
             return 0
         }*/
         
-        if textFiled.text!.isEmpty {
+        if textField.text!.isEmpty {
             return 0
         }
         
@@ -362,7 +387,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS:计算包含数据
     func getContainsData(){
-        let str = textFiled.text
+        let str = textField.text
         for contactSession in sessions {
             for contact in contactSession.contacts{
                 if contact.name.containsString(str!){
@@ -374,7 +399,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 计算英文数据
     func getContainsDataByEnglish(){
-        let str = textFiled.text
+        let str = textField.text
         for contactSession in sessions {
             let key = contactSession.key
             if key.uppercaseString == str?.uppercaseString {
