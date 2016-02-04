@@ -18,6 +18,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     let leftPadding:CGFloat = 20
     
     var tableViewIndex:TableViewIndex?
+    var searchLabelView:WeChatSearchLabelView?
+    var customSearchBar:WeChatSearchBar!
     
     var totalCount = 0
     //MARKS: 重写协议的属性
@@ -106,7 +108,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         
         initContactData()
-        initSearchBar()
+        //initSearchBar()
+        initCustomerSearchBar()
         initTableIndex()
         addFooter()
     }
@@ -126,6 +129,28 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         if self.tableViewIndex != nil {
             self.tableViewIndex?.hidden = true
         }
+    }
+    
+    func initCustomerSearchBar(){
+        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
+        self.searchLabelView = self.customSearchBar.createTextSearchLabelView(0)
+        searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
+        
+        tableView.frame.size = self.view.frame.size
+        tableView.backgroundColor = UIColor.whiteColor()
+        
+        let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,headerHeight))
+        headerView.backgroundColor = self.customSearchBar.backgroundColor
+        headerView.addSubview(searchLabelView!)
+        tableView.tableHeaderView = headerView
+    }
+    
+    //MARKS: searchBar触摸事件
+    func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
+        let customView = ContactCustomSearchView()
+        customView.index = 1
+        customView.sessions = self.sessions
+        self.navigationController?.pushViewController(customView, animated: false)
     }
     
     //MARKS: Init SearchBar And Add Header View

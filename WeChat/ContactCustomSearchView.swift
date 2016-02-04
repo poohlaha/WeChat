@@ -46,6 +46,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     var data = [Contact]()
     var navigationHeight:CGFloat = 0
     var searchLabelView:WeChatSearchLabelView?
+    var statusHeight:CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +54,9 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func initFrame(){
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        self.statusHeight = statusBarFrame.height
+        
         self.navigationController?.navigationBar.hidden = true
         self.navigationHeight = (self.navigationController?.navigationBar.frame.height)!
         //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "touming-bg")!)
@@ -62,29 +66,9 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         createCustomSearchBar()
         self.frame = CGRectMake(0, customSearchBar.frame.origin.y + customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - searchBarHeight - topPadding!)
         self.edgesForExtendedLayout = .None
-        
-        self.view.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action:"viewTap:"))
+
         addTableView()
         createThreeArc()
-    }
-    
-    //MARKS: 视图触摸事件
-    func viewTap(view:WeChatUITapGestureRecognizer){
-        self.searchLabelView = self.customSearchBar.createTextSearchLabelView()
-        searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
-        self.view.addSubview(searchLabelView!)
-    }
-    
-    //MARKS: searchView点击事件
-    func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
-        if searchLabelView != nil {
-            for subView in self.view.subviews {
-                if subView.isKindOfClass(WeChatSearchLabelView){
-                    subView.removeFromSuperview()
-                }
-            }
-        }
-        self.textField.becomeFirstResponder()
     }
     
     
@@ -126,7 +110,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 创建自定义searchBar
     func createCustomSearchBar(){
-        customSearchBar = WeChatSearchBar(frame: CGRectMake(0, topPadding!, UIScreen.mainScreen().bounds.width, searchBarHeight), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1))
+        customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, searchBarHeight + topPadding!), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1))
         self.view.addSubview(customSearchBar)
         
         self.textField = self.customSearchBar.textSearchView.textField

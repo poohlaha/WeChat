@@ -52,8 +52,7 @@ class WeChatSearchBar: UIView {
         }
         
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        self.statusHeight  = statusBarFrame.height
-        
+        self.statusHeight = statusBarFrame.height
         initFrame()
     }
 
@@ -80,15 +79,15 @@ class WeChatSearchBar: UIView {
             textFieldWidth = self.frame.width - leftPadding - textFieldRightPadding
             textFieldHeight = self.frame.height - topOrBottomPadding * 2
         }
-        textSearchView = TextSearchView(frame: CGRectMake(leftPadding, topOrBottomPadding, textFieldWidth, textFieldHeight), placeholder: self.placeholder, cancelText: self.cancelText)
+        textSearchView = TextSearchView(frame: CGRectMake(leftPadding, topOrBottomPadding + self.statusHeight, textFieldWidth, textFieldHeight - statusHeight), placeholder: self.placeholder, cancelText: self.cancelText)
         
         self.addSubview(textSearchView)
     }
     
     //MARKS: 设置遮罩层
-    func createTextSearchLabelView() -> WeChatSearchLabelView{
+    func createTextSearchLabelView(statusHeight:CGFloat) -> WeChatSearchLabelView{
         self.textSearchView.textField.resignFirstResponder()
-        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, self.statusHeight + topOrBottomPadding, self.textSearchView.frame.width, self.textSearchView.frame.height), textSearchView: self.textSearchView)
+        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, statusHeight + topOrBottomPadding, self.textSearchView.frame.width, self.frame.height - topOrBottomPadding * 2), textSearchView: self.textSearchView)
         return searchLabelView
     }
     
@@ -99,7 +98,7 @@ class WeChatSearchBar: UIView {
         }
         
         let beginX:CGFloat = self.textSearchView.frame.origin.x + self.textSearchView.frame.width + leftPadding
-        let beginY:CGFloat = (self.frame.height - self.cancelBtnHeight) / 2
+        let beginY:CGFloat = (self.frame.height - self.cancelBtnHeight + statusHeight) / 2
         self.cancelBtn = UIButton()
         self.cancelBtn?.frame = CGRectMake(beginX, beginY, cancelBtnWidth, self.textSearchView.frame.height)
         self.cancelBtn?.setTitle(self.cancelText, forState: .Normal)
