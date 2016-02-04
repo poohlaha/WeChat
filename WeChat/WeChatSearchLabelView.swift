@@ -66,8 +66,9 @@ class WeChatSearchLabelView: UIView {
         let speakImageView = UIImageView()
         speakImageView.image = self.textSearchView.speakImageView.image
         
+        let speakBeginX:CGFloat = self.frame.width - self.textSearchView.leftOrRightPadding - self.textSearchView.speakImageWidth
         let speakBeginY:CGFloat = (self.frame.height - self.textSearchView.speakImageView.frame.height) / 2
-        speakImageView.frame = CGRectMake(self.textSearchView.speakImageView.frame.origin.x, speakBeginY, self.textSearchView.speakImageView.frame.width, self.textSearchView.speakImageView.frame.height)
+        speakImageView.frame = CGRectMake(speakBeginX, speakBeginY, self.textSearchView.speakImageView.frame.width, self.textSearchView.speakImageView.frame.height)
         self.addSubview(speakImageView)
         
         self.addSubview(centerView)

@@ -32,6 +32,7 @@ class WeChatSearchBar: UIView {
     var delegate:WeChatSearchBarDelegate? = nil
     var searchLabelView:WeChatSearchLabelView!
     var statusHeight:CGFloat = 0
+    var searchView:UIView!
     
     //MARKS: Init
     init(frame:CGRect,placeholder:String?,cancelBtnText:String?,cancelBtnColor:UIColor?){
@@ -87,8 +88,22 @@ class WeChatSearchBar: UIView {
     //MARKS: 设置遮罩层
     func createTextSearchLabelView(statusHeight:CGFloat) -> WeChatSearchLabelView{
         self.textSearchView.textField.resignFirstResponder()
-        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, statusHeight + topOrBottomPadding, self.textSearchView.frame.width, self.frame.height - topOrBottomPadding * 2), textSearchView: self.textSearchView)
+        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, statusHeight + topOrBottomPadding, self.frame.width - leftPadding * 2, self.frame.height - topOrBottomPadding * 2), textSearchView: self.textSearchView)
         return searchLabelView
+    }
+    
+    func createSearchView(frame:CGRect,bgColor:UIColor?) -> UIView{
+        self.textSearchView.textField.resignFirstResponder()
+        self.searchView = UIView()
+        self.searchView.frame = frame
+        
+        if bgColor != nil {
+            self.searchView.backgroundColor = bgColor
+        }
+        
+        searchLabelView = WeChatSearchLabelView(frame: CGRectMake(leftPadding, topOrBottomPadding, self.frame.width - leftPadding * 2, self.frame.height - topOrBottomPadding * 2), textSearchView: self.textSearchView)
+        searchView.addSubview(searchLabelView)
+        return searchView
     }
     
     //MARKS: 创建searchButton

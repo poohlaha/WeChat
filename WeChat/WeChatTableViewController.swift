@@ -26,9 +26,17 @@ class WeChatTableViewController: UITableViewController {
     //MARKS: Properties
     var chats = [WeChat]()
     let CELL_HEIGHT:CGFloat = 71
+    var searchLabelView:WeChatSearchLabelView?
+    var searchView:UIView!
+    var customSearchBar:WeChatSearchBar!
+    let headerHeight:CGFloat = 40
+    let searchHeight:CGFloat = 40
+    var sessions = [ContactSession]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sessions = ContactModel().contactSesion
         
         /*self.tabBarItem.image = UIImage(named: "contact")?.imageWithRenderingMode(.AlwaysOriginal)
         self.tabBarItem.title = "消息"
@@ -39,6 +47,7 @@ class WeChatTableViewController: UITableViewController {
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         self.navigationController?.tabBarController!.tabBar.hidden = false
+        createHeaderView()
     }
     
     func loadSampleDatas(){
@@ -59,11 +68,33 @@ class WeChatTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.tabBarController!.tabBar.hidden = false
+        self.navigationController?.navigationBar.hidden = false
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    //MARKS: 创建header搜索框
+    func createHeaderView(){
+        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
+        self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, -self.customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
+        self.searchLabelView = self.customSearchBar.searchLabelView
+        searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
+        self.view.addSubview(self.searchView)
+    }
+    
+    //MARKS: searchBar触摸事件
+    func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
+        let customView = ContactCustomSearchView()
+        customView.index = 0
+        customView.sessions = sessions
+        self.navigationController?.pushViewController(customView, animated: false)
+    }
+    
+    //MARKS: 画底部线条
+    func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
+        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
     }
 
     // MARK: - Table view data source
