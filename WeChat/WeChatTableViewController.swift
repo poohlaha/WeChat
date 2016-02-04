@@ -21,7 +21,7 @@ extension String {
 }
 
 //消息页面
-class WeChatTableViewController: UITableViewController {
+class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     
     //MARKS: Properties
     var chats = [WeChat]()
@@ -32,12 +32,15 @@ class WeChatTableViewController: UITableViewController {
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
     var sessions = [ContactSession]()
+    var topHeight:CGFloat = 0
+    var lastPosition:CGPoint = CGPointZero
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sessions = ContactModel().contactSesion
-        
+        topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
+        self.lastPosition = CGPointMake(0, -topHeight)
         /*self.tabBarItem.image = UIImage(named: "contact")?.imageWithRenderingMode(.AlwaysOriginal)
         self.tabBarItem.title = "消息"
         self.tabBarItem.selectedImage = UIImage(named: "contact-touch")?.imageWithRenderingMode(.AlwaysOriginal)*/
@@ -84,12 +87,60 @@ class WeChatTableViewController: UITableViewController {
         self.view.addSubview(self.searchView)
     }
     
+    //MARKS: 滚动条事件
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        /*if !self.isUserDrag {
+            return
+        }*/
+        
+        let position:CGPoint = scrollView.contentOffset
+        print(position.y)
+        
+        let newY = scrollView.contentOffset.y
+        if(self.startY - newY > 0) {//向上滚动
+            if position.y < lastPosition.y {
+                //lastPosition = CGPointMake(position.x, -(searchHeight + topHeight))
+                scrollView.setContentOffset(lastPosition, animated: true)
+                self.view.frame.origin = CGPointMake(self.view.frame.origin.x,searchHeight)
+            }
+        } else if self.startY - newY < 0{//向下滚动
+            if position.y > lastPosition.y {
+                if self.view.frame.origin.y > 0 {
+                    self.view.frame.origin = CGPointMake(self.view.frame.origin.x,0)
+                }
+            }
+            
+        }
+        
+        self.startY = scrollView.contentOffset.y
+    }
+    
+    var startY:CGFloat = 0
+    var isUserDrag:Bool = false
+    
+    //MARKS: 即将开始滚动
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.isUserDrag = true
+        self.startY = scrollView.contentOffset.y
+    }
+    
+    //MARKS: 滚动结束
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.isUserDrag = false
+    }
+    
     //MARKS: searchBar触摸事件
     func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
         let customView = ContactCustomSearchView()
         customView.index = 0
         customView.sessions = sessions
+        customView.delegate = self
         self.navigationController?.pushViewController(customView, animated: false)
+    }
+    
+    //MARKS:取消事件,需要设置scrollView位置
+    func cancelClick() {
+        
     }
     
     //MARKS: 画底部线条

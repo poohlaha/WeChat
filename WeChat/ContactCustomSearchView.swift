@@ -27,6 +27,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     var customView:UIView?
     var frame:CGRect?
     var textField:UITextField!
+    var delegate:WeChatSearchBarDelegate?
     
     var sessions = [ContactSession]()
     var index:Int = -1
@@ -231,6 +232,10 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         if self.index >= 0 {
             let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
             rootController.selectedIndex = self.index
+        }
+        
+        if self.delegate != nil {
+            delegate?.cancelClick!()
         }
     }
 
