@@ -23,6 +23,7 @@ class WeChatChatViewController: UIViewController,WeChatEmojiDialogBottomDelegate
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.tabBarController!.tabBar.hidden = true
+        self.navigationController?.navigationBar.hidden = false
     }
     
     //MARKS: 初始化

@@ -81,7 +81,9 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
     
     //MARKS: 键盘落下事件
     func keyboardWillDisappear(notification:NSNotification){
-        animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.topOrBottomPadding * 2 - self.textView.frame.height)
+        if self.textView != nil {
+            animation(self.frame.origin.x, y: UIScreen.mainScreen().bounds.height - self.topOrBottomPadding * 2 - self.textView.frame.height)
+        }
     }
     
     //MARKS: 导航条返回

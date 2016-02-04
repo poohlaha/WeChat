@@ -182,6 +182,11 @@ class TextSearchView:UIView,UITextFieldDelegate {
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector:"textDidChange", name: UITextFieldTextDidChangeNotification, object: nil)
         textField.addTarget(self, action: "textDidChange", forControlEvents: .EditingChanged)
+        
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        
     }
     
     //MARKS: Change事件

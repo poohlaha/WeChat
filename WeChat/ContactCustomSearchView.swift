@@ -44,6 +44,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     let photoRightPadding:CGFloat = 10
     let fontName = "AlNile"
     var data = [Contact]()
+    var navigationHeight:CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +52,8 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func initFrame(){
-        //设置背景颜色
+        self.navigationController?.navigationBar.hidden = true
+        self.navigationHeight = (self.navigationController?.navigationBar.frame.height)!
         //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "touming-bg")!)
         self.view.backgroundColor = UIColor.whiteColor()
         getStatusHeight()
@@ -76,6 +78,21 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CustomTableCell")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        //hideNavigationBar()
+        self.navigationController?.navigationBar.hidden = true
+    }
+    
+    //MARKS: 隐藏导航条动画
+    func hideNavigationBar(){
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.navigationController?.navigationBar.frame = CGRectMake(0,UIApplication.sharedApplication().statusBarFrame.height,(self.navigationController?.navigationBar.frame.width)!,0)
+            }) { (Bool) -> Void in
+                self.navigationController?.navigationBar.hidden = true
+                self.navigationController?.navigationBar.frame.size = CGSize(width: (self.navigationController?.navigationBar.frame.width)!,height: self.navigationHeight)
+        }
+    }
+    
     //MARKS: 获取状态栏高度
     func getStatusHeight(){
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
@@ -91,6 +108,11 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.customSearchBar.delegate = self
         self.customSearchBar.textSearchView.delegate = self
         self.textFiled.becomeFirstResponder()//获取键盘
+    }
+    
+    //MARKS: 滚动的时候取消键盘
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.textFiled.resignFirstResponder()
     }
 
     //MARKS: 画三个圆
@@ -196,11 +218,10 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 取消事件
     func cancelClick() {
-        dismissViewControllerAnimated(false) { () -> Void in
-            if self.index >= 0 {
-                let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
-                rootController.selectedIndex = self.index
-            }
+        self.navigationController?.popViewControllerAnimated(true)
+        if self.index >= 0 {
+            let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
+            rootController.selectedIndex = self.index
         }
     }
 
@@ -267,6 +288,19 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         return tableCellHeight
     }
     
+    //MARKS: tableView选中事件
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        //set data
+        let contact = data[indexPath.row - 1]
+        let weChatChatViewController = WeChatChatViewController()
+        weChatChatViewController.nagTitle = contact.name
+        
+        //取消选中状态
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+        self.navigationController!.pushViewController(weChatChatViewController, animated: true)
+    }
+    
+    
     //设置数据
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         /*var cell = tableView.dequeueReusableCellWithIdentifier("Cell\(indexPath.section)\(indexPath.row)")
@@ -296,6 +330,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         if indexPath.row == 0  && self.data.count > 0{
             let label = createLabel(CGRectMake(leftPadding, tableCellOneTopPadding, UIScreen.mainScreen().bounds.width - leftPadding, tabelCellOneTextHeight), string: "联系人", color: UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1), fontName: self.fontName, fontSize: 14, isAllowNext: false,char:"")
             cell.addSubview(label)
+            cell.selectionStyle = .None
             return cell
         }
         

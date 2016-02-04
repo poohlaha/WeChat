@@ -117,6 +117,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         if self.tableViewIndex != nil {
             self.tableViewIndex?.hidden = false
         }
+        
+        self.navigationController?.navigationBar.hidden = false
     }
     
     //MARKS: 当视图消失的时候
@@ -165,9 +167,11 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         let customView = ContactCustomSearchView()
         customView.index = 1
         customView.sessions = self.sessions
-        self.presentViewController(customView, animated: false) { () -> Void in
+        /*self.presentViewController(customView, animated: false) { () -> Void in
             
-        }
+        }*/
+        
+        self.navigationController?.pushViewController(customView, animated: false)
         return false
     }
     

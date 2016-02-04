@@ -53,6 +53,7 @@ class WeChatTextField:UITextField {
     
     //MARKS: 改变绘文字属性
     override func drawTextInRect(rect: CGRect) {
+        super.drawTextInRect(rect)
     }
     
     //MARKS: 重置占位符区域
