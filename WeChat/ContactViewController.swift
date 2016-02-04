@@ -15,7 +15,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     let footerHeight:CGFloat = 40
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
-    let leftPadding:CGFloat = 20
+    let leftPadding:CGFloat = 15
     
     var tableViewIndex:TableViewIndex?
     var searchLabelView:WeChatSearchLabelView?
@@ -25,7 +25,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     //MARKS: 重写协议的属性
     var CELL_HEIGHT:CGFloat {
         get {
-            return 54
+            return 60
         }
         
         set {
@@ -52,9 +52,6 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
             self.CELL_FOOTER_HEIGHT = newValue
         }
     }
-    
-    
-    var searchBar:UISearchBar?
     
     var sessions = [ContactSession]()
     override func viewDidLoad() {
@@ -108,7 +105,6 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         
         initContactData()
-        //initSearchBar()
         initCustomerSearchBar()
         initTableIndex()
         addFooter()
@@ -131,6 +127,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         }
     }
     
+    //MARKS:初始化SearchBar等
     func initCustomerSearchBar(){
         self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
         self.searchLabelView = self.customSearchBar.createTextSearchLabelView(0)
@@ -139,10 +136,47 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         tableView.frame.size = self.view.frame.size
         tableView.backgroundColor = UIColor.whiteColor()
         
-        let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,headerHeight))
+        let headerView:UIView = UIView()
         headerView.backgroundColor = self.customSearchBar.backgroundColor
         headerView.addSubview(searchLabelView!)
+        headerView.layer.addSublayer(drawLineAtLast(0,height: searchHeight))
+        
+        //添加列表
+        let width:CGFloat = UIScreen.mainScreen().bounds.width
+        var height:CGFloat = searchHeight
+        let newFriendView = createOneCell("new-friend", labelText: "新的朋友", beginY: height, width: width,bounds: 0)
+        height += CELL_HEIGHT
+        headerView.addSubview(newFriendView)
+        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        
+        let groupChatView = createOneCell("group-chat", labelText: "群聊", beginY: height, width: width,bounds: 0)
+        height += CELL_HEIGHT
+        headerView.addSubview(groupChatView)
+        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        
+        let markView = createOneCell("mark", labelText: "标签", beginY: height, width: width,bounds: 0)
+        height += CELL_HEIGHT
+        headerView.addSubview(markView)
+        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        
+        let publicNumView = createOneCell("public-num", labelText: "公众号", beginY: height, width: width,bounds: 0)
+        height += CELL_HEIGHT
+        headerView.addSubview(publicNumView)
+        
+        headerView.frame = CGRectMake(0,0,tableView.frame.size.width,height)
+        
         tableView.tableHeaderView = headerView
+    }
+    
+    func createOneCell(imageName:String,labelText:String,beginY:CGFloat,width:CGFloat,bounds:CGFloat) -> UIView{
+        let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: UIImage(named: imageName)!,bounds: bounds)
+        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + 5, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, self.labelHeight), string: labelText, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
+        let view = UIView()
+        view.frame = CGRectMake(0, beginY,width, CELL_HEIGHT)
+        view.addSubview(photoImageView)
+        view.addSubview(textLabel)
+        view.backgroundColor = UIColor.whiteColor()
+        return view
     }
     
     //MARKS: searchBar触摸事件
@@ -153,51 +187,9 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         self.navigationController?.pushViewController(customView, animated: false)
     }
     
-    //MARKS: Init SearchBar And Add Header View
-    func initSearchBar(){
-        //tableView.frame = UIScreen.mainScreen().bounds
-        tableView.frame.size = self.view.frame.size
-        //tableView.backgroundColor = UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
-        tableView.backgroundColor = UIColor.whiteColor()
-        
-        let headerView:UIView = UIView(frame: CGRectMake(0,0,tableView.frame.size.width,headerHeight))
-        searchBar = UISearchBar(frame: CGRectMake(0,0,tableView.frame.size.width,searchHeight))
-        
-        //设置透明
-        searchBar!.placeholder = "搜索"
-        searchBar!.translucent = true
-        searchBar!.barStyle = .Default
-        searchBar!.showsCancelButton = false
-        searchBar!.showsScopeBar = false
-        searchBar!.barStyle = UIBarStyle.Default
-        searchBar!.searchBarStyle = UISearchBarStyle.Default
-        searchBar!.showsBookmarkButton = false
-        searchBar!.showsSearchResultsButton = false
-        searchBar!.delegate = self
-        
-        //设置背景
-        searchBar!.backgroundColor = UIColor.clearColor()
-        //searchBar!.subviews[0].removeFromSuperview()
-        let imageView = UIImageView()
-        imageView.frame = searchBar!.frame
-        imageView.image = UIImage(named: "searchBarBg")
-        searchBar!.insertSubview(imageView, atIndex: 1)
-        
-        headerView.addSubview(searchBar!)
-        tableView.tableHeaderView = headerView
-    }
-    
-    //MARKS:当焦点在输入框的时候
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        let customView = ContactCustomSearchView()
-        customView.index = 1
-        customView.sessions = self.sessions
-        /*self.presentViewController(customView, animated: false) { () -> Void in
-            
-        }*/
-        
-        self.navigationController?.pushViewController(customView, animated: false)
-        return false
+    //MARKS: 画底部线条
+    func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
+        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
     }
     
     //MARKS: Init tableview index
@@ -254,10 +246,10 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     }
     
     let paddingLeft:CGFloat = 15
-    let imageWidth:CGFloat = 44
-    let imageHeight:CGFloat = 44
-    let topOrBottomPadding:CGFloat = 5
-    let bounds:CGFloat = 4
+    let imageWidth:CGFloat = 40
+    let imageHeight:CGFloat = 40
+    let topOrBottomPadding:CGFloat = 10
+    let bounds:CGFloat = 0
     let photoRightPadding:CGFloat = 8
     let labelHeight:CGFloat = 20
     
