@@ -22,6 +22,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     var customSearchBar:WeChatSearchBar!
     
     var totalCount = 0
+    var topHeight:CGFloat = 0
     //MARKS: 重写协议的属性
     var CELL_HEIGHT:CGFloat {
         get {
@@ -91,6 +92,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     }*/
     
     func initFrame(){
+        topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -104,10 +107,33 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         
+        addNavigationRightBar()
+        
         initContactData()
         initCustomerSearchBar()
         initTableIndex()
         addFooter()
+    }
+    
+    //MARKS: 设置右侧导航条按钮
+    func addNavigationRightBar(){
+        let rightBtn = UIButton(type: .Custom)
+        let imageWidth:CGFloat = 40
+        let imageHeight:CGFloat = 40
+        let imageBottomPadding:CGFloat = 15
+        let imageRightPadding:CGFloat = 15
+        rightBtn.frame = CGRectMake((self.navigationController?.navigationBar.frame.width)! - imageRightPadding - imageWidth, topHeight - imageHeight - imageBottomPadding, imageWidth, imageWidth)
+        rightBtn.setBackgroundImage(UIImage(named: "contact-add"), forState: .Normal)
+        
+        let space = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil) 
+        space.width -= imageRightPadding
+        self.navigationItem.rightBarButtonItems = [space,UIBarButtonItem(customView: rightBtn)]
+        
+        rightBtn.addTarget(self, action: "contactAddItems", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    //MARKS: add事件
+    func contactAddItems(){
     }
     
     //MARKS: 当视图出现的时候显示tabbar
