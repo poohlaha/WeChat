@@ -145,6 +145,9 @@
                     <navigationItem key="navigationItem" title="消息" id="sXX-tH-OQ3">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TiX-R5-dKC">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="addMessageItems:" destination="wPY-MV-FaU" id="wNZ-Pq-QqT"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>

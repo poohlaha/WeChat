@@ -228,7 +228,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 取消事件
     func cancelClick() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(false)
         if self.index >= 0 {
             let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
             rootController.selectedIndex = self.index

@@ -31,25 +31,89 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     var customSearchBar:WeChatSearchBar!
     let headerHeight:CGFloat = 40
     let searchHeight:CGFloat = 40
-    var sessions = [ContactSession]()
     var topHeight:CGFloat = 0
     var lastPosition:CGPoint = CGPointZero
+    var alertViews:[AlertView] = [AlertView]()
+
+    
+    //MARKS: 自定义弹出框属性
+    let customAlertWidth:CGFloat = 150
+    let customAlertHeight:CGFloat = 180
+    let customAlertRightPadding:CGFloat = 5
+    let customAlertTopPadding:CGFloat = 5
+    
+    var isCustomAlertViewShow:Bool = false
+    var customAlerView:CustomAlertView?
+    //MARKS: 导航条右侧+按钮事件
+    @IBAction func addMessageItems(sender: UIBarButtonItem) {
+        if !isCustomAlertViewShow {
+            createCustomAlertView()
+            isCustomAlertViewShow = true
+        } else {
+            removeCustomAlertView()
+            isCustomAlertViewShow = false
+        }
+        
+    }
+    
+    //MARKS: 移除customAlertView
+    func removeCustomAlertView(){
+        let controller = self.parentViewController
+        for subView in (controller?.parentViewController!.view.subviews)!{
+            if subView.isKindOfClass(CustomAlertView) {
+                subView.removeFromSuperview()
+            }
+        }
+        
+        isCustomAlertViewShow = false
+    }
+    
+    //MARKS: 创建customAlertView
+    func createCustomAlertView(){
+        let frame = CGRectMake(self.view.frame.width - customAlertRightPadding - customAlertWidth, topHeight + customAlertTopPadding, customAlertWidth, customAlertHeight)
+        
+        //计算controlFrame在customAlertView中的坐标
+        let imageWH:CGFloat = 20
+        let imagePadding:CGFloat = 15
+        let controlBeginX:CGFloat = frame.width - imageWH - imagePadding
+        let controlBeginY:CGFloat = topHeight + 5
+        let controlFrame = CGRectMake(controlBeginX, controlBeginY, imageWH, imageWH)
+        let customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor(patternImage: UIImage(named: "alertView-bg")!), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
+        let controller = self.parentViewController
+        controller?.parentViewController!.view.addSubview(customAlerView)
+    }
+    
+    func createAlertViews(){
+        if self.alertViews.count == 0 {
+            let alertView1 = AlertView(imageName: "alertView-group", string: "发起群聊")
+            let alertView2 = AlertView(imageName: "alertView-addFriend", string: "添加朋友")
+            let alertView3 = AlertView(imageName: "alertView-scan", string: "扫一扫")
+            let alertView4 = AlertView(imageName: "alertView-money", string: "收付款")
+            self.alertViews.append(alertView1)
+            self.alertViews.append(alertView2)
+            self.alertViews.append(alertView3)
+            self.alertViews.append(alertView4)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sessions = ContactModel().contactSesion
         topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
         self.lastPosition = CGPointMake(0, -topHeight)
-        /*self.tabBarItem.image = UIImage(named: "contact")?.imageWithRenderingMode(.AlwaysOriginal)
-        self.tabBarItem.title = "消息"
-        self.tabBarItem.selectedImage = UIImage(named: "contact-touch")?.imageWithRenderingMode(.AlwaysOriginal)*/
         //MARKS: 增加启动时间
         NSThread.sleepForTimeInterval(1.0)
         loadSampleDatas()
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         self.navigationController?.tabBarController!.tabBar.hidden = false
+        
+        createAlertViews()
+    }
+    
+    //MARKS: 当视图消失的时候移除customAlertView
+    override func viewWillDisappear(animated: Bool) {
+        self.removeCustomAlertView()
     }
     
     func loadSampleDatas(){
@@ -92,14 +156,14 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         tableView.tableHeaderView = headerView
     }
     
-    //MARKS: 滚动条事件
+    //MARKS: 滚动条事件,移除customAlertView
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        /*if !self.isUserDrag {
+        if !self.isUserDrag {
             return
-        }*/
+        }
         
+        self.removeCustomAlertView()
         let position:CGPoint = scrollView.contentOffset
-        print(position.y)
         
         let newY = scrollView.contentOffset.y
         if(self.startY - newY > 0) {//向上滚动
@@ -135,11 +199,12 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         self.isUserDrag = false
     }
     
-    //MARKS: searchBar触摸事件
+    //MARKS: searchBar触摸事件,移除customAlertView
     func searchLabelViewTap(searchView:WeChatUITapGestureRecognizer){
+        self.removeCustomAlertView()
         let customView = ContactCustomSearchView()
         customView.index = 0
-        customView.sessions = sessions
+        customView.sessions = ContactModel().contactSesion
         customView.delegate = self
         self.navigationController?.pushViewController(customView, animated: false)
     }
