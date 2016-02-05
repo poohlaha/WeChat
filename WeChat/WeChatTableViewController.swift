@@ -50,7 +50,6 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         self.navigationController?.tabBarController!.tabBar.hidden = false
-        createHeaderView()
     }
     
     func loadSampleDatas(){
@@ -78,13 +77,19 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    //MARKS: 创建header搜索框
+    //MARKS: 创建header搜索框,用tableHeaderView包起来,当向上滚动到顶部时出现
     func createHeaderView(){
         self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
-        self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, -self.customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
+        //self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, -self.customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
+        self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
         self.searchLabelView = self.customSearchBar.searchLabelView
         searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
-        self.view.addSubview(self.searchView)
+        //self.view.addSubview(self.searchView)
+        
+        let headerView:UIView = UIView()
+        headerView.frame = CGRectMake(0,-self.customSearchBar.frame.height,tableView.frame.size.width,self.customSearchBar.frame.height)
+        headerView.addSubview(self.searchView)
+        tableView.tableHeaderView = headerView
     }
     
     //MARKS: 滚动条事件
@@ -100,14 +105,15 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         if(self.startY - newY > 0) {//向上滚动
             if position.y < lastPosition.y {
                 //lastPosition = CGPointMake(position.x, -(searchHeight + topHeight))
-                scrollView.setContentOffset(lastPosition, animated: true)
-                self.view.frame.origin = CGPointMake(self.view.frame.origin.x,searchHeight)
+                //scrollView.setContentOffset(lastPosition, animated: true)
+                //self.view.frame.origin = CGPointMake(self.view.frame.origin.x,searchHeight)
+                self.createHeaderView()
             }
         } else if self.startY - newY < 0{//向下滚动
             if position.y > lastPosition.y {
-                if self.view.frame.origin.y > 0 {
+                /*if self.view.frame.origin.y > 0 {
                     self.view.frame.origin = CGPointMake(self.view.frame.origin.x,0)
-                }
+                }*/
             }
             
         }
