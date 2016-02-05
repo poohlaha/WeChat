@@ -14,12 +14,13 @@ class AlertView {
     var imageName:String?
     var image:UIImage?
     var string:String!
+    var flag:Int = 0//用于识别view
     
     init(string:String){
         self.string = string
     }
     
-    init(imageName:String?,string:String!){
+    init(imageName:String?,string:String!,flag:Int){
         if imageName != nil {
             self.imageName = imageName
         }
@@ -27,7 +28,7 @@ class AlertView {
         create()
     }
     
-    init(image:UIImage?,string:String!){
+    init(image:UIImage?,string:String!,flag:Int){
         if image != nil {
             self.image = image
         }
@@ -67,6 +68,8 @@ class CustomAlertView: UIView {
     var totalHeight:CGFloat = 0//框架总高度
     let linePadding:CGFloat = 15//线条左右空白
     let corner:CGFloat = 5//圆角
+    
+    var views:[UIView] = [UIView]()
     
     init(frame: CGRect,controlFrame:CGRect,bgColor:UIColor?,
         textColor:UIColor?,fontName:String?,fontSize:CGFloat?,alertViews:[AlertView]) {
@@ -118,6 +121,8 @@ class CustomAlertView: UIView {
         if alertView.image != nil {
             self.isCreateImage = true
         }
+        
+        createView()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -169,25 +174,9 @@ class CustomAlertView: UIView {
         return shape
     }
     
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if !isLayedOut {
-            self.backgroundColor = self.bgColor
-            self.alpha = 0.95
-            
-            if self.alertViews.count > 0 {
-                createView()
-            }
-            
-            self.isLayedOut = true
-        }
-    }
-    
-    
     func createView(){
         var beginY:CGFloat = topPadding
+        views = [UIView]()
         for(var i = 0;i < alertViews.count;i++){
             let alertView = alertViews[i]
             
@@ -225,6 +214,8 @@ class CustomAlertView: UIView {
                 self.layer.addSublayer(shape)
             }
             
+            view.tag = alertView.flag
+            views.append(view)
             self.addSubview(view)
         }
         

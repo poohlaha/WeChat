@@ -54,6 +54,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
             isCustomAlertViewShow = false
         }
         
+        print(self.customAlerView?.views)
     }
     
     //MARKS: 移除customAlertView
@@ -78,17 +79,21 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         let controlBeginX:CGFloat = frame.width - imageWH - imagePadding
         let controlBeginY:CGFloat = topHeight + 5
         let controlFrame = CGRectMake(controlBeginX, controlBeginY, imageWH, imageWH)
-        let customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor(patternImage: UIImage(named: "alertView-bg")!), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
+        
+        if self.customAlerView == nil {
+           self.customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor(patternImage: UIImage(named: "alertView-bg")!), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
+        }
+        
         let controller = self.parentViewController
-        controller?.parentViewController!.view.addSubview(customAlerView)
+        controller?.parentViewController!.view.addSubview(self.customAlerView!)
     }
     
     func createAlertViews(){
         if self.alertViews.count == 0 {
-            let alertView1 = AlertView(imageName: "alertView-group", string: "发起群聊")
-            let alertView2 = AlertView(imageName: "alertView-addFriend", string: "添加朋友")
-            let alertView3 = AlertView(imageName: "alertView-scan", string: "扫一扫")
-            let alertView4 = AlertView(imageName: "alertView-money", string: "收付款")
+            let alertView1 = AlertView(imageName: "alertView-group", string: "发起群聊",flag: 0)
+            let alertView2 = AlertView(imageName: "alertView-addFriend", string: "添加朋友",flag: 1)
+            let alertView3 = AlertView(imageName: "alertView-scan", string: "扫一扫",flag: 2)
+            let alertView4 = AlertView(imageName: "alertView-money", string: "收付款",flag: 3)
             self.alertViews.append(alertView1)
             self.alertViews.append(alertView2)
             self.alertViews.append(alertView3)
