@@ -66,6 +66,7 @@ class CustomAlertView: UIView {
     var oneHeight:CGFloat = 0//每一个view的高度
     var totalHeight:CGFloat = 0//框架总高度
     let linePadding:CGFloat = 15//线条左右空白
+    let corner:CGFloat = 5//圆角
     
     init(frame: CGRect,controlFrame:CGRect,bgColor:UIColor?,
         textColor:UIColor?,fontName:String?,fontSize:CGFloat?,alertViews:[AlertView]) {
@@ -135,13 +136,30 @@ class CustomAlertView: UIView {
         path.moveToPoint(CGPointMake(0, topPadding))
         
         let topBeginX:CGFloat = self.controlFrame.origin.x + (self.controlFrame.width / 2)
-        path.addLineToPoint(CGPointMake(topBeginX, topPadding))// -
+        
+        //左上角圆角
+        path.addArcWithCenter(CGPoint(x: corner, y: corner + topPadding), radius: corner , startAngle: CGFloat(M_PI) , endAngle:  CGFloat(3 * M_PI / 2), clockwise: true)
+        
+        path.addLineToPoint(CGPointMake(topBeginX - corner, topPadding))// -
         path.addLineToPoint(CGPointMake(topBeginX + leftPadding, 0))// /
         path.addLineToPoint(CGPointMake(topBeginX + leftPadding * 2, topPadding))// \
-        path.addLineToPoint(CGPointMake(self.frame.width, topPadding))// -
-        path.addLineToPoint(CGPointMake(self.frame.width, self.frame.height))// |
-        path.addLineToPoint(CGPointMake(0, self.frame.height))// -
-        path.addLineToPoint(CGPointMake(0, topPadding)) // |
+        
+        path.addLineToPoint(CGPointMake(self.frame.width - corner, topPadding))// -
+        
+        //右下角圆角
+        path.addArcWithCenter(CGPoint(x: self.frame.width - corner, y: corner + topPadding), radius: corner , startAngle: CGFloat(M_PI/2) , endAngle:  0 , clockwise: true)
+        
+        path.addLineToPoint(CGPointMake(self.frame.width, self.frame.height - corner))// |
+        
+        //右下角圆角
+        path.addArcWithCenter(CGPoint(x: self.frame.width - corner, y: self.frame.height - corner), radius: corner , startAngle: 0 , endAngle:  CGFloat(M_PI/2), clockwise: true)
+        
+        path.addLineToPoint(CGPointMake(corner, self.frame.height))// -
+        
+        //左下角圆角
+        path.addArcWithCenter(CGPoint(x: corner, y: self.frame.height - corner), radius: corner , startAngle: CGFloat(2 * M_PI / 3) , endAngle:  CGFloat(M_PI), clockwise: true)
+        
+        path.addLineToPoint(CGPointMake(0, topPadding + corner)) // |
         
         let shape = CAShapeLayer()
         shape.path = path.CGPath
