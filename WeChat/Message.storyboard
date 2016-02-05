@@ -159,7 +159,7 @@
         <scene sceneID="Jv6-mD-T69">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="X2X-Rr-WTB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="消息" image="message" badgeValue="8" selectedImage="message-touch" id="o6g-Ub-yhX"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="消息" image="message" selectedImage="message-touch" id="o6g-Ub-yhX"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5G7-Zd-8cg">
