@@ -140,7 +140,7 @@ class CustomAlertView: UIView {
         //左上角圆角
         path.addArcWithCenter(CGPoint(x: corner, y: corner + topPadding), radius: corner , startAngle: CGFloat(M_PI) , endAngle:  CGFloat(3 * M_PI / 2), clockwise: true)
         
-        path.addLineToPoint(CGPointMake(topBeginX - corner, topPadding))// -
+        path.addLineToPoint(CGPointMake(topBeginX, topPadding))// -
         path.addLineToPoint(CGPointMake(topBeginX + leftPadding, 0))// /
         path.addLineToPoint(CGPointMake(topBeginX + leftPadding * 2, topPadding))// \
         
