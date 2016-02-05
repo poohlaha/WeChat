@@ -44,6 +44,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     
     var isCustomAlertViewShow:Bool = false
     var customAlerView:CustomAlertView?
+    
     //MARKS: 导航条右侧+按钮事件
     @IBAction func addMessageItems(sender: UIBarButtonItem) {
         if !isCustomAlertViewShow {
@@ -156,6 +157,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         //self.view.addSubview(self.searchView)
         
         let headerView:UIView = UIView()
+        headerView.layer.addSublayer(drawLineAtLast(0,height: self.searchView.frame.height))
         headerView.frame = CGRectMake(0,-self.customSearchBar.frame.height,tableView.frame.size.width,self.customSearchBar.frame.height)
         headerView.addSubview(self.searchView)
         tableView.tableHeaderView = headerView

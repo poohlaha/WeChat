@@ -18,6 +18,12 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     @IBOutlet weak var personLabel: UILabel!
     @IBOutlet weak var phoneNumber: UILabel!
     
+    //MARKS; 发消息按钮事件
+    @IBAction func sendMessage(sender: UIButton) {
+        let weChatChatViewController = WeChatChatViewController()
+        weChatChatViewController.nagTitle = self.nameText
+        self.navigationController?.pushViewController(weChatChatViewController, animated: true)
+    }
     
     var nameText:String?
     var photoImage:UIImage?
