@@ -15,6 +15,8 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
     @IBOutlet weak var myWeChatNumLabel: UILabel!
     @IBOutlet weak var twoDimeImageView: UIImageView!
     
+    var twoDimeView:UIView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initFrame()
@@ -42,7 +44,56 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
         drawLastLine()
 
         searchView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchViewTap:"))
+        twoDimeImageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "twoDimeImageViewTap:"))
+        
     }
+    
+    //MARKS: 创建显示图片
+    func createTwoDimeView(){
+        if twoDimeView != nil {
+            self.parentViewController?.parentViewController!.view.addSubview(twoDimeView!)
+            return
+        }
+        let leftPadding:CGFloat = 15
+        let twoDimeViewHeight:CGFloat = 450
+        let twoDimeViewWidth:CGFloat = self.view.frame.width - leftPadding * 2
+        let beginY:CGFloat = (self.view.frame.height - twoDimeViewHeight) / 2
+        
+        
+        let view = UIView()
+        view.frame = CGRectMake(leftPadding, beginY, twoDimeViewWidth, twoDimeViewHeight)
+        view.backgroundColor = UIColor.whiteColor()
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 5
+        
+        let twoImageView = UIImageView()
+        twoImageView.image = UIImage(named: "my-wechat")
+        let padding:CGFloat = 20
+        twoImageView.frame = CGRectMake(padding, padding, view.frame.width - padding * 2, view.frame.height - padding * 2)
+        view.addSubview(twoImageView)
+        
+        twoDimeView = UIView()
+        twoDimeView!.frame = self.view.frame
+        twoDimeView!.addSubview(view)
+        //设置背景
+        twoDimeView!.backgroundColor = UIColor(patternImage: UIImage(named: "bg")!)
+        twoDimeView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "twoDimeViewTap:"))
+        
+        self.parentViewController?.parentViewController!.view.addSubview(twoDimeView!)
+    }
+    
+    //MARKS: 二维码点击事件
+    func twoDimeImageViewTap(view:WeChatUITapGestureRecognizer){
+        createTwoDimeView()
+    }
+    
+    //MARKS: 弹出二维码点击事件
+    func twoDimeViewTap(view:WeChatUITapGestureRecognizer){
+        if twoDimeView != nil {
+            twoDimeView?.removeFromSuperview()
+        }
+    }
+    
     
     
     //MARKS:画分割线
