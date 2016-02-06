@@ -82,7 +82,8 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         let controlFrame = CGRectMake(controlBeginX, controlBeginY, imageWH, imageWH)
         
         if self.customAlerView == nil {
-           self.customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor(patternImage: UIImage(named: "alertView-bg")!), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
+           //self.customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor(patternImage: UIImage(named: "alertView-bg")!), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
+            self.customAlerView = CustomAlertView(frame: frame, controlFrame: controlFrame, bgColor: UIColor.darkGrayColor(), textColor: nil, fontName: nil, fontSize: 16, alertViews: self.alertViews)
         }
         
         let controller = self.parentViewController

@@ -122,6 +122,7 @@ class CustomAlertView: UIView {
             self.isCreateImage = true
         }
         
+        self.backgroundColor = self.bgColor
         createView()
     }
 
@@ -168,7 +169,7 @@ class CustomAlertView: UIView {
         
         let shape = CAShapeLayer()
         shape.path = path.CGPath
-        shape.fillColor = self.bgColor?.CGColor//填充颜色
+        shape.fillColor = UIColor.darkGrayColor().CGColor//填充颜色
         shape.lineWidth = 1
         path.closePath()
         return shape
