@@ -122,6 +122,11 @@ class WeChatDrawView: UIView {
         return shape
     }
     
+    
+    //MARKS: 画底部线条
+    func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
+        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
+    }
 
     //画聊天对话框,剪头向下
     func drawDialog(){

@@ -38,6 +38,7 @@
 		765964451C3BF60800910F0D /* WeChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765964441C3BF60800910F0D /* WeChat.swift */; };
 		765A61D21C4C7A3D004F7A3D /* ContactCustomSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765A61D11C4C7A3D004F7A3D /* ContactCustomSearchView.swift */; };
 		765A61D51C4C815C004F7A3D /* ContactSearchArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765A61D41C4C815C004F7A3D /* ContactSearchArcView.swift */; };
+		7675969C1C65911D00C58246 /* ContactAddFriendsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675969B1C65911D00C58246 /* ContactAddFriendsTableViewController.swift */; };
 		7686BF8D1C58F05D00E00837 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7686BF8C1C58F05D00E00837 /* Emoji.swift */; };
 		76872ABC1C53BA6F00BBD965 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76872ABA1C53BA6F00BBD965 /* Contact.storyboard */; };
 		7687BCEF1C607F8200489E4F /* WeChatSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687BCEE1C607F8200489E4F /* WeChatSearchBar.swift */; };
@@ -118,6 +119,7 @@
 		765964441C3BF60800910F0D /* WeChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChat.swift; sourceTree = "<group>"; };
 		765A61D11C4C7A3D004F7A3D /* ContactCustomSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCustomSearchView.swift; sourceTree = "<group>"; };
 		765A61D41C4C815C004F7A3D /* ContactSearchArcView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSearchArcView.swift; sourceTree = "<group>"; };
+		7675969B1C65911D00C58246 /* ContactAddFriendsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddFriendsTableViewController.swift; sourceTree = "<group>"; };
 		7686BF8C1C58F05D00E00837 /* Emoji.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		76872ABB1C53BA6F00BBD965 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Contact.storyboard; sourceTree = "<group>"; };
 		7687BCEE1C607F8200489E4F /* WeChatSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSearchBar.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 		7615130C1C3F593000DE8B2A /* Contact */ = {
 			isa = PBXGroup;
 			children = (
+				767596991C6590CB00C58246 /* Others */,
 				761042CE1C42942A00D6FB85 /* List */,
 				761042CF1C42945900D6FB85 /* Detail */,
 				7610D87B1C47B998003D012D /* Person */,
@@ -329,6 +332,22 @@
 				7659642E1C3BE90700910F0D /* Info.plist */,
 			);
 			path = WeChatUITests;
+			sourceTree = "<group>";
+		};
+		767596991C6590CB00C58246 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				7675969A1C6590DE00C58246 /* Add Friends */,
+			);
+			name = Others;
+			sourceTree = "<group>";
+		};
+		7675969A1C6590DE00C58246 /* Add Friends */ = {
+			isa = PBXGroup;
+			children = (
+				7675969B1C65911D00C58246 /* ContactAddFriendsTableViewController.swift */,
+			);
+			name = "Add Friends";
 			sourceTree = "<group>";
 		};
 		7687BCF01C607F8900489E4F /* SearchBar */ = {
@@ -590,6 +609,7 @@
 				7610E48D1C44A51400F80B71 /* RemarkTagViewController.swift in Sources */,
 				765964121C3BE90700910F0D /* WeChat.xcdatamodeld in Sources */,
 				761042D11C4294A800D6FB85 /* ResourceDetailViewController.swift in Sources */,
+				7675969C1C65911D00C58246 /* ContactAddFriendsTableViewController.swift in Sources */,
 				765451B61C5760F30060BB2D /* CommentDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

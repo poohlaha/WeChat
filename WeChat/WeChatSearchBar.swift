@@ -33,9 +33,10 @@ class WeChatSearchBar: UIView {
     var searchLabelView:WeChatSearchLabelView!
     var statusHeight:CGFloat = 0
     var searchView:UIView!
+    var isCreateSpeakImage:Bool = true
     
     //MARKS: Init
-    init(frame:CGRect,placeholder:String?,cancelBtnText:String?,cancelBtnColor:UIColor?){
+    init(frame:CGRect,placeholder:String?,cancelBtnText:String?,cancelBtnColor:UIColor?,isCreateSpeakImage:Bool){
         super.init(frame: frame)
         
         if placeholder != nil && !placeholder!.isEmpty {
@@ -52,6 +53,7 @@ class WeChatSearchBar: UIView {
             self.cancelBtnColor = UIColor.blueColor()//默认蓝色
         }
         
+        self.isCreateSpeakImage = isCreateSpeakImage
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         self.statusHeight = statusBarFrame.height
         initFrame()
@@ -61,12 +63,13 @@ class WeChatSearchBar: UIView {
         super.init(coder: aDecoder)
     }
     
-    
+    //MARKS: 初始化一些属性
     func initFrame(){
         createTextSearchView()
         createSearchButton()
         //self.backgroundColor = UIColor(patternImage: UIImage(named: "searchBar-bg")!)
         self.backgroundColor = UIColor(red: 238/255, green: 240/255, blue: 242/255, alpha: 1)
+        self.layer.addSublayer(WeChatDrawView().drawLineAtLast(0,height: self.frame.height))
     }
     
     //MARKS: 创建textSearchView
@@ -80,7 +83,7 @@ class WeChatSearchBar: UIView {
             textFieldWidth = self.frame.width - leftPadding - textFieldRightPadding
             textFieldHeight = self.frame.height - topOrBottomPadding * 2
         }
-        textSearchView = TextSearchView(frame: CGRectMake(leftPadding, topOrBottomPadding + self.statusHeight, textFieldWidth, textFieldHeight - statusHeight), placeholder: self.placeholder, cancelText: self.cancelText)
+        textSearchView = TextSearchView(frame: CGRectMake(leftPadding, topOrBottomPadding + self.statusHeight, textFieldWidth, textFieldHeight - statusHeight), placeholder: self.placeholder, cancelText: self.cancelText,isCreateSpeakImage:isCreateSpeakImage)
         
         self.addSubview(textSearchView)
     }
@@ -147,8 +150,9 @@ class TextSearchView:UIView,UITextFieldDelegate {
     var delegate:WeChatSearchBarDelegate?
     
     var isLayedOut:Bool = false
+    var isCreateSpeakImage:Bool = true
     
-    init(frame:CGRect,placeholder:String?,cancelText:String?){
+    init(frame:CGRect,placeholder:String?,cancelText:String?,isCreateSpeakImage:Bool){
         super.init(frame: frame)
         
         if placeholder != nil && !placeholder!.isEmpty {
@@ -158,6 +162,8 @@ class TextSearchView:UIView,UITextFieldDelegate {
         if cancelText != nil && !cancelText!.isEmpty {
             self.cancelText = cancelText
         }
+        
+        self.isCreateSpeakImage = isCreateSpeakImage
         
         initFrame()
     }
@@ -171,7 +177,11 @@ class TextSearchView:UIView,UITextFieldDelegate {
         
         createSearchImageView()
         createTextField()
-        createSpeakImageView()
+        
+        if isCreateSpeakImage {
+            createSpeakImageView()
+        }
+        
     }
     
     //MARKS: 设置圆角等属性

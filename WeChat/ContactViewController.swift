@@ -134,6 +134,10 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     
     //MARKS: add事件
     func contactAddItems(){
+        //根据storyboard获取controller
+        let sb = UIStoryboard(name:"Contact", bundle: nil)
+        let addFriendController = sb.instantiateViewControllerWithIdentifier("ContactAddFriendsTableViewController") as! ContactAddFriendsTableViewController
+        self.navigationController?.pushViewController(addFriendController, animated: true)
     }
     
     //MARKS: 当视图出现的时候显示tabbar
@@ -155,7 +159,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     
     //MARKS:初始化SearchBar等
     func initCustomerSearchBar(){
-        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
+        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil,isCreateSpeakImage:true)
         self.searchLabelView = self.customSearchBar.createTextSearchLabelView(0)
         searchLabelView!.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchLabelViewTap:"))
         
@@ -165,7 +169,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         let headerView:UIView = UIView()
         headerView.backgroundColor = self.customSearchBar.backgroundColor
         headerView.addSubview(searchLabelView!)
-        headerView.layer.addSublayer(drawLineAtLast(0,height: searchHeight))
+        headerView.layer.addSublayer(WeChatDrawView().drawLineAtLast(0,height: searchHeight))
         
         //添加列表
         let width:CGFloat = UIScreen.mainScreen().bounds.width
@@ -173,17 +177,17 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         let newFriendView = createOneCell("new-friend", labelText: "新的朋友", beginY: height, width: width,bounds: 0)
         height += CELL_HEIGHT
         headerView.addSubview(newFriendView)
-        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        headerView.layer.addSublayer(WeChatDrawView().drawLineAtLast(leftPadding,height: height))
         
         let groupChatView = createOneCell("group-chat", labelText: "群聊", beginY: height, width: width,bounds: 0)
         height += CELL_HEIGHT
         headerView.addSubview(groupChatView)
-        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        headerView.layer.addSublayer(WeChatDrawView().drawLineAtLast(leftPadding,height: height))
         
         let markView = createOneCell("mark", labelText: "标签", beginY: height, width: width,bounds: 0)
         height += CELL_HEIGHT
         headerView.addSubview(markView)
-        headerView.layer.addSublayer(drawLineAtLast(leftPadding,height: height))
+        headerView.layer.addSublayer(WeChatDrawView().drawLineAtLast(leftPadding,height: height))
         
         let publicNumView = createOneCell("public-num", labelText: "公众号", beginY: height, width: width,bounds: 0)
         height += CELL_HEIGHT
@@ -211,11 +215,6 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         customView.index = 1
         customView.sessions = self.sessions
         self.navigationController?.pushViewController(customView, animated: false)
-    }
-    
-    //MARKS: 画底部线条
-    func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
-        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
     }
     
     //MARKS: Init tableview index

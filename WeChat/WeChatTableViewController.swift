@@ -150,7 +150,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     
     //MARKS: 创建header搜索框,用tableHeaderView包起来,当向上滚动到顶部时出现
     func createHeaderView(){
-        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil)
+        self.customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, searchHeight), placeholder: "搜索", cancelBtnText: nil, cancelBtnColor: nil,isCreateSpeakImage:true)
         //self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, -self.customSearchBar.frame.height, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
         self.searchView = self.customSearchBar.createSearchView(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, self.customSearchBar.frame.height),bgColor: self.customSearchBar.backgroundColor)
         self.searchLabelView = self.customSearchBar.searchLabelView
@@ -158,7 +158,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         //self.view.addSubview(self.searchView)
         
         let headerView:UIView = UIView()
-        headerView.layer.addSublayer(drawLineAtLast(0,height: self.searchView.frame.height))
+        headerView.layer.addSublayer(WeChatDrawView().drawLineAtLast(0,height: self.searchView.frame.height))
         headerView.frame = CGRectMake(0,-self.customSearchBar.frame.height,tableView.frame.size.width,self.customSearchBar.frame.height)
         headerView.addSubview(self.searchView)
         tableView.tableHeaderView = headerView
@@ -221,12 +221,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     func cancelClick() {
         
     }
-    
-    //MARKS: 画底部线条
-    func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
-        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
-    }
-
+  
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

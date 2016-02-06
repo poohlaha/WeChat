@@ -48,6 +48,8 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     var navigationHeight:CGFloat = 0
     var searchLabelView:WeChatSearchLabelView?
     var statusHeight:CGFloat = 0
+    var iscreateThreeArc:Bool = true
+    var isCreateSpeakImage:Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +71,11 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         self.edgesForExtendedLayout = .None
 
         addTableView()
-        createThreeArc()
+        
+        if iscreateThreeArc {
+            createThreeArc()
+        }
+        
     }
     
     
@@ -111,7 +117,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
     
     //MARKS: 创建自定义searchBar
     func createCustomSearchBar(){
-        customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, searchBarHeight + topPadding!), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1))
+        customSearchBar = WeChatSearchBar(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, searchBarHeight + topPadding!), placeholder: "搜索", cancelBtnText: "取消", cancelBtnColor: UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1),isCreateSpeakImage:isCreateSpeakImage)
         self.view.addSubview(customSearchBar)
         
         self.textField = self.customSearchBar.textSearchView.textField
@@ -235,7 +241,7 @@ class ContactCustomSearchView: UIViewController,UITableViewDelegate,UITableViewD
         }
         
         if self.delegate != nil {
-            delegate?.cancelClick!()
+            delegate?.cancelClick?()
         }
     }
 
