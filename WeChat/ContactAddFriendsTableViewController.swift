@@ -45,7 +45,15 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
 
         searchView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "searchViewTap:"))
         twoDimeImageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "twoDimeImageViewTap:"))
-        
+        createSkyView()
+    }
+    
+    //MAKRS: 创建skyView
+    func createSkyView(){
+        if skyView == nil {
+            skyView = ContactSkyView(frame: self.view.frame)
+            skyView?.exitBtn.addTarget(self, action: "exitSky", forControlEvents: .TouchUpInside)
+        }
     }
     
     //MARKS: 创建显示图片
@@ -93,7 +101,6 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
             twoDimeView?.removeFromSuperview()
         }
     }
-    
     
     
     //MARKS:画分割线
@@ -157,5 +164,27 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
         let view = UIView()
         view.backgroundColor = getBackgroundColor()
         tableView.tableFooterView = view
+    }
+    
+    //MARKS:雷达退出事件
+    func exitSky(){
+        if skyView != nil {
+            skyView?.removeFromSuperview()
+        }
+    }
+    
+    
+    var skyView:ContactSkyView?
+    //MARKS: tableView cell选中事件
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 2 {
+            if self.skyView == nil {
+                createSkyView()
+            }
+            
+            self.parentViewController?.parentViewController!.view.addSubview(self.skyView!)
+        }
+        
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: false)//取消选中
     }
 }

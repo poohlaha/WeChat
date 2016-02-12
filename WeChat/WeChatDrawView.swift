@@ -99,6 +99,61 @@ class WeChatDrawView: UIView {
         return shape
     }
     
+    //绘制圆,startAngle 是以 x 轴正方向为起点，clockwise 则是用来标记是否为顺时针方向。
+    func drawArc(point:CGPoint,radius:CGFloat,strokeColor:UIColor,fillColor:UIColor,
+            shadowOpacity:CGFloat,shadowOffset:CGSize,shadowRadius:CGFloat,shadowColor:UIColor) -> CAShapeLayer{
+        let path = UIBezierPath()
+        path.addArcWithCenter(point, radius: radius, startAngle: 0, endAngle: CGFloat(2 * M_PI), clockwise: true)
+        
+        let shape = CAShapeLayer()
+        shape.path = path.CGPath
+        shape.fillColor = fillColor.CGColor// 闭环填充的颜色
+        shape.strokeColor = strokeColor.CGColor// 边缘线的颜色
+        shape.strokeEnd = 1.0
+        shape.lineWidth = 1
+        shape.shadowOpacity = Float(shadowOpacity)
+        shape.shadowOffset = shadowOffset
+        shape.shadowRadius = shadowRadius
+        shape.shadowColor = shadowColor.CGColor
+        path.closePath()
+        return shape
+    }
+    
+    func drawArc(path:UIBezierPath,point:CGPoint,radius:CGFloat,strokeColor:UIColor,fillColor:UIColor,
+        shadowOpacity:CGFloat,shadowOffset:CGSize,shadowRadius:CGFloat,shadowColor:UIColor) -> CAShapeLayer{
+            let shape = CAShapeLayer()
+            shape.path = path.CGPath
+            shape.fillColor = fillColor.CGColor// 闭环填充的颜色
+            shape.strokeColor = strokeColor.CGColor// 边缘线的颜色
+            shape.strokeEnd = 1.0
+            shape.lineWidth = 1
+            shape.shadowOpacity = Float(shadowOpacity)
+            shape.shadowOffset = shadowOffset
+            shape.shadowRadius = shadowRadius
+            shape.shadowColor = shadowColor.CGColor
+            path.closePath()
+            return shape
+    }
+    
+    func drawArc(point:CGPoint,radius:CGFloat,fillColor:UIColor,strokeColor:UIColor,
+        shadowOpacity:CGFloat,shadowOffset:CGSize,shadowRadius:CGFloat,shadowColor:UIColor){
+            let path = UIBezierPath()
+            path.addArcWithCenter(point, radius: radius, startAngle: 0, endAngle: CGFloat(2 * M_PI), clockwise: true)
+            
+            let shape = CAShapeLayer()
+            shape.path = path.CGPath
+            shape.fillColor = fillColor.CGColor// 闭环填充的颜色
+            shape.strokeColor = strokeColor.CGColor// 边缘线的颜色
+            shape.strokeEnd = 1.0
+            shape.lineWidth = 1
+            shape.shadowOpacity = Float(shadowOpacity)//阴影不透明度
+            shape.shadowOffset = shadowOffset//阴影偏移量
+            shape.shadowRadius = shadowRadius//阴影半径
+            shape.shadowColor = shadowColor.CGColor
+            path.closePath()
+            self.layer.addSublayer(shape)
+    }
+    
     //绘制矩形
     func drawRect(beginPointX x:CGFloat,beginPointY y:CGFloat,width:CGFloat,height:CGFloat) -> CAShapeLayer{
         let path = UIBezierPath(roundedRect: CGRectMake(x, y, width, height), cornerRadius: 0)
@@ -125,7 +180,7 @@ class WeChatDrawView: UIView {
     
     //MARKS: 画底部线条
     func drawLineAtLast(beginX:CGFloat,height:CGFloat) -> CAShapeLayer{
-        return WeChatDrawView().drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
+        return drawLine(beginPointX: beginX, beginPointY: height, endPointX: UIScreen.mainScreen().bounds.width, endPointY: height,color:UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1))
     }
 
     //画聊天对话框,剪头向下
