@@ -215,6 +215,7 @@ class TextSearchView:UIView,UITextFieldDelegate {
         textField.borderStyle = .None
         textField.placeholder = self.placeholder
         textField.returnKeyType = .Search
+        textField.clearButtonMode = .WhileEditing
         self.addSubview(textField)
         
         self.textField.delegate = self
