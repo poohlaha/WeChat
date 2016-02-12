@@ -87,8 +87,12 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
         self.photoView.image = photoImage
         self.name.text = nameText
         self.weChatNumber.text = weChatNumberText
+        //替换 - 为空字符
+        if photoNumberText?.characters.count > 0 {
+            photoNumberText = photoNumberText!.stringByReplacingOccurrencesOfString("-", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        }
+        
         self.phoneNumber.text = photoNumberText
-       // self.photoNumberText = photoNumberText!.stringByReplacingOccurrencesOfString("-", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
         self.phoneNumber.textColor = UIColor(red: 51/255, green: 153/255, blue: 204/255, alpha: 1)
     }
 
