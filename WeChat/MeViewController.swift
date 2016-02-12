@@ -28,6 +28,8 @@ class MeViewController: WeChatTableViewNormalController {
     //MARKS: 初始化属性
     func initFrame(){
         myHeaderImageView.layer.borderWidth = 0.2
+        //MARKS: 设置导航行背景及字体颜色
+        WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
     }
     
     
