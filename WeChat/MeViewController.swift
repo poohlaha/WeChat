@@ -20,6 +20,10 @@ class MeViewController: WeChatTableViewNormalController {
         super.viewDidLoad()
         initFrame()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.tabBarController!.tabBar.hidden = false
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -38,4 +42,5 @@ class MeViewController: WeChatTableViewNormalController {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)//取消cell选中事件
     }
+    
 }
