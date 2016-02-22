@@ -36,14 +36,6 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     var alertViews:[AlertView] = [AlertView]()
     var delegate:SliderContainerViewControllerDelegate?
     var sliderContainerViewController:SliderContainerViewController?
-
-    @IBAction func getMyHeaderView(sender: UIBarButtonItem) {
-        if sliderContainerViewController == nil {
-            sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
-        }
-        
-        sliderContainerViewController!.toggleLeftPanel()
-    }
     
     //MARKS: 自定义弹出框属性
     let customAlertWidth:CGFloat = 150
@@ -122,7 +114,32 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         self.navigationController?.tabBarController!.tabBar.hidden = false
         
+        //创建导航条左侧图片
+        createLeftBarItem()
+        
         createAlertViews()
+    }
+    
+    let leftBarImageWidthAndHegiht:CGFloat = 30//左侧按钮大小
+    //MARKS: 创建导航条左侧图片
+    func createLeftBarItem(){
+        let imageView = UIImageView(image: UIImage(named: "my-header"))
+        imageView.frame = CGRectMake(0, 0, leftBarImageWidthAndHegiht, leftBarImageWidthAndHegiht)
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.frame.width / 2
+        
+        let item = UIBarButtonItem(customView: imageView)
+        self.navigationItem.leftBarButtonItem = item
+        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "leftBarItemClick:"))
+    }
+    
+    //MARKS: 左侧头像点击事件
+    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
+        if sliderContainerViewController == nil {
+            sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
+        }
+        
+        sliderContainerViewController!.toggleLeftPanel()
     }
     
     //MARKS: 当视图消失的时候移除customAlertView
