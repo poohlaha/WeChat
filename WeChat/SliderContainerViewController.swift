@@ -21,10 +21,9 @@ enum SlideOutState {
 }
 
 //主容器
-class SliderContainerViewController: UIViewController {
+class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegate {
     
     var mainViewController:UIViewController!//中间视图
-    var weChatNavigationController:UINavigationController!//导航,用于包含中间视图
     
     var leftViewController: UIViewController?//左侧边栏
     var rightViewController: UIViewController?//右侧边栏
@@ -34,17 +33,162 @@ class SliderContainerViewController: UIViewController {
     var baseView:UIView!
     var sliderDelegate:SliderContainerViewControllerDelegate?
     
+    var needSwipeShowMenu:Bool = true//是否需要手势
+    var panGestureRecognizer:UIPanGestureRecognizer?
+    var panMovingLeft:Bool = false
+    
+    var startPanPoint:CGPoint = CGPointZero//滑动开始坐标点
+    var leftViewShowWidth:CGFloat = 0
+    var rightViewShowWidth:CGFloat = 0
+    var sliderWidth:CGFloat = 0
+    
     var currentState: SlideOutState = .BothCollapsed {//初始状态
         didSet {
             let shouldShowShadow = currentState != .BothCollapsed
-            showShadowForCenterViewController(shouldShowShadow)
+            showShadowForMainViewController(shouldShowShadow)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.leftViewShowWidth = CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset
+        self.rightViewShowWidth = self.leftViewShowWidth
+        
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "pen:")
+        panGestureRecognizer!.delegate = self
+        if self.baseView == nil {
+            self.baseView = self.view
+        }
+        
+        self.sliderWidth = CGRectGetWidth(self.mainViewController.view.frame) / 2 - mainPanelExpandedOffset
+        self.baseView.addGestureRecognizer(panGestureRecognizer!)
     }
     
+    func setNeedSwipeShowMenu(){
+        if self.needSwipeShowMenu {
+            baseView.addGestureRecognizer(panGestureRecognizer!)
+        } else {
+            baseView.removeGestureRecognizer(panGestureRecognizer!)
+        }
+    }
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if (gestureRecognizer == panGestureRecognizer) {
+            //控制是否从视图的边缘触发弹出侧边试图
+            if (gestureRecognizer.locationInView(currentView).x >= self.sliderWidth && gestureRecognizer.locationInView(currentView).x < currentView!.frame.size.width - self.sliderWidth) {
+                return false
+            }
+            
+            let panGesture = gestureRecognizer as! UIPanGestureRecognizer
+            let translation = panGesture.translationInView(baseView)//指定的坐标系中移动
+            //velocityInView 指定坐标系统中pan gesture拖动的速度
+            if (panGesture.velocityInView(baseView).x < 600 && abs(translation.x) / abs(translation.y) > 1) {
+                return true
+            }
+            
+            return false
+        }
+
+        return true
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceivePress press: UIPress) -> Bool {
+        return false
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        return true
+    }
+    
+    //MARKS: 拦截下级视图的手势
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return false
+    }
+    
+    //MARKS: 手势会传递到下级视图
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+    
+    //MARKS: 手势派发给下级视图
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+
+    
+    //MARKS: 手势事件
+    func pen(gesture:UIPanGestureRecognizer){
+        if panGestureRecognizer?.state == .Began {
+            startPanPoint = (currentView?.frame.origin)!
+            
+            if currentView?.frame.origin.x == 0 {
+                self.showShadowForMainViewController(true)
+            }
+            
+            let point = gesture.velocityInView(baseView)
+            if (point.x > 0) {
+                if (currentView!.frame.origin.x >= 0 && leftViewController != nil) {
+                    self.willShowSidePanelController(self.leftViewController!, isLeft: true)
+                }
+            } else if (point.x < 0) {
+                if (currentView!.frame.origin.x <= 0 && rightViewController != nil) {
+                    self.willShowSidePanelController(self.rightViewController!, isLeft: true)
+                }
+            }
+            return;
+        }
+        
+        let currentPostion = gesture.translationInView(baseView)
+        var xOffPoint:CGFloat = startPanPoint.x + currentPostion.x
+        
+        if (xOffPoint > 0) {
+            if (leftViewController != nil) {
+                xOffPoint = xOffPoint > leftViewShowWidth ? leftViewShowWidth : xOffPoint;
+            } else {
+                xOffPoint = 0
+            }
+        } else if (xOffPoint < 0) {
+            if (rightViewController != nil) {
+                xOffPoint = xOffset < -rightViewShowWidth ? -rightViewShowWidth : xOffPoint;
+            } else {
+                xOffPoint = 0;
+            }
+        }
+        if (xOffPoint != currentView!.frame.origin.x) {
+           animateCenterPanelXPosition(xOffPoint)
+        }
+        
+        if (panGestureRecognizer!.state == .Ended) {
+            if (currentView!.frame.origin.x == 0) {
+                self.showShadowForMainViewController(false)
+            } else {
+                if (panMovingLeft && currentView!.frame.origin.x > sliderWidth) {
+                    self.toggleLeftPanel()
+                } else if (!panMovingLeft && currentView!.frame.origin.x < -sliderWidth) {
+                    self.toggleRightPanel()
+                } else {
+                    //向左滑动
+                    if !panMovingLeft && (self.leftViewShowWidth - self.currentView!.frame.origin.x) < sliderWidth {
+                        currentState = .BothCollapsed
+                        self.toggleLeftPanel()
+                    } else {
+                        currentState = .LeftPanelExpanded
+                        toggleLeftPanel()
+                    }
+                }
+            }
+        } else {
+            let velocity = gesture.translationInView(baseView)
+            if (velocity.x > 0) {
+                panMovingLeft = true
+            } else if (velocity.x < 0) {
+                panMovingLeft = false
+            }
+        }
+    }
+
     override func viewWillAppear(animated: Bool) {
         resetCurrentView()
     }
@@ -90,6 +234,7 @@ class SliderContainerViewController: UIViewController {
         
         self.baseView = self.view
         self.baseView.addSubview(self.mainViewController.view)
+        
         //addChildViewController(self.mainViewController)
         //self.mainViewController.didMoveToParentViewController(self)
     }
@@ -167,7 +312,7 @@ class SliderContainerViewController: UIViewController {
     }
     
     //添加阴影
-    func showShadowForCenterViewController(shouldShowShadow: Bool) {
+    func showShadowForMainViewController(shouldShowShadow: Bool) {
         if (shouldShowShadow) {
             self.mainViewController.view.layer.shadowOpacity = 0.8
         } else {
@@ -178,25 +323,37 @@ class SliderContainerViewController: UIViewController {
     
     //MARKS: 添加左侧边栏
     func addLeftPanelViewController(){
-        leftViewController!.view.frame = baseView.bounds
-        addChildSidePanelController(leftViewController!)
-        if (self.rightViewController != nil && self.rightViewController!.view.superview != nil) {
-            self.rightViewController!.view.removeFromSuperview()
-        }
+        willShowSidePanelController(leftViewController!,isLeft:true)
     }
     
     //MARKS: 添加右侧边栏
     func addRightPanelViewController(){
-        rightViewController!.view.frame = baseView.bounds
-        addChildSidePanelController(rightViewController!)
-        if (self.leftViewController != nil && self.leftViewController!.view.superview != nil) {
-            self.leftViewController!.view.removeFromSuperview()
-        }
+        willShowSidePanelController(rightViewController!,isLeft:false)
     }
     
     //MARKS: 添加视图
-    func addChildSidePanelController(sliderPanelController: UIViewController) {
+    func willShowSidePanelController(sliderPanelController: UIViewController,isLeft:Bool) {
+        if isLeft {
+            if leftViewController != nil {
+                leftViewController!.view.frame = baseView.bounds
+            }
+        } else {
+            if rightViewController != nil {
+                rightViewController!.view.frame = baseView.bounds
+            }
+        }
+        
         baseView.insertSubview(sliderPanelController.view, belowSubview: currentView!)
+        
+        if isLeft {
+            if (self.rightViewController != nil && self.rightViewController!.view.superview != nil) {
+                self.rightViewController!.view.removeFromSuperview()
+            }
+        } else {
+            if (self.leftViewController != nil && self.leftViewController!.view.superview != nil) {
+                self.leftViewController!.view.removeFromSuperview()
+            }
+        }
         //addChildViewController(sliderPanelController)
         //sliderPanelController.didMoveToParentViewController(self)
     }

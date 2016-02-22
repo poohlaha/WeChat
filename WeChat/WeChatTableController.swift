@@ -35,14 +35,16 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
         let item = UIBarButtonItem(customView: imageView)
         self.navigationItem.leftBarButtonItem = item
         imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "leftBarItemClick:"))
-    }
-    
-    //MARKS: 左侧头像点击事件
-    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
+        
         if sliderContainerViewController == nil {
             sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
             sliderContainerViewController?.sliderDelegate = self
         }
+    }
+    
+    //MARKS: 左侧头像点击事件
+    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
+        
         
         sliderContainerViewController!.toggleLeftPanel()
         
@@ -53,15 +55,9 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
     func addTableViewClick() {
         let tap = WeChatUITapGestureRecognizer(target:self,action: "tableViewClick:")
         self.tableView.addGestureRecognizer(tap)
-//        if sliderContainerViewController?.currentView?.frame.origin.x == 0 {
-//            tap.data = ["true"]
-//            self.tableView.addGestureRecognizer(tap)
-//        } else {
-//            tap.data = ["false"]
-//            self.tableView.removeGestureRecognizer(tap)
-//        }
     }
     
+    //MARKS: 显示左侧边栏
     func toggleLeftPanel() {
         if sliderContainerViewController?.xOffset > 0 {
             addTableViewClick()
@@ -76,17 +72,7 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
     func tableViewClick(gestrue: WeChatUITapGestureRecognizer){
         if sliderContainerViewController?.currentView?.frame.origin.x > 0 {
             sliderContainerViewController!.toggleLeftPanel()
-        } else {
-            
         }
-//        
-//        var str = ""
-//        if gestrue.data != nil {
-//            str = gestrue.data![0] as! String
-//        }
-//        if str == "true" {
-//            sliderContainerViewController!.toggleLeftPanel()
-//        }
     }
 }
 
