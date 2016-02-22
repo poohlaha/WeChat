@@ -21,7 +21,7 @@ enum SlideOutState {
 }
 
 //主容器
-class SliderContainerViewController: UIViewController,SliderContainerViewControllerDelegate {
+class SliderContainerViewController: UIViewController {
     
     var mainViewController:UIViewController!//中间视图
     var weChatNavigationController:UINavigationController!//导航,用于包含中间视图
@@ -32,6 +32,7 @@ class SliderContainerViewController: UIViewController,SliderContainerViewControl
     let mainPanelExpandedOffset: CGFloat = 60 //中间视图可见宽度
     var currentView:UIView?
     var baseView:UIView!
+    var sliderDelegate:SliderContainerViewControllerDelegate?
     
     var currentState: SlideOutState = .BothCollapsed {//初始状态
         didSet {
@@ -97,6 +98,7 @@ class SliderContainerViewController: UIViewController,SliderContainerViewControl
         super.didReceiveMemoryWarning()
     }
     
+    var xOffset:CGFloat = 0
     //MARKS: 显示左侧边栏
     func toggleLeftPanel() {
         if self.leftViewController == nil {
@@ -107,8 +109,16 @@ class SliderContainerViewController: UIViewController,SliderContainerViewControl
         
         if notAlreadyExpanded {
             addLeftPanelViewController()
+            xOffset = CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset
+        } else {
+            xOffset = 0
         }
-        animatePanel(shouldExpand: notAlreadyExpanded,state:.LeftPanelExpanded,xOffset: CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset,isLeftToggle:true)
+        
+        animatePanel(shouldExpand: notAlreadyExpanded,state:.LeftPanelExpanded,xOffset: xOffset,isLeftToggle:true)
+        
+        if self.sliderDelegate != nil {
+            self.sliderDelegate!.toggleLeftPanel!()
+        }
     }
     
     //MARKS: 显示右侧边栏
@@ -121,10 +131,15 @@ class SliderContainerViewController: UIViewController,SliderContainerViewControl
         
         if notAlreadyExpanded {
             addRightPanelViewController()
+            xOffset = -(CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset)
+        } else {
+            xOffset = 0
         }
         
-        let xOffset:CGFloat = -(CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset)
         animatePanel(shouldExpand: notAlreadyExpanded,state:.RightPanelExpanded,xOffset: xOffset,isLeftToggle:false)
+        if self.sliderDelegate != nil {
+            self.sliderDelegate!.toggleRightPanel!()
+        }
     }
     
     //MARKS: 侧边栏动画
@@ -140,7 +155,6 @@ class SliderContainerViewController: UIViewController,SliderContainerViewControl
                 }else {
                     self.rightViewController!.view.removeFromSuperview()
                 }
-                
             }
         }
     }

@@ -19,7 +19,7 @@ protocol WeChatCustomTableViewControllerDelete {
 }
 
 //自定义TableViewController,添加左侧边栏
-class WeChatCustomTableViewController:UITableViewController {
+class WeChatCustomTableViewController:UITableViewController,SliderContainerViewControllerDelegate {
     
     let leftBarImageWidthAndHegiht:CGFloat = 40//左侧按钮大小
     var sliderContainerViewController:SliderContainerViewController?
@@ -41,6 +41,7 @@ class WeChatCustomTableViewController:UITableViewController {
     func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
         if sliderContainerViewController == nil {
             sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
+            sliderContainerViewController?.sliderDelegate = self
         }
         
         sliderContainerViewController!.toggleLeftPanel()
@@ -48,6 +49,45 @@ class WeChatCustomTableViewController:UITableViewController {
         delegate?.leftBarItemClick()
     }
     
+    //MARKS: 添加tableView点击事件
+    func addTableViewClick() {
+        let tap = WeChatUITapGestureRecognizer(target:self,action: "tableViewClick:")
+        self.tableView.addGestureRecognizer(tap)
+//        if sliderContainerViewController?.currentView?.frame.origin.x == 0 {
+//            tap.data = ["true"]
+//            self.tableView.addGestureRecognizer(tap)
+//        } else {
+//            tap.data = ["false"]
+//            self.tableView.removeGestureRecognizer(tap)
+//        }
+    }
+    
+    func toggleLeftPanel() {
+        if sliderContainerViewController?.xOffset > 0 {
+            addTableViewClick()
+        } else {
+            for ges in self.tableView.gestureRecognizers! {
+                self.tableView.removeGestureRecognizer(ges)
+            }
+        }
+    }
+    
+    //MARKS: tableView点击事件
+    func tableViewClick(gestrue: WeChatUITapGestureRecognizer){
+        if sliderContainerViewController?.currentView?.frame.origin.x > 0 {
+            sliderContainerViewController!.toggleLeftPanel()
+        } else {
+            
+        }
+//        
+//        var str = ""
+//        if gestrue.data != nil {
+//            str = gestrue.data![0] as! String
+//        }
+//        if str == "true" {
+//            sliderContainerViewController!.toggleLeftPanel()
+//        }
+    }
 }
 
 

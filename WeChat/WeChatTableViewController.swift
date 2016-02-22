@@ -116,7 +116,6 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
         self.delegate = self
         //创建导航条左侧图片
         createLeftBarItem()
-        
         createAlertViews()
     }
     
@@ -307,6 +306,7 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
     
     //MARKS: tableViewCell选中事件
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         //set data
         let chat = chats[indexPath.row]
         let weChatChatViewController = WeChatChatViewController()
