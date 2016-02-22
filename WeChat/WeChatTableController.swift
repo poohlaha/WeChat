@@ -14,6 +14,42 @@ import UIKit
     optional var CELL_FOOTER_HEIGHT:CGFloat{get set}
 }
 
+protocol WeChatCustomTableViewControllerDelete {
+    func leftBarItemClick()
+}
+
+//自定义TableViewController,添加左侧边栏
+class WeChatCustomTableViewController:UITableViewController {
+    
+    let leftBarImageWidthAndHegiht:CGFloat = 40//左侧按钮大小
+    var sliderContainerViewController:SliderContainerViewController?
+    var delegate:WeChatCustomTableViewControllerDelete?
+    
+    //MARKS: 创建导航条左侧图片
+    func createLeftBarItem(){
+        let imageView = UIImageView(image: UIImage(named: "my-header"))
+        imageView.frame = CGRectMake(0, 0, leftBarImageWidthAndHegiht, leftBarImageWidthAndHegiht)
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.frame.width / 2
+        
+        let item = UIBarButtonItem(customView: imageView)
+        self.navigationItem.leftBarButtonItem = item
+        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "leftBarItemClick:"))
+    }
+    
+    //MARKS: 左侧头像点击事件
+    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
+        if sliderContainerViewController == nil {
+            sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
+        }
+        
+        sliderContainerViewController!.toggleLeftPanel()
+        
+        delegate?.leftBarItemClick()
+    }
+    
+}
+
 
 class WeChatTableViewNormalController:UITableViewController,WeChatPropDelegate {
     

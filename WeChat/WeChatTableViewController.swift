@@ -21,7 +21,7 @@ extension String {
 }
 
 //消息页面
-class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
+class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete {
     
     //MARKS: Properties
     var chats = [WeChat]()
@@ -34,8 +34,6 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     var topHeight:CGFloat = 0
     var lastPosition:CGPoint = CGPointZero
     var alertViews:[AlertView] = [AlertView]()
-    var delegate:SliderContainerViewControllerDelegate?
-    var sliderContainerViewController:SliderContainerViewController?
     
     //MARKS: 自定义弹出框属性
     let customAlertWidth:CGFloat = 150
@@ -89,6 +87,7 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         controller?.parentViewController!.view.addSubview(self.customAlerView!)
     }
     
+    //MARKS: 创建弹出框
     func createAlertViews(){
         if self.alertViews.count == 0 {
             let alertView1 = AlertView(imageName: "alertView-group", string: "发起群聊",flag: 0)
@@ -114,32 +113,16 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         self.navigationController?.tabBarController!.tabBar.hidden = false
         
+        self.delegate = self
         //创建导航条左侧图片
         createLeftBarItem()
         
         createAlertViews()
     }
     
-    let leftBarImageWidthAndHegiht:CGFloat = 30//左侧按钮大小
-    //MARKS: 创建导航条左侧图片
-    func createLeftBarItem(){
-        let imageView = UIImageView(image: UIImage(named: "my-header"))
-        imageView.frame = CGRectMake(0, 0, leftBarImageWidthAndHegiht, leftBarImageWidthAndHegiht)
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = imageView.frame.width / 2
-        
-        let item = UIBarButtonItem(customView: imageView)
-        self.navigationItem.leftBarButtonItem = item
-        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "leftBarItemClick:"))
-    }
-    
-    //MARKS: 左侧头像点击事件
-    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
-        if sliderContainerViewController == nil {
-            sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
-        }
-        
-        sliderContainerViewController!.toggleLeftPanel()
+    //MARKS: 移除alertView
+    func leftBarItemClick() {
+         self.removeCustomAlertView()
     }
     
     //MARKS: 当视图消失的时候移除customAlertView

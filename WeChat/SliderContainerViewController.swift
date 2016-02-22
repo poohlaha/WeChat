@@ -11,7 +11,6 @@ import UIKit
 @objc protocol SliderContainerViewControllerDelegate {
     optional func toggleLeftPanel()
     optional func toggleRightPanel()
-    optional func collapseSidePanels()
 }
 
 //侧边栏状态
