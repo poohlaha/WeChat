@@ -34,7 +34,16 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
     var topHeight:CGFloat = 0
     var lastPosition:CGPoint = CGPointZero
     var alertViews:[AlertView] = [AlertView]()
+    var delegate:SliderContainerViewControllerDelegate?
+    var sliderContainerViewController:SliderContainerViewController?
 
+    @IBAction func getMyHeaderView(sender: UIBarButtonItem) {
+        if sliderContainerViewController == nil {
+            sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
+        }
+        
+        sliderContainerViewController!.toggleLeftPanel()
+    }
     
     //MARKS: 自定义弹出框属性
     let customAlertWidth:CGFloat = 150
@@ -54,8 +63,6 @@ class WeChatTableViewController: UITableViewController,WeChatSearchBarDelegate {
             removeCustomAlertView()
             isCustomAlertViewShow = false
         }
-        
-        print(self.customAlerView?.views)
     }
     
     //MARKS: 移除customAlertView

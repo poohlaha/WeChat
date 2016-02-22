@@ -13,6 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var sliderContainerViewController:SliderContainerViewController!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -31,7 +32,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = tabbar
         self.window?.backgroundColor = UIColor.whiteColor()*/
         
+        initSliderMenu()
         return true
+    }
+    
+    func initSliderMenu(){
+        //初始化window
+        if window == nil {
+            window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
+        }
+        //根据storyboard获取controller
+        let sb = UIStoryboard(name:"Main", bundle: nil)
+        let weChatTabBarController = sb.instantiateViewControllerWithIdentifier("WeChatTabBar") as! WeChatTabBarController
+        
+        
+        let leftViewController = SliderPanelViewController()
+        
+        let rightViewController = SliderPanelViewController()
+        
+        sliderContainerViewController = SliderContainerViewController()
+        sliderContainerViewController.initFrame(weChatTabBarController, leftViewController: leftViewController, rightViewController: rightViewController)
+        
+        window?.rootViewController = sliderContainerViewController
+        window?.makeKeyAndVisible()//使被使用对象的主窗口显示到屏幕的最前端
     }
 
     func applicationWillResignActive(application: UIApplication) {

@@ -64,6 +64,8 @@
 		76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */; };
 		76CC88B51C720B12004CA00E /* MyTwoDime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC88B41C720B12004CA00E /* MyTwoDime.swift */; };
 		76CC88B71C720ECD004CA00E /* MeTwoDimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC88B61C720ECD004CA00E /* MeTwoDimeViewController.swift */; };
+		76CC88BA1C749E72004CA00E /* SliderContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC88B91C749E72004CA00E /* SliderContainerViewController.swift */; };
+		76CC88BC1C749E94004CA00E /* SliderPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC88BB1C749E94004CA00E /* SliderPanelViewController.swift */; };
 		76D0E2A01C570D970074C0A5 /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0E29F1C570D970074C0A5 /* AddCommentViewController.swift */; };
 		76DBE5151C4B2A4600D77289 /* LastCellCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */; };
 		76FF9DCC1C5863AA0046E3B1 /* WeChatCustomKeyBordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FF9DCB1C5863AA0046E3B1 /* WeChatCustomKeyBordView.swift */; };
@@ -150,6 +152,8 @@
 		76B965FD1C46818000678AE5 /* WeChatContactPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatContactPhotoView.swift; sourceTree = "<group>"; };
 		76CC88B41C720B12004CA00E /* MyTwoDime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTwoDime.swift; sourceTree = "<group>"; };
 		76CC88B61C720ECD004CA00E /* MeTwoDimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeTwoDimeViewController.swift; sourceTree = "<group>"; };
+		76CC88B91C749E72004CA00E /* SliderContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderContainerViewController.swift; sourceTree = "<group>"; };
+		76CC88BB1C749E94004CA00E /* SliderPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanelViewController.swift; sourceTree = "<group>"; };
 		76D0E29F1C570D970074C0A5 /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		76DBE5141C4B2A4600D77289 /* LastCellCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastCellCustomView.swift; sourceTree = "<group>"; };
 		76FF9DCB1C5863AA0046E3B1 /* WeChatCustomKeyBordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatCustomKeyBordView.swift; sourceTree = "<group>"; };
@@ -281,6 +285,7 @@
 		7653D22B1C4517F80085F983 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				76CC88B81C749E3D004CA00E /* Slider */,
 				76AB9D301C643474003B15F6 /* CustomView */,
 				76983B1E1C61D2460044FDDC /* TextField */,
 				7687BCF01C607F8900489E4F /* SearchBar */,
@@ -441,6 +446,15 @@
 				76CC88B41C720B12004CA00E /* MyTwoDime.swift */,
 			);
 			name = "Two Dime";
+			sourceTree = "<group>";
+		};
+		76CC88B81C749E3D004CA00E /* Slider */ = {
+			isa = PBXGroup;
+			children = (
+				76CC88B91C749E72004CA00E /* SliderContainerViewController.swift */,
+				76CC88BB1C749E94004CA00E /* SliderPanelViewController.swift */,
+			);
+			name = Slider;
 			sourceTree = "<group>";
 		};
 		76FF9DCA1C5863340046E3B1 /* KeyBord */ = {
@@ -623,6 +637,7 @@
 				76B965FE1C46818000678AE5 /* WeChatContactPhotoView.swift in Sources */,
 				761513121C3F7EC100DE8B2A /* ContactTableViewCell.swift in Sources */,
 				765773731C3FE99F007AF9B9 /* DiscoverViewController.swift in Sources */,
+				76CC88BA1C749E72004CA00E /* SliderContainerViewController.swift in Sources */,
 				7610D87D1C47BA17003D012D /* PersonInfoCell.swift in Sources */,
 				76B4D66B1C6F3AAB006E5665 /* MyPersonViewController.swift in Sources */,
 				76AB9D361C6493F7003B15F6 /* WeChatTabBarBadge.swift in Sources */,
@@ -632,6 +647,7 @@
 				765964451C3BF60800910F0D /* WeChat.swift in Sources */,
 				765A61D51C4C815C004F7A3D /* ContactSearchArcView.swift in Sources */,
 				76AB9D321C64349B003B15F6 /* CustomAlertView.swift in Sources */,
+				76CC88BC1C749E94004CA00E /* SliderPanelViewController.swift in Sources */,
 				76CC88B51C720B12004CA00E /* MyTwoDime.swift in Sources */,
 				7610E48D1C44A51400F80B71 /* RemarkTagViewController.swift in Sources */,
 				765964121C3BE90700910F0D /* WeChat.xcdatamodeld in Sources */,

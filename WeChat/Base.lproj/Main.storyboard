@@ -7,7 +7,7 @@
         <!--We Chat Tab Bar Controller-->
         <scene sceneID="VoI-15-U6X">
             <objects>
-                <tabBarController id="82P-0b-Lxe" customClass="WeChatTabBarController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="WeChatTabBar" id="82P-0b-Lxe" customClass="WeChatTabBarController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="thx-9w-sbI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

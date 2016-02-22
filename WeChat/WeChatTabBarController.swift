@@ -15,9 +15,8 @@ class WeChatTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         //MARKS: Load Controllers
         configTabBar()

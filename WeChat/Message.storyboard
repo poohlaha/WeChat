@@ -8,7 +8,7 @@
         <!--消息-->
         <scene sceneID="lQw-wV-hBp">
             <objects>
-                <tableViewController id="wPY-MV-FaU" customClass="WeChatTableViewController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WeChatTableViewController" id="wPY-MV-FaU" customClass="WeChatTableViewController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="FHx-le-eI2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,6 +143,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="消息" id="sXX-tH-OQ3">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="X6j-Gu-doR">
+                            <connections>
+                                <action selector="getMyHeaderView:" destination="wPY-MV-FaU" id="juv-n9-MJi"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TiX-R5-dKC">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
