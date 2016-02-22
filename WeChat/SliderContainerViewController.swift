@@ -98,6 +98,8 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        /*let touchPoint = touch.locationInView(baseView)
+        return CGRectContainsPoint(currentView!.frame, touchPoint)*/
         return true
     }
     

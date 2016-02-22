@@ -127,6 +127,8 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
     //MARKS: 当视图消失的时候移除customAlertView
     override func viewWillDisappear(animated: Bool) {
         self.removeCustomAlertView()
+        //去掉手势
+        addOrRemoveRecognizer(false)
     }
     
     func loadSampleDatas(){
@@ -148,6 +150,8 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.tabBarController!.tabBar.hidden = false
         self.navigationController?.navigationBar.hidden = false
+        //添加手势
+        addOrRemoveRecognizer(true)
     }
 
     override func didReceiveMemoryWarning() {

@@ -34,7 +34,7 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
         
         let item = UIBarButtonItem(customView: imageView)
         self.navigationItem.leftBarButtonItem = item
-        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "leftBarItemClick:"))
+        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "sliderLeftBarItemClick:"))
         
         if sliderContainerViewController == nil {
             sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
@@ -43,9 +43,7 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
     }
     
     //MARKS: 左侧头像点击事件
-    func leftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
-        
-        
+    func sliderLeftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
         sliderContainerViewController!.toggleLeftPanel()
         
         delegate?.leftBarItemClick()
@@ -73,6 +71,12 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
         if sliderContainerViewController?.currentView?.frame.origin.x > 0 {
             sliderContainerViewController!.toggleLeftPanel()
         }
+    }
+    
+    //MARKS: 添加或删除手势
+    func addOrRemoveRecognizer(needSwipeShowMenu:Bool){
+        self.sliderContainerViewController?.needSwipeShowMenu = needSwipeShowMenu
+        self.sliderContainerViewController?.setNeedSwipeShowMenu()
     }
 }
 
