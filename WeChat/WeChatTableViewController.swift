@@ -115,7 +115,7 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
         
         self.delegate = self
         //创建导航条左侧图片
-        createLeftBarItem()
+        //createBarItem(true)
         createAlertViews()
     }
     

@@ -55,6 +55,11 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
         self.leftViewShowWidth = CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset
         self.rightViewShowWidth = self.leftViewShowWidth
         
+        addGestureRecognizer()
+    }
+    
+    //MARKS: 添加手势
+    func addGestureRecognizer(){
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "pen:")
         panGestureRecognizer!.delegate = self
         if self.baseView == nil {
@@ -62,7 +67,8 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
         }
         
         self.sliderWidth = CGRectGetWidth(self.mainViewController.view.frame) / 2 - mainPanelExpandedOffset
-        self.baseView.addGestureRecognizer(panGestureRecognizer!)
+        //self.baseView.addGestureRecognizer(panGestureRecognizer!)
+        setNeedSwipeShowMenu()
     }
     
     func setNeedSwipeShowMenu(){
@@ -175,6 +181,9 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
                     if !panMovingLeft && (self.leftViewShowWidth - self.currentView!.frame.origin.x) < sliderWidth {
                         currentState = .BothCollapsed
                         self.toggleLeftPanel()
+                    } else if (panMovingLeft && (self.leftViewShowWidth + self.currentView!.frame.origin.x) < sliderWidth){
+                        currentState = .BothCollapsed
+                        self.toggleRightPanel()
                     } else {
                         currentState = .LeftPanelExpanded
                         toggleLeftPanel()
@@ -193,6 +202,9 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
 
     override func viewWillAppear(animated: Bool) {
         resetCurrentView()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
     }
     
     //MARKS: 重置当前currentView
@@ -228,10 +240,6 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
         
         if rightViewController != nil {
             self.rightViewController = rightViewController
-        }
-        
-        if self.leftViewController == nil && self.rightViewController == nil {
-            return
         }
         
         self.baseView = self.view

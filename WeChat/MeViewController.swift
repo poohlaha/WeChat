@@ -34,6 +34,9 @@ class MeViewController: WeChatTableViewNormalController {
         myHeaderImageView.layer.borderWidth = 0.2
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
+        
+        //创建导航条右侧图片
+        createBarItem(false)
     }
     
     

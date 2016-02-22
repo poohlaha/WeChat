@@ -47,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let leftViewController = SliderPanelViewController()
-        
         let rightViewController = SliderPanelViewController()
         
         sliderContainerViewController = SliderContainerViewController()

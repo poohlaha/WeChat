@@ -25,28 +25,44 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
     var sliderContainerViewController:SliderContainerViewController?
     var delegate:WeChatCustomTableViewControllerDelete?
     
-    //MARKS: 创建导航条左侧图片
-    func createLeftBarItem(){
+    //MARKS: 创建导航条左右侧图片
+    func createBarItem(isLeft:Bool){
         let imageView = UIImageView(image: UIImage(named: "my-header"))
         imageView.frame = CGRectMake(0, 0, leftBarImageWidthAndHegiht, leftBarImageWidthAndHegiht)
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageView.frame.width / 2
         
         let item = UIBarButtonItem(customView: imageView)
-        self.navigationItem.leftBarButtonItem = item
-        imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "sliderLeftBarItemClick:"))
+        if isLeft {
+            self.navigationItem.leftBarButtonItem = item
+            imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "sliderLeftBarItemClick:"))
+        } else {
+            self.navigationItem.rightBarButtonItem = item
+            imageView.addGestureRecognizer(WeChatUITapGestureRecognizer(target:self,action: "sliderRightBarItemClick:"))
+        }
         
         if sliderContainerViewController == nil {
             sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
             sliderContainerViewController?.sliderDelegate = self
+            
+           /* if isLeft {
+                sliderContainerViewController?.leftViewController = SliderPanelViewController()
+            } else {
+                sliderContainerViewController?.rightViewController = SliderPanelViewController()
+            }*/
         }
     }
     
+   
     //MARKS: 左侧头像点击事件
     func sliderLeftBarItemClick(gestrue: WeChatUITapGestureRecognizer){
         sliderContainerViewController!.toggleLeftPanel()
-        
         delegate?.leftBarItemClick()
+    }
+    
+    //MARKS: 右侧头像点击事件
+    func sliderRightBarItemClick(gestrue: WeChatUITapGestureRecognizer){
+        sliderContainerViewController!.toggleRightPanel()
     }
     
     //MARKS: 添加tableView点击事件
@@ -66,10 +82,23 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
         }
     }
     
+    //MARKS: 显示右侧边栏
+    func toggleRightPanel() {
+        if sliderContainerViewController?.xOffset < 0 {
+            addTableViewClick()
+        } else {
+            for ges in self.tableView.gestureRecognizers! {
+                self.tableView.removeGestureRecognizer(ges)
+            }
+        }
+    }
+    
     //MARKS: tableView点击事件
     func tableViewClick(gestrue: WeChatUITapGestureRecognizer){
         if sliderContainerViewController?.currentView?.frame.origin.x > 0 {
             sliderContainerViewController!.toggleLeftPanel()
+        } else {
+            sliderContainerViewController!.toggleRightPanel()
         }
     }
     
@@ -81,7 +110,7 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
 }
 
 
-class WeChatTableViewNormalController:UITableViewController,WeChatPropDelegate {
+class WeChatTableViewNormalController:WeChatCustomTableViewController,WeChatPropDelegate {
     
     //MARKS: 重写协议的属性
     var CELL_HEADER_HEIGHT:CGFloat {
