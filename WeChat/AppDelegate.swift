@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let weChatTabBarController = sb.instantiateViewControllerWithIdentifier("WeChatTabBar") as! WeChatTabBarController
         
         let leftViewController = SliderPanelViewController()
+        //let leftViewController = sb.instantiateViewControllerWithIdentifier("SliderLeftViewController") as! SliderPanelViewController
         
         sliderContainerViewController = SliderContainerViewController()
         sliderContainerViewController.initFrame(weChatTabBarController, leftViewController: leftViewController, rightViewController: nil)
