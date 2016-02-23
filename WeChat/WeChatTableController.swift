@@ -44,12 +44,6 @@ class WeChatCustomTableViewController:UITableViewController,SliderContainerViewC
         if sliderContainerViewController == nil {
             sliderContainerViewController = ((UIApplication.sharedApplication().delegate) as! AppDelegate).sliderContainerViewController
             sliderContainerViewController?.sliderDelegate = self
-            
-           /* if isLeft {
-                sliderContainerViewController?.leftViewController = SliderPanelViewController()
-            } else {
-                sliderContainerViewController?.rightViewController = SliderPanelViewController()
-            }*/
         }
     }
     

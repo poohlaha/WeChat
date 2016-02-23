@@ -22,7 +22,7 @@ class WeChatChatViewController: UIViewController,WeChatEmojiDialogBottomDelegate
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.tabBarController!.tabBar.hidden = true
+        //self.navigationController?.tabBarController!.tabBar.hidden = true
         self.navigationController?.navigationBar.hidden = false
     }
     
@@ -31,7 +31,7 @@ class WeChatChatViewController: UIViewController,WeChatEmojiDialogBottomDelegate
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         //隐藏底部tabbar
-        self.navigationController?.tabBarController!.tabBar.hidden = true
+        //self.navigationController?.tabBarController!.tabBar.hidden = true
         self.nagHeight = self.navigationController!.navigationBar.frame.height
         self.navigationItem.title = self.nagTitle
         self.view.backgroundColor = UIColor.whiteColor()

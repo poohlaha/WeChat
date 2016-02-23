@@ -37,7 +37,7 @@ class SliderPanelViewController: UIViewController {
         let bgImageView = UIImageView()
         bgImageView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
         
-        //拉伸图片询问
+        //拉伸图片底部
         var image = UIImage(named: "slider-bg")
         //image?.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 0, bgImageView.frame.width, 650))
         image = image?.resizableImageWithCapInsets(UIEdgeInsetsMake(180, 0, 0,0), resizingMode: .Stretch)
@@ -51,7 +51,7 @@ class SliderPanelViewController: UIViewController {
         statusFrame = UIApplication.sharedApplication().statusBarFrame.height
         top = statusFrame + nagvHeight
         
-        width = self.view.frame.width - 60
+        width = self.view.frame.width - 80
         
         //交换左右padding
         if !isLeft{

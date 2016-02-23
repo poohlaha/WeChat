@@ -26,7 +26,7 @@
                                                     <rect key="frame" x="15" y="10" width="552" height="65"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="my-header" translatesAutoresizingMaskIntoConstraints="NO" id="1tZ-6G-5IB">
-                                                            <rect key="frame" x="0.0" y="0.0" width="65" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="65" id="c1H-2i-dLg"/>
                                                             </constraints>
@@ -97,7 +97,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="ZG8-bF-RVa" kind="show" id="SQ6-jv-8Xv"/>
+                                            <segue destination="ZG8-bF-RVa" kind="show" identifier="MeInfo" id="SQ6-jv-8Xv"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -360,7 +360,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="my-header" translatesAutoresizingMaskIntoConstraints="NO" id="dnt-Ze-7EO">
-                                                            <rect key="frame" x="487" y="25" width="65" height="16"/>
+                                                            <rect key="frame" x="487" y="0.0" width="65" height="65"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="65" id="0YH-Js-w2m"/>
                                                             </constraints>

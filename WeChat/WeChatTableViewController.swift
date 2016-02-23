@@ -111,11 +111,10 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
         loadSampleDatas()
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
-        self.navigationController?.tabBarController!.tabBar.hidden = false
         
         self.delegate = self
         //创建导航条左侧图片
-        //createBarItem(true)
+        createBarItem(true)
         createAlertViews()
     }
     
@@ -148,7 +147,7 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.tabBarController!.tabBar.hidden = false
+        //self.navigationController?.tabBarController!.tabBar.hidden = false
         self.navigationController?.navigationBar.hidden = false
         //添加手势
         addOrRemoveRecognizer(true)
@@ -315,10 +314,13 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
         let chat = chats[indexPath.row]
         let weChatChatViewController = WeChatChatViewController()
         weChatChatViewController.nagTitle = chat.title
+        weChatChatViewController.hidesBottomBarWhenPushed = true//隐藏底部tabbar
         
         //取消选中状态
         tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+        
         self.navigationController?.pushViewController(weChatChatViewController, animated: true)
+        
     }
 
     /*

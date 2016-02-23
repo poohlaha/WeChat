@@ -14,8 +14,6 @@ class MyPersonViewController: WeChatTableViewNormalController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.navigationController?.tabBarController!.tabBar.hidden = true
         initFrame()
     }
 
@@ -53,6 +51,7 @@ class MyPersonViewController: WeChatTableViewNormalController {
                 if myTwoDimeController == nil {
                     myTwoDimeController = MeTwoDimeViewController()
                 }
+                myTwoDimeController?.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(myTwoDimeController!, animated: true)
             } else if row == 4 {
                 

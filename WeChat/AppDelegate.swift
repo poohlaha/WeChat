@@ -45,12 +45,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let sb = UIStoryboard(name:"Main", bundle: nil)
         let weChatTabBarController = sb.instantiateViewControllerWithIdentifier("WeChatTabBar") as! WeChatTabBarController
         
-        
         let leftViewController = SliderPanelViewController()
-        let rightViewController = SliderPanelViewController()
         
         sliderContainerViewController = SliderContainerViewController()
-        sliderContainerViewController.initFrame(weChatTabBarController, leftViewController: leftViewController, rightViewController: rightViewController)
+        sliderContainerViewController.initFrame(weChatTabBarController, leftViewController: leftViewController, rightViewController: nil)
         
         window?.rootViewController = sliderContainerViewController
         window?.makeKeyAndVisible()//使被使用对象的主窗口显示到屏幕的最前端

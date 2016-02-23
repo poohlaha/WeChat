@@ -22,7 +22,6 @@ class MeViewController: WeChatTableViewNormalController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.tabBarController!.tabBar.hidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,9 +33,6 @@ class MeViewController: WeChatTableViewNormalController {
         myHeaderImageView.layer.borderWidth = 0.2
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
-        
-        //创建导航条右侧图片
-        createBarItem(false)
     }
     
     
@@ -46,4 +42,14 @@ class MeViewController: WeChatTableViewNormalController {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)//取消cell选中事件
     }
     
+    //MARKS: 页面参数传递,隐藏tabbar
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "MeInfo" {
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let destinationController = segue.destinationViewController as! MyPersonViewController
+                destinationController.hidesBottomBarWhenPushed = true
+            }
+            
+        }
+    }
 }

@@ -53,7 +53,6 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
         
         let weChatPhotoView = WeChatContactPhotoView(frame: CGRectMake(90, 0, UIScreen.mainScreen().bounds.width - 90 - 30, cell!.frame.height), images: images)
         cell?.addSubview(weChatPhotoView)
-        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     func initFrame(){
@@ -105,7 +104,6 @@ class ResourceDetailViewController: WeChatTableFooterBlankController{
     //MARKS: 取消tableview cell选中状态,使用尾部闭包
     override func viewWillAppear(animated: Bool) {
         setCellStyleNone()
-        self.navigationController?.tabBarController!.tabBar.hidden = true
     }
     
     func setCellStyleNone(){

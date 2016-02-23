@@ -28,7 +28,7 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
     var leftViewController: UIViewController?//左侧边栏
     var rightViewController: UIViewController?//右侧边栏
     
-    let mainPanelExpandedOffset: CGFloat = 60 //中间视图可见宽度
+    let mainPanelExpandedOffset: CGFloat = 80 //中间视图可见宽度
     var currentView:UIView?
     var baseView:UIView!
     var sliderDelegate:SliderContainerViewControllerDelegate?
@@ -41,6 +41,7 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
     var leftViewShowWidth:CGFloat = 0
     var rightViewShowWidth:CGFloat = 0
     var sliderWidth:CGFloat = 0
+    var mainWidth:CGFloat = 0
     
     var currentState: SlideOutState = .BothCollapsed {//初始状态
         didSet {
@@ -52,7 +53,8 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.leftViewShowWidth = CGRectGetWidth(self.mainViewController.view.frame) - mainPanelExpandedOffset
+        self.mainWidth = CGRectGetWidth(UIScreen.mainScreen().bounds)
+        self.leftViewShowWidth =  mainWidth - mainPanelExpandedOffset
         self.rightViewShowWidth = self.leftViewShowWidth
         
         addGestureRecognizer()
@@ -66,7 +68,7 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
             self.baseView = self.view
         }
         
-        self.sliderWidth = CGRectGetWidth(self.mainViewController.view.frame) / 2 - mainPanelExpandedOffset
+        self.sliderWidth = mainWidth / 2 - mainPanelExpandedOffset
         //self.baseView.addGestureRecognizer(panGestureRecognizer!)
         setNeedSwipeShowMenu()
     }

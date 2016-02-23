@@ -142,7 +142,6 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     
     //MARKS: 当视图出现的时候显示tabbar
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.tabBarController!.tabBar.hidden = false
         if self.tableViewIndex != nil {
             self.tableViewIndex?.hidden = false
         }
@@ -381,6 +380,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         //根据storyboard获取controller
         let sb = UIStoryboard(name:"Contact-Detail", bundle: nil)
         let resourceDetailController = sb.instantiateViewControllerWithIdentifier("ResourceDetail") as! ResourceDetailViewController
+        resourceDetailController.hidesBottomBarWhenPushed = true
         prepareForData(resourceDetailController,indexPath: indexPath)
         self.navigationController?.pushViewController(resourceDetailController, animated: true)
     }
@@ -390,6 +390,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         if segue.identifier == "ShowResourceDetail" {
              if let indexPath = self.tableView.indexPathForSelectedRow{
                 let destinationController = segue.destinationViewController as! ResourceDetailViewController
+                destinationController.hidesBottomBarWhenPushed = true
                 prepareForData(destinationController,indexPath: indexPath)
             }
             
