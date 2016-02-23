@@ -4,6 +4,7 @@
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1216.PNG)<br/>
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1221.PNG)<br/>
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1242.PNG)<br/>
+![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1243.PNG)<br/>
 <br/><br/>
 2.联系人:<br/>
 ![image](https://github.com/ztyjr888/WeChat/blob/master/Pictures/IMG_1217.PNG)<br/>
