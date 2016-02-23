@@ -32,7 +32,7 @@ class CommentDetailViewController: UIViewController,WeChatCustomNavigationHeader
         //获取状态栏
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         self.navigationHeight = statusBarFrame.height + 44
-        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "完成", centerLabel: "详情", rightButtonText: nil, rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(), leftLabelColor: UIColor.greenColor(), rightLabelColor: nil)
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "完成", centerLabel: "详情", rightButtonText: nil, rightButtonImage: nil, backgroundColor: nil, leftLabelColor: UIColor.greenColor(), rightLabelColor: nil)
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
         self.navigation.delegate = self

@@ -49,6 +49,8 @@
 		76A80B551C50782F00E96629 /* WeChatCustomNavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A80B541C50782F00E96629 /* WeChatCustomNavigationHeaderView.swift */; };
 		76A80B5A1C50CD8500E96629 /* WeChatCustomNavigationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A80B591C50CD8500E96629 /* WeChatCustomNavigationBottomView.swift */; };
 		76A80B5C1C50D34500E96629 /* WeChatNavigationBottomLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A80B5B1C50D34500E96629 /* WeChatNavigationBottomLabelView.swift */; };
+		76A846031C7C4D0F0035E196 /* WeChatColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A846021C7C4D0F0035E196 /* WeChatColor.swift */; };
+		76A846051C7C4D940035E196 /* UtilTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A846041C7C4D940035E196 /* UtilTools.swift */; };
 		76A9D3371C3CF290001805CA /* Message.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76A9D3361C3CF290001805CA /* Message.storyboard */; };
 		76A9D33C1C3CF2F2001805CA /* WeChatTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A9D33B1C3CF2F2001805CA /* WeChatTabBarController.swift */; };
 		76A9D3421C3CFF87001805CA /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76A9D3401C3CFF87001805CA /* Discover.storyboard */; };
@@ -137,6 +139,8 @@
 		76A80B541C50782F00E96629 /* WeChatCustomNavigationHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatCustomNavigationHeaderView.swift; sourceTree = "<group>"; };
 		76A80B591C50CD8500E96629 /* WeChatCustomNavigationBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatCustomNavigationBottomView.swift; sourceTree = "<group>"; };
 		76A80B5B1C50D34500E96629 /* WeChatNavigationBottomLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationBottomLabelView.swift; sourceTree = "<group>"; };
+		76A846021C7C4D0F0035E196 /* WeChatColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatColor.swift; sourceTree = "<group>"; };
+		76A846041C7C4D940035E196 /* UtilTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilTools.swift; sourceTree = "<group>"; };
 		76A9D3361C3CF290001805CA /* Message.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Message.storyboard; sourceTree = "<group>"; };
 		76A9D33B1C3CF2F2001805CA /* WeChatTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTabBarController.swift; sourceTree = "<group>"; };
 		76A9D3411C3CFF87001805CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Discover.storyboard; sourceTree = "<group>"; };
@@ -420,6 +424,8 @@
 				76A9FA161C43F8A400E244D3 /* WeChatTableController.swift */,
 				76A9FA191C43FEDD00E244D3 /* WeChatNavigationController.swift */,
 				760FF0481C4E211C00563902 /* WeChatCustomViewController.swift */,
+				76A846021C7C4D0F0035E196 /* WeChatColor.swift */,
+				76A846041C7C4D940035E196 /* UtilTools.swift */,
 			);
 			name = Custom;
 			sourceTree = "<group>";
@@ -626,6 +632,7 @@
 				76A9D33C1C3CF2F2001805CA /* WeChatTabBarController.swift in Sources */,
 				76983B201C61D4D40044FDDC /* WeChatSearchLabelView.swift in Sources */,
 				764F803F1C4E5D5C00A6E24F /* WeChatRefreshView.swift in Sources */,
+				76A846051C7C4D940035E196 /* UtilTools.swift in Sources */,
 				76B86F651C5EFF0100317373 /* WeChatChatViewController.swift in Sources */,
 				760D3F171C421D3D00F41269 /* TableViewIndex.swift in Sources */,
 				765964431C3BF53B00910F0D /* WeChatTableViewCell.swift in Sources */,
@@ -655,6 +662,7 @@
 				7675969C1C65911D00C58246 /* ContactAddFriendsTableViewController.swift in Sources */,
 				76CC88B71C720ECD004CA00E /* MeTwoDimeViewController.swift in Sources */,
 				765451B61C5760F30060BB2D /* CommentDetailView.swift in Sources */,
+				76A846031C7C4D0F0035E196 /* WeChatColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

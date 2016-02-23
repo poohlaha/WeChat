@@ -74,7 +74,8 @@ class WeChatBottomAlert: WeChatDrawView {
         super.init(frame: UIScreen.mainScreen().bounds)
     
         //设置背景
-        self.backgroundColor = UIColor(patternImage: UIImage(named: "bg")!)
+        //self.backgroundColor = UIColor(patternImage: UIImage(named: "bg")!)
+        self.backgroundColor = WeChatColor().alertViewColor
         //self.alpha = 0.8
     }
     

@@ -76,7 +76,7 @@ class WeChatCustomNavigationHeaderView: UIView {
             self.bgColor = bgColor
             self.backgroundColor = self.bgColor
         }else{
-            self.backgroundColor = UIColor.blackColor()
+            self.backgroundColor = WeChatColor().barTintColor
         }
         
         self.statusFrame = UIApplication.sharedApplication().statusBarFrame
@@ -110,7 +110,7 @@ class WeChatCustomNavigationHeaderView: UIView {
                 self.bgColor = bgColor
                 self.backgroundColor = self.bgColor
             }else{
-                self.backgroundColor = UIColor.blackColor()
+                self.backgroundColor = WeChatColor().barTintColor
             }
             
             if leftLabelColor != nil {

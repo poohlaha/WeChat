@@ -29,7 +29,6 @@ class ContactAddFriendsTableViewController: WeChatTableViewNormalController,WeCh
     func initFrame(){
         createFooterForTableView()
         tableView.separatorStyle = .None
-        self.navigationController?.tabBarController!.tabBar.hidden = true
         
         //设置第二个tableView Cell背景色和tableView一样
         let indexPath = NSIndexPath(forRow: 1, inSection: 0)

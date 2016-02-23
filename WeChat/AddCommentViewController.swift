@@ -26,7 +26,7 @@ class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDel
         //获取状态栏
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         self.navigationHeight += statusBarFrame.height
-        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "取消", centerLabel: "评论", rightButtonText: "发送", rightButtonImage: nil, backgroundColor: UIColor.darkGrayColor(), leftLabelColor: nil, rightLabelColor: UIColor.greenColor())
+        self.navigation = WeChatCustomNavigationHeaderView(frame: CGRectMake(0, 0,UIScreen.mainScreen().bounds.width, navigationHeight), backImage: nil, backTitle: "取消", centerLabel: "评论", rightButtonText: "发送", rightButtonImage: nil, backgroundColor: nil, leftLabelColor: nil, rightLabelColor: UIColor.greenColor())
         self.view.addSubview(self.navigation)
         self.view.bringSubviewToFront(self.navigation)
         self.navigation.delegate = self
@@ -46,8 +46,7 @@ class AddCommentViewController: UIViewController,WeChatCustomNavigationHeaderDel
     func leftBarClick() {
         self.textView.resignFirstResponder()
         self.dismissViewControllerAnimated(true) { () -> Void in
-            let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
-            rootController.selectedIndex = 1
+            UtilTools().weChatTabBarController.selectedIndex = 1
         }
     }
     

@@ -137,6 +137,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         //根据storyboard获取controller
         let sb = UIStoryboard(name:"Contact", bundle: nil)
         let addFriendController = sb.instantiateViewControllerWithIdentifier("ContactAddFriendsTableViewController") as! ContactAddFriendsTableViewController
+        
+        addFriendController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(addFriendController, animated: true)
     }
     

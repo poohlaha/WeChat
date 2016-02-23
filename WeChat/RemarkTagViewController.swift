@@ -164,8 +164,7 @@ class RemarkTagViewController: WeChatTableViewNormalController,UIImagePickerCont
     
     //MARKS: 默认选中第1个TabBar
     func setDefaultTabBarIndex(){
-        let rootController = UIApplication.sharedApplication().delegate!.window?!.rootViewController as! UITabBarController
-        rootController.selectedIndex = 1
+        UtilTools().weChatTabBarController.selectedIndex = 1
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

@@ -102,7 +102,7 @@ class CustomAlertView: UIView {
     
     func initFrame(){
         if self.bgColor == nil {
-            self.bgColor = UIColor.darkGrayColor()
+            self.bgColor = WeChatColor().alertViewColor
         }
         
         if self.textColor == nil {
