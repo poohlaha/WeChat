@@ -368,11 +368,20 @@ class SliderPanelViewController: UIViewController,UITableViewDelegate,UITableVie
         cell!.contentView.backgroundColor = UIColor.clearColor()
         
         //设置cell的选中样式
+        let view = UIView(frame: cell!.frame)
+        view.backgroundColor = UIColor(red: 240/255, green: 248/255, blue: 255/255, alpha: 0.3)
+        cell?.selectedBackgroundView = view
+        
         return cell!
     }
+
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
         return CELL_HEIGHT
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
 }
 
