@@ -24,7 +24,7 @@ extension String {
 class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete {
     
     //MARKS: Properties
-    var chats = [WeChat]()
+    var chats = [Message]()
     let CELL_HEIGHT:CGFloat = 71
     var searchLabelView:WeChatSearchLabelView?
     var searchView:UIView!
