@@ -59,7 +59,7 @@
 		76947B4C1C7D68BA0064E74D /* WeChatSearchLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B2C1C7D68BA0064E74D /* WeChatSearchLabelView.swift */; };
 		76947B4D1C7D68BA0064E74D /* SliderContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B2E1C7D68BA0064E74D /* SliderContainerViewController.swift */; };
 		76947B4E1C7D68BA0064E74D /* SliderPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B2F1C7D68BA0064E74D /* SliderPanelViewController.swift */; };
-		76947B4F1C7D68BA0064E74D /* WeChatScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B321C7D68BA0064E74D /* WeChatScrollView.swift */; };
+		76947B4F1C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B321C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift */; };
 		76947B501C7D68BA0064E74D /* WeChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B331C7D68BA0064E74D /* WeChatTableViewCell.swift */; };
 		76947B511C7D68BA0064E74D /* WeChatCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B351C7D68BA0064E74D /* WeChatCustomViewController.swift */; };
 		76947B521C7D68BA0064E74D /* WeChatTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B361C7D68BA0064E74D /* WeChatTableController.swift */; };
@@ -151,7 +151,7 @@
 		76947B2C1C7D68BA0064E74D /* WeChatSearchLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSearchLabelView.swift; sourceTree = "<group>"; };
 		76947B2E1C7D68BA0064E74D /* SliderContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderContainerViewController.swift; sourceTree = "<group>"; };
 		76947B2F1C7D68BA0064E74D /* SliderPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanelViewController.swift; sourceTree = "<group>"; };
-		76947B321C7D68BA0064E74D /* WeChatScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatScrollView.swift; sourceTree = "<group>"; };
+		76947B321C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatGestureRecognizerScrollView.swift; sourceTree = "<group>"; };
 		76947B331C7D68BA0064E74D /* WeChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTableViewCell.swift; sourceTree = "<group>"; };
 		76947B351C7D68BA0064E74D /* WeChatCustomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatCustomViewController.swift; sourceTree = "<group>"; };
 		76947B361C7D68BA0064E74D /* WeChatTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTableController.swift; sourceTree = "<group>"; };
@@ -252,12 +252,12 @@
 		76947A491C7D58810064E74D /* Contact */ = {
 			isa = PBXGroup;
 			children = (
-				76947A4A1C7D58810064E74D /* Contact-Detail.storyboard */,
-				76947A4B1C7D58810064E74D /* Contact.storyboard */,
-				76947A4C1C7D58810064E74D /* Detail */,
 				76947A501C7D58810064E74D /* List */,
-				76947A561C7D58810064E74D /* Others */,
+				76947A4C1C7D58810064E74D /* Detail */,
 				76947A5A1C7D58810064E74D /* Person */,
+				76947A561C7D58810064E74D /* Others */,
+				76947A4B1C7D58810064E74D /* Contact.storyboard */,
+				76947A4A1C7D58810064E74D /* Contact-Detail.storyboard */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -449,7 +449,7 @@
 		76947B311C7D68BA0064E74D /* TableCell */ = {
 			isa = PBXGroup;
 			children = (
-				76947B321C7D68BA0064E74D /* WeChatScrollView.swift */,
+				76947B321C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift */,
 				76947B331C7D68BA0064E74D /* WeChatTableViewCell.swift */,
 			);
 			path = TableCell;
@@ -702,7 +702,7 @@
 				76947A701C7D58810064E74D /* AddCommentViewController.swift in Sources */,
 				76947B431C7D68BA0064E74D /* CustomAlertView.swift in Sources */,
 				76947A6A1C7D58810064E74D /* ContactCustomSearchView.swift in Sources */,
-				76947B4F1C7D68BA0064E74D /* WeChatScrollView.swift in Sources */,
+				76947B4F1C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

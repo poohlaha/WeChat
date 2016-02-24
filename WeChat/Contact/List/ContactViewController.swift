@@ -98,7 +98,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         tableView.dataSource = self
         
         //MARKS: register table view cell
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
+        //tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
         
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
@@ -282,7 +282,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     //MARKS: 返回每行的单元格
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableViewCell", forIndexPath: indexPath) as! ContactTableViewCell
-        let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as UITableViewCell
+        //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as UITableViewCell
+        let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "ContactTableCell",isShowGesture:true,leftPadding:self.leftPadding)
         
         //MARKS: Get group sesssion
         let session = sessions[indexPath.section]
@@ -313,10 +314,10 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         
         //MARKS: Get group sesssion
         let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: contact.photo!,bounds: bounds)
-        cell.addSubview(photoImageView)
+        cell.cellView.addSubview(photoImageView)
         
         let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + 5, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, self.labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
-        cell.addSubview(textLabel)
+        cell.cellView.addSubview(textLabel)
         
         return cell
     }
@@ -351,6 +352,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sessions[section].key
     }
+    
     
     //MARKS: 开启tableview编辑模式
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
