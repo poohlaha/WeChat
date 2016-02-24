@@ -8,13 +8,13 @@
         <!--消息-->
         <scene sceneID="lQw-wV-hBp">
             <objects>
-                <tableViewController storyboardIdentifier="WeChatTableViewController" id="wPY-MV-FaU" customClass="WeChatTableViewController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WeChatTableViewController" id="wPY-MV-FaU" customClass="MessageTableViewController" customModule="WeChat" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="FHx-le-eI2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatTableViewCell" id="aba-58-yDy" customClass="WeChatTableViewCell" customModule="WeChat" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatTableViewCell" id="aba-58-yDy" customClass="MessageTableViewCell" customModule="WeChat" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aba-58-yDy" id="EQh-5T-gib">

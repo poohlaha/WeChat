@@ -21,7 +21,7 @@ extension String {
 }
 
 //消息页面
-class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete {
+class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete {
     
     //MARKS: Properties
     var chats = [WeChat]()
@@ -243,7 +243,7 @@ class WeChatTableViewController: WeChatCustomTableViewController,WeChatSearchBar
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ChatTableViewCell", forIndexPath: indexPath) as! WeChatTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("ChatTableViewCell", forIndexPath: indexPath) as! MessageTableViewCell
         
         //set data
         let chat = chats[indexPath.row]
