@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeChat {
+class Message {
     
     //MARK: Properties
     var title:String
