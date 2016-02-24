@@ -114,7 +114,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         
         self.delegate = self
         //创建导航条左侧图片
-        //createBarItem(true)
+        createBarItem(true)
         createAlertViews()
     }
     
@@ -127,7 +127,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
     override func viewWillDisappear(animated: Bool) {
         self.removeCustomAlertView()
         //去掉手势
-        //addOrRemoveRecognizer(false)
+        addOrRemoveRecognizer(false)
     }
     
     func loadSampleDatas(){
@@ -150,7 +150,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         //self.navigationController?.tabBarController!.tabBar.hidden = false
         self.navigationController?.navigationBar.hidden = false
         //添加手势
-        //addOrRemoveRecognizer(true)
+        addOrRemoveRecognizer(true)
     }
 
     override func didReceiveMemoryWarning() {
