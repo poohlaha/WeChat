@@ -161,7 +161,7 @@ class SliderContainerViewController: UIViewController,UIGestureRecognizerDelegat
             }
         } else if (xOffPoint < 0) {
             if (rightViewController != nil) {
-                xOffPoint = xOffset < -rightViewShowWidth ? -rightViewShowWidth : xOffPoint;
+                xOffPoint = xOffPoint < -rightViewShowWidth ? -rightViewShowWidth : xOffPoint;
             } else {
                 xOffPoint = 0;
             }
