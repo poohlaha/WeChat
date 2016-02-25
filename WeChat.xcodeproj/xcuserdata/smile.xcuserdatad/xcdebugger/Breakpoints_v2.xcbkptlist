@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "gestureRecognizerShouldBegin(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "cellPenGestureRecognizerDrag(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "animatePanelXPosition(_:duration:completion:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -330,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "layoutSubviews()"
             landmarkType = "5">
          </BreakpointContent>
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "cellPenGestureRecognizerDrag(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
-            timestampString = "478067097.13184"
+            timestampString = "478074962.363231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "init(frame:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -378,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
-            timestampString = "478067891.49089"
+            timestampString = "478075165.831691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "simulateSpringWithDisplayLink(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
-            timestampString = "478069915.311068"
+            timestampString = "478075835.838915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "positionLeftAnchoredViewsWithRecognizer(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
-            timestampString = "478070347.137759"
+            timestampString = "478075835.838915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "243"
+            endingLineNumber = "243"
             landmarkName = "positionLeftAnchoredViewsWithRecognizer(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -438,16 +438,80 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Table/TableCell/WeChatTableViewCell.swift"
-            timestampString = "478072547.978733"
+            timestampString = "478073560.659315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "toggleView(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
+            timestampString = "478075165.831691"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "simulateSpringWithDisplayLink(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
+            timestampString = "478075447.907553"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "gestureRecognizerShouldBegin(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
+            timestampString = "478075721.004876"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "viewWasPanned(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Table/TableCell/SpringAnimation.swift"
+            timestampString = "478075835.838915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "viewWasPanned(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

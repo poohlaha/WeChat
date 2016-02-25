@@ -9,7 +9,7 @@
 import UIKit
 
 //视图弹簧动画
-class SpringAnimation: UIView {
+class SpringAnimation: UIView,UIGestureRecognizerDelegate {
 
     var springEnabled:Bool = false
     var springConstant:CGFloat = 0//设置弹簧常数,Effectively, as you increase this, the speed at which the spring returns to rest increases
@@ -32,9 +32,14 @@ class SpringAnimation: UIView {
     var rightAnchoredView:SpringAnimation?
     
     var panGestureRecognizer:UIPanGestureRecognizer?
-    
     var pannedBlock:SpringLoadedViewPannedBlock?
     
+    var isLeftMoving:Bool = true
+    var isRightMoving:Bool = true
+    var isTopMoving:Bool = true
+    var isBottomMoving:Bool = true
+    
+    var oldPoint:CGPoint = CGPointZero
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -50,6 +55,9 @@ class SpringAnimation: UIView {
         
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "viewWasPanned:")
         self.addGestureRecognizer(panGestureRecognizer!)
+        self.panGestureRecognizer?.delegate = self
+        
+        oldPoint = self.center
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -76,6 +84,7 @@ class SpringAnimation: UIView {
                 
                 //设置控件新位置
                 var newCenter:CGPoint = self.center
+                //let oldCenter:CGPoint = self.center
                 newCenter.x += (self.velocity.x * CGFloat(displayLink.duration))
                 newCenter.y += (self.velocity.y * CGFloat(displayLink.duration))
                 self.center = newCenter
@@ -83,7 +92,116 @@ class SpringAnimation: UIView {
         }
     }
     
+    
+    override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.panGestureRecognizer {
+            let gesture = gestureRecognizer as! UIPanGestureRecognizer
+            let translation = gesture.translationInView(gestureRecognizer.view)//返回在横坐标上、纵坐标上拖动了多少像素
+            if !isLeftMoving {
+                if translation.x < 0 {
+                    return false
+                }
+            }
+            
+            if !isRightMoving {
+                if translation.x > 0 {
+                    return false
+                }
+            }
+            
+            if !isTopMoving {
+                if translation.y < 0 {
+                    return false
+                }
+            }
+            
+            if !isBottomMoving {
+                if translation.y > 0 {
+                    return false
+                }
+            }
+            
+            return fabs(translation.y) <= fabs(translation.x)//处理double类型的取绝对值
+        } else {
+            return true
+        }
+    }
+    
+    
+    
+    var startPoint:CGPoint = CGPointZero
     func viewWasPanned(sender:UIPanGestureRecognizer){
+        switch(sender.state){
+            case .Began:
+                self.startPoint =  sender.translationInView(self)
+                break
+            
+            case .Changed:
+                var translation:CGPoint = CGPointApplyAffineTransform(sender.translationInView(self.superview),CGAffineTransformMakeScale(self.panDragCoefficient, self.panDragCoefficient))
+                
+                if !isLeftMoving {
+                    if translation.x < 0 {
+                        return
+                    }
+                }
+                
+                if !isRightMoving {
+                    if translation.x > 0 {
+                        return
+                    }
+                }
+                
+                if !isTopMoving {
+                    if translation.y < 0 {
+                        return
+                    }
+                }
+                
+                if !isBottomMoving {
+                    if translation.y > 0 {
+                        return
+                    }
+                }
+                
+                let translatedCenter:CGPoint = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
+                
+                if (translation.x > 0 && (translatedCenter.x - self.restCenter.x) > self.panDistanceLimits.right){
+                    translation.x -= (translatedCenter.x - self.restCenter.x) - self.panDistanceLimits.right
+                }
+                else if (translation.x < 0 && (self.restCenter.x - translatedCenter.x) > self.panDistanceLimits.left){
+                    translation.x += (self.restCenter.x - translatedCenter.x) - self.panDistanceLimits.left
+                }
+                
+                if (translation.y > 0 && (translatedCenter.y - self.restCenter.y) > self.panDistanceLimits.bottom){
+                    translation.y -= (translatedCenter.y - self.restCenter.y) - self.panDistanceLimits.bottom
+                }
+                else if (translation.y < 0 && (self.restCenter.y - translatedCenter.y) > self.panDistanceLimits.top){
+                    translation.y += (self.restCenter.y - translatedCenter.y) - self.panDistanceLimits.top
+                }
+                
+                self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
+                sender.setTranslation(CGPointZero, inView: self.superview)
+                
+                if ((self.pannedBlock) != nil) {
+                    self.pannedBlock  = SpringLoadedViewPannedBlock(center: self.center, restCenter: self.restCenter, translation: translation, velocity: sender.velocityInView(self.superview), finished: false)
+                }
+                
+                self.positionLeftAnchoredViewsWithRecognizer(sender)
+                self.positionRightAnchoredViewsWithRecognizer(sender)
+                
+                break
+            
+            case .Ended:
+                if (self.inheritsPanVelocity){
+                    self.velocity = sender.velocityInView(self.superview)
+                }
+                break
+            
+            default:
+                break
+        }
+        
+        /*
         var translation:CGPoint = CGPointApplyAffineTransform(sender.translationInView(self.superview),CGAffineTransformMakeScale(self.panDragCoefficient, self.panDragCoefficient))
         
         let translatedCenter:CGPoint = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
@@ -116,7 +234,7 @@ class SpringAnimation: UIView {
         }
         
         self.positionLeftAnchoredViewsWithRecognizer(sender)
-        self.positionRightAnchoredViewsWithRecognizer(sender)
+        self.positionRightAnchoredViewsWithRecognizer(sender)*/
     }
     
     

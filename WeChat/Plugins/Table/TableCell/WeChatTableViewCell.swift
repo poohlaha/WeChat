@@ -63,6 +63,11 @@ class WeChatTableViewCell:UITableViewCell {
         self.cellView.dampingCoefficient = 15
         self.cellView.inheritsPanVelocity = false
         
+        self.cellView.isRightMoving = true
+        self.cellView.isLeftMoving = false
+        self.cellView.isTopMoving = false
+        self.cellView.isBottomMoving = false
+        
         self.containtCellView = UIView(frame: self.cellView.frame)
         self.cellView.addSubview(containtCellView)
         
