@@ -53,8 +53,13 @@ class WeChatTableViewCell:UITableViewCell {
     }
 
     //MARKS: 添加Cell的滑动手势,主要用SpringAnimation
-    func toggleView(subViewTags:[Int]){
-        self.cellView = SpringAnimation(frame: CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.width - rightWidth, self.contentView.frame.height))
+    func toggleView(frame:CGRect?,subViewTags:[Int]){
+        if frame == nil {
+            self.cellView = SpringAnimation(frame: CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.width - rightWidth, self.contentView.frame.height))
+        } else {
+            self.cellView = SpringAnimation(frame: frame!)
+        }
+        
         self.cellView!.translatesAutoresizingMaskIntoConstraints = false
         
         self.cellView!.restCenter = CGPointMake(CGRectGetMidX(cellView!.bounds), CGRectGetMidY(cellView!.bounds))
@@ -84,7 +89,7 @@ class WeChatTableViewCell:UITableViewCell {
        
         self.addSubview(cellView!)
         //insertSubview(self.cellView, atIndex: 1)
-        self.cellView!.backgroundColor = UIColor.greenColor()
+        //self.cellView!.backgroundColor = UIColor.greenColor()
         
         //添加手势
         //addGestureRecognizer()

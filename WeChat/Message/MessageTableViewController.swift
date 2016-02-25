@@ -242,7 +242,8 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         return chats.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    //MARKS: 添加TableViewCell弹簧效果
+    /*override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ChatTableViewCell", forIndexPath: indexPath) as! MessageTableViewCell
         
         //set data
@@ -253,6 +254,72 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         cell.time.text = chat.time
         cell.title.lineBreakMode = .ByTruncatingTail
         return cell
+    }*/
+    
+    var paddingLeft:CGFloat = 15
+    var imageWidth:CGFloat = 55
+    var imageHeight:CGFloat = 55
+    var topOrBottomPadding:CGFloat = 8
+    
+    var titleTopPaddingFormImage:CGFloat = 5
+    var photoRightPadding:CGFloat = 10
+    
+    var timeWidth:CGFloat = 60
+    var timeLeftPadding:CGFloat = 10
+    var titleLabelHeight:CGFloat = 0
+    
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
+        
+        //set data
+        let chat = chats[indexPath.row]
+        
+        let photoView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: chat.photo!,bounds: imageWidth / 2)
+        
+        photoView.tag = 1000
+        cell.addSubview(photoView)
+        
+        titleLabelHeight = imageHeight / 2
+        
+        let title = createLabel(CGRectMake(photoView.frame.origin.x + photoRightPadding + photoView.frame.width, photoView.frame.origin.y + topOrBottomPadding, UIScreen.mainScreen().bounds.width - photoView.frame.origin.x - imageWidth - photoRightPadding, titleLabelHeight), string: chat.title, color: UIColor.blackColor(), fontName: "AlNile", fontSize: 17)
+        title.tag = 1001
+        title.lineBreakMode = .ByTruncatingTail
+        cell.addSubview(title)
+        
+        let time = createLabel(CGRectMake(UIScreen.mainScreen().bounds.width - timeWidth, title.frame.origin.y, timeWidth, title.frame.height), string: chat.time, color: UIColor.lightGrayColor() ,fontName: "AlNile", fontSize: 12)
+        time.tag = 1002
+        cell.addSubview(time)
+        
+        let content = createLabel(CGRectMake(title.frame.origin.x, title.frame.origin.y + title.frame.height, UIScreen.mainScreen().bounds.width - photoView.frame.origin.x - imageWidth - photoRightPadding - timeWidth / 2, imageHeight - titleTopPaddingFormImage * 2 - title.frame.height), string: chat.content, color: UIColor.lightGrayColor(), fontName: "AlNile", fontSize: 14)
+        content.tag = 1003
+        cell.addSubview(content)
+        
+        cell.toggleView(CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.width, cell.frame.height),
+            subViewTags:[1000,1001,1002,1003])
+        
+        return cell
+    }
+    
+    func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat) -> UILabel{
+        let label = UILabel(frame: frame)
+        label.textAlignment = .Left
+        label.font = UIFont(name: fontName, size: fontSize)
+        label.textColor = color
+        label.numberOfLines = 1
+        label.text = string
+        return label
+    }
+    
+    //创建Photo
+    func createPhotoView(frame:CGRect,image:UIImage,bounds:CGFloat) -> UIImageView{
+        let photoView = UIImageView(frame: frame)
+        photoView.image = image
+        if bounds > 0 {
+            photoView.layer.masksToBounds = true
+            photoView.layer.cornerRadius = bounds
+        }
+        return photoView
     }
     
     //MARKS: 设置每列高度

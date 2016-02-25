@@ -21,7 +21,7 @@ extension UIView {
     }
 }
 
-class MessageTableViewCell: UITableViewCell {
+class MessageTableViewCell: WeChatTableViewCell {
     
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var title: UILabel!
@@ -38,6 +38,14 @@ class MessageTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        photoView.tag = 1000
+        title.tag = 1001
+        content.tag = 1002
+        time.tag = 1003
     }
 
 }

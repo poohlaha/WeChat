@@ -323,7 +323,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         textLabel.tag = 1100
         cell.addSubview(textLabel)
         
-        cell.toggleView([1000,1100])
+        cell.toggleView(nil,subViewTags: [1000,1100])
         return cell
     }
     
