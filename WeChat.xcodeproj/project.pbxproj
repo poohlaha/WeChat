@@ -73,6 +73,7 @@
 		76947B5F1C7D68E10064E74D /* WeChatColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5C1C7D68E10064E74D /* WeChatColor.swift */; };
 		76947B601C7D68E10064E74D /* WeChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5D1C7D68E10064E74D /* WeChatNavigationController.swift */; };
 		76947B611C7D68E10064E74D /* WeChatTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */; };
+		769948761C7EA6AA00D62FEF /* SpringAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769948751C7EA6AA00D62FEF /* SpringAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +166,7 @@
 		76947B5C1C7D68E10064E74D /* WeChatColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatColor.swift; sourceTree = "<group>"; };
 		76947B5D1C7D68E10064E74D /* WeChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationController.swift; sourceTree = "<group>"; };
 		76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTabBarController.swift; sourceTree = "<group>"; };
+		769948751C7EA6AA00D62FEF /* SpringAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,6 +453,7 @@
 			children = (
 				76947B321C7D68BA0064E74D /* WeChatGestureRecognizerScrollView.swift */,
 				76947B331C7D68BA0064E74D /* WeChatTableViewCell.swift */,
+				769948751C7EA6AA00D62FEF /* SpringAnimation.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -683,6 +686,7 @@
 				76947B4B1C7D68BA0064E74D /* WeChatSearchBar.swift in Sources */,
 				76947A691C7D58810064E74D /* Contact.swift in Sources */,
 				7659640A1C3BE90700910F0D /* AppDelegate.swift in Sources */,
+				769948761C7EA6AA00D62FEF /* SpringAnimation.swift in Sources */,
 				76947A6E1C7D58810064E74D /* ContactAddFriendsTableViewController.swift in Sources */,
 				76947A6B1C7D58810064E74D /* ContactSearchArcView.swift in Sources */,
 				765964121C3BE90700910F0D /* WeChat.xcdatamodeld in Sources */,
