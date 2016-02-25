@@ -39,6 +39,11 @@ class SpringAnimation: UIView,UIGestureRecognizerDelegate {
     var isTopMoving:Bool = true
     var isBottomMoving:Bool = true
     
+    var sliderLeftWidth:CGFloat = 0//向右移动左边空的位置
+    var sliderRightWidth:CGFloat = 0
+    var sliderTopWidth:CGFloat = 0
+    var sliderBottomWidth:CGFloat = 0
+    
     var oldPoint:CGPoint = CGPointZero
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -163,7 +168,8 @@ class SpringAnimation: UIView,UIGestureRecognizerDelegate {
                     }
                 }
                 
-                let translatedCenter:CGPoint = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
+                
+               /* let translatedCenter:CGPoint = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
                 
                 if (translation.x > 0 && (translatedCenter.x - self.restCenter.x) > self.panDistanceLimits.right){
                     translation.x -= (translatedCenter.x - self.restCenter.x) - self.panDistanceLimits.right
@@ -177,10 +183,36 @@ class SpringAnimation: UIView,UIGestureRecognizerDelegate {
                 }
                 else if (translation.y < 0 && (self.restCenter.y - translatedCenter.y) > self.panDistanceLimits.top){
                     translation.y += (self.restCenter.y - translatedCenter.y) - self.panDistanceLimits.top
+                }*/
+                
+                if isRightMoving {
+                    if self.sliderLeftWidth > 0 {
+                        translation.x = self.sliderLeftWidth
+                    }
                 }
                 
-                self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
-                sender.setTranslation(CGPointZero, inView: self.superview)
+                if isLeftMoving {
+                    if self.sliderRightWidth > 0 {
+                        translation.x = -self.sliderRightWidth
+                    }
+                }
+                
+                if isTopMoving {
+                    if self.sliderBottomWidth > 0 {
+                        translation.y = -self.sliderBottomWidth
+                    }
+                }
+                
+                if isBottomMoving {
+                    if self.sliderTopWidth > 0 {
+                        translation.y = self.sliderTopWidth
+                    }
+                }
+                
+                self.center = CGPointMake(self.oldPoint.x + translation.x, self.oldPoint.y + translation.y)
+                //self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y)
+                
+                sender.setTranslation(CGPointZero, inView: self)
                 
                 if ((self.pannedBlock) != nil) {
                     self.pannedBlock  = SpringLoadedViewPannedBlock(center: self.center, restCenter: self.restCenter, translation: translation, velocity: sender.velocityInView(self.superview), finished: false)

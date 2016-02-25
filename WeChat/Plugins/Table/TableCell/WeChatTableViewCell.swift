@@ -15,8 +15,7 @@ public enum WeChatCellStatus: Int {
 //自定义tableViewCell,添加滑动手势
 class WeChatTableViewCell:UITableViewCell {
     
-    var cellView:SpringAnimation!
-    var containtCellView: UIView!
+    var cellView:SpringAnimation?
     var cellStatus: WeChatCellStatus = .Center
     var layoutUpdating = false
     
@@ -56,35 +55,36 @@ class WeChatTableViewCell:UITableViewCell {
     //MARKS: 添加Cell的滑动手势,主要用SpringAnimation
     func toggleView(subViewTags:[Int]){
         self.cellView = SpringAnimation(frame: CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.width - rightWidth, self.contentView.frame.height))
-        self.cellView.translatesAutoresizingMaskIntoConstraints = false
+        self.cellView!.translatesAutoresizingMaskIntoConstraints = false
         
-        self.cellView.restCenter = CGPointMake(CGRectGetMidX(cellView.bounds), CGRectGetMidY(cellView.bounds))
-        self.cellView.springConstant = 500
-        self.cellView.dampingCoefficient = 15
-        self.cellView.inheritsPanVelocity = false
+        self.cellView!.restCenter = CGPointMake(CGRectGetMidX(cellView!.bounds), CGRectGetMidY(cellView!.bounds))
+        self.cellView!.springConstant = 500
+        self.cellView!.dampingCoefficient = 15
+        self.cellView!.inheritsPanVelocity = false
+        self.cellView!.sliderLeftWidth = 50
         
-        self.cellView.isRightMoving = true
-        self.cellView.isLeftMoving = false
-        self.cellView.isTopMoving = false
-        self.cellView.isBottomMoving = false
-        
-        self.containtCellView = UIView(frame: self.cellView.frame)
-        self.cellView.addSubview(containtCellView)
+        self.cellView!.isRightMoving = true
+        self.cellView!.isLeftMoving = false
+        self.cellView!.isTopMoving = false
+        self.cellView!.isBottomMoving = false
         
         let cellSubViews = self.subviews
         
+        let containtCellView = UIView(frame: self.cellView!.frame)
         for subView in cellSubViews {
-            print(subView.tag)
             if subViewTags.contains(subView.tag){
-                self.containtCellView.addSubview(subView)
+                containtCellView.addSubview(subView)
             }
         }
         
-        self.cellView.addSubview(containtCellView)
-        
-        self.addSubview(cellView)
+        for subView in self.cellView!.subviews {
+            subView.removeFromSuperview()
+        }
+        self.cellView!.addSubview(containtCellView)
+       
+        self.addSubview(cellView!)
         //insertSubview(self.cellView, atIndex: 1)
-        //self.cellView.backgroundColor = UIColor.greenColor()
+        self.cellView!.backgroundColor = UIColor.greenColor()
         
         //添加手势
         //addGestureRecognizer()
@@ -99,7 +99,7 @@ class WeChatTableViewCell:UITableViewCell {
     }
     
     func displayLinkTick(link:CADisplayLink){
-        self.cellView.simulateSpringWithDisplayLink(link)
+        self.cellView!.simulateSpringWithDisplayLink(link)
     }
     
     override func layoutSubviews() {
@@ -126,20 +126,20 @@ extension WeChatTableViewCell {
         第六个参数 multiplier: 视图view1的指定属性是参照视图view2制定属性的多少倍；
         第七个参数 c: 视图view1的指定属性需要加的浮点数
         */
-        let leftConstraint = NSLayoutConstraint(item: cellView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: cellView!, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1, constant: 0)
         self.cellViewLeftConstraint = leftConstraint
         
-        let rightConstraint =  NSLayoutConstraint(item: cellView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1, constant: 0)
+        let rightConstraint =  NSLayoutConstraint(item: cellView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1, constant: 0)
         self.cellViewRightConstraint = rightConstraint
         
-        addConstraints([NSLayoutConstraint(item: cellView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 0),
+        addConstraints([NSLayoutConstraint(item: cellView!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 0),
             leftConstraint,
-            NSLayoutConstraint(item: cellView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: cellView!, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1, constant: 0),
             rightConstraint])
         
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "cellPenGestureRecognizerDrag:")
         self.panGestureRecognizer!.delegate = self
-        self.cellView.addGestureRecognizer(self.panGestureRecognizer!)
+        self.cellView!.addGestureRecognizer(self.panGestureRecognizer!)
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {

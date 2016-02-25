@@ -98,7 +98,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         tableView.dataSource = self
         
         //MARKS: register table view cell
-        tableView.registerClass(WeChatTableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
+        //tableView.registerClass(WeChatTableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
         
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
@@ -282,7 +282,10 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     //MARKS: 返回每行的单元格
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableViewCell", forIndexPath: indexPath) as! ContactTableViewCell
-        let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as! WeChatTableViewCell
+        //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as! WeChatTableViewCell
+        
+        let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
+        
         
         //MARKS: Get group sesssion
         let session = sessions[indexPath.section]
@@ -291,12 +294,12 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         //清除旧数据
         if cell.subviews.count > 0 {
             for subView in cell.subviews {
-                if subView.isKindOfClass(UILabel) || subView.isKindOfClass(UIImageView) {
+                if subView.isKindOfClass(UILabel) || subView.isKindOfClass(UIImageView){
                     subView.removeFromSuperview()
                 }
-                
             }
         }
+        
         
         /*let section = tableView.numberOfRowsInSection(indexPath.section)
         let index = tableView.numberOfRowsInSection(section)
