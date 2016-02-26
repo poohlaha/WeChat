@@ -198,10 +198,10 @@ class WeChatTableViewNormalController:WeChatCustomTableViewController,WeChatProp
         let count:CGFloat = 10
         
         self.view.addSubview(snowImageView)
-        //snowImageViews.append(snowImageView)
+        snowImageViews.append(snowImageView)
         
         UIView.animateWithDuration(NSTimeInterval(count * speed), animations: { () -> Void in
-            snowImageView.frame = CGRectMake(endX, y, 25.0 * scale, 25.0 * scale);
+            snowImageView.frame = CGRectMake(endX, y, 25.0 * scale, 25.0 * scale)
             }) { (Bool) -> Void in
             snowImageView.removeFromSuperview()
         }
@@ -211,6 +211,9 @@ class WeChatTableViewNormalController:WeChatCustomTableViewController,WeChatProp
     //MARKS: 清除飘雪定时器
     func clearSnowTimer(){
         snowTimer?.invalidate()
+        if snowTimer != nil {
+            snowTimer = nil
+        }
     }
     
     //MARKS: 激活定时器
@@ -219,10 +222,14 @@ class WeChatTableViewNormalController:WeChatCustomTableViewController,WeChatProp
     }
     
     //MARKS: 停止定时器
-    func invalidateTimer(){
+    func invalidateTimer(originY:CGFloat){
         snowTimer?.invalidate()
         if snowTimer != nil {
             snowTimer = nil
+        }
+        
+        for view in snowImageViews {
+            view.frame = CGRectMake(view.frame.origin.x, originY, view.frame.width, view.frame.height)
         }
     }
     

@@ -115,15 +115,15 @@ class PersonViewController: WeChatTableViewNormalController {
         let newY = scrollView.contentOffset.y
         if(self.startY - newY > 0) {//向上滚动
             if position.y < lastPosition.y {
-                print(lastPosition.y - position.y)
-                invalidateTimer()
-                addSnowTimer(self.view.frame.height + (lastPosition.y - position.y))
+                let y = self.view.frame.height + (lastPosition.y - position.y)
+                invalidateTimer(y)
+                addSnowTimer(y)
             }
         } else if self.startY - newY < 0{//向下滚动
             if position.y > lastPosition.y {
-                invalidateTimer()
-                addSnowTimer(self.view.frame.height + (position.y - lastPosition.y))
-                print(position.y - lastPosition.y)
+                let y = self.view.frame.height + (position.y - lastPosition.y)
+                invalidateTimer(y)
+                addSnowTimer(y)
             }
             
         }
@@ -162,8 +162,7 @@ class PersonViewController: WeChatTableViewNormalController {
     
     //MARKS: 清除飘雪定时器
     override func viewDidDisappear(animated: Bool) {
-        //stopSnowTimer()
-        invalidateTimer()
+        clearSnowTimer()
     }
     
     override func viewWillAppear(animated: Bool) {
