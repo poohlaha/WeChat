@@ -243,7 +243,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
     }
 
     //MARKS: 添加TableViewCell弹簧效果
-    /*override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ChatTableViewCell", forIndexPath: indexPath) as! MessageTableViewCell
         
         //set data
@@ -253,8 +253,11 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         cell.content.text = chat.content
         cell.time.text = chat.time
         cell.title.lineBreakMode = .ByTruncatingTail
+        
+        cell.photoView.layer.masksToBounds = true
+        cell.photoView.layer.cornerRadius = imageWidth / 2
         return cell
-    }*/
+    }
     
     var paddingLeft:CGFloat = 15
     var imageWidth:CGFloat = 55
@@ -268,7 +271,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
     var timeLeftPadding:CGFloat = 10
     var titleLabelHeight:CGFloat = 0
     
-    
+    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
         
@@ -299,7 +302,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
             subViewTags:[1000,1001,1002,1003])
         
         return cell
-    }
+    }*/
     
     func createLabel(frame:CGRect,string:String,color:UIColor,fontName:String,fontSize:CGFloat) -> UILabel{
         let label = UILabel(frame: frame)

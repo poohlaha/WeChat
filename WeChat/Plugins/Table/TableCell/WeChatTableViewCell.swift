@@ -75,17 +75,17 @@ class WeChatTableViewCell:UITableViewCell {
         
         let cellSubViews = self.subviews
         
-        let containtCellView = UIView(frame: self.cellView!.frame)
+        //let containtCellView = UIView(frame: self.cellView!.frame)
         for subView in cellSubViews {
             if subViewTags.contains(subView.tag){
-                containtCellView.addSubview(subView)
+                self.cellView!.addSubview(subView)
             }
         }
         
-        for subView in self.cellView!.subviews {
+        /*for subView in self.cellView!.subviews {
             subView.removeFromSuperview()
         }
-        self.cellView!.addSubview(containtCellView)
+        self.cellView!.addSubview(containtCellView)*/
        
         self.addSubview(cellView!)
         //insertSubview(self.cellView, atIndex: 1)
@@ -109,7 +109,7 @@ class WeChatTableViewCell:UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-       // cellView.frame.size = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))
+        //cellView!.frame.size = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))
     }
     
 }

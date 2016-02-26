@@ -26,7 +26,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     //MARKS: 重写协议的属性
     var CELL_HEIGHT:CGFloat {
         get {
-            return 60
+            return 70
         }
         
         set {
@@ -98,7 +98,7 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         tableView.dataSource = self
         
         //MARKS: register table view cell
-        //tableView.registerClass(WeChatTableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
+        tableView.registerClass(WeChatTableViewCell.self, forCellReuseIdentifier: "ContactTableCell")
         
         //self.automaticallyAdjustsScrollViewInsets = false
         //MARKS: remove blank at bottom
@@ -272,8 +272,8 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     }
     
     let paddingLeft:CGFloat = 15
-    let imageWidth:CGFloat = 40
-    let imageHeight:CGFloat = 40
+    let imageWidth:CGFloat = 50
+    let imageHeight:CGFloat = 50
     let topOrBottomPadding:CGFloat = 10
     let bounds:CGFloat = 0
     let photoRightPadding:CGFloat = 8
@@ -282,9 +282,9 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
     //MARKS: 返回每行的单元格
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableViewCell", forIndexPath: indexPath) as! ContactTableViewCell
-        //let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as! WeChatTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("ContactTableCell",forIndexPath:indexPath) as! WeChatTableViewCell
         
-        let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
+        //let cell = WeChatTableViewCell(style: .Default, reuseIdentifier: "Cell\(indexPath.section)\(indexPath.row)")
         
         
         //MARKS: Get group sesssion
@@ -314,16 +314,35 @@ class ContactViewController: UITableViewController,UISearchBarDelegate{
         //MARKS:因为cell长度超出竖屏范围,故重新设置其长度
         //cell.resize((searchBar?.frame.width)!)
         
-        //MARKS: Get group sesssion
-        let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: contact.photo!,bounds: bounds)
-        photoImageView.tag = 1000
-        cell.addSubview(photoImageView)
-        
-        let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + 5, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, self.labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
-        textLabel.tag = 1100
-        cell.addSubview(textLabel)
-        
-        cell.toggleView(nil,subViewTags: [1000,1100])
+        if cell.cellView != nil {
+            for view in cell.cellView!.subviews {
+                if view.tag == 1000 {
+                    let imageView = view as! UIImageView
+                    imageView.image = contact.photo!
+                }
+                
+                if view.tag == 1100 {
+                    let textLabel = view as! UILabel
+                    textLabel.text = contact.name
+                }
+            }
+        } else {
+            //MARKS: Get group sesssion
+            let photoImageView = createPhotoView(CGRectMake(paddingLeft, topOrBottomPadding, imageWidth, imageHeight), image: contact.photo!,bounds: bounds)
+            photoImageView.tag = 1000
+            photoImageView.layer.masksToBounds = true
+            photoImageView.layer.cornerRadius = imageWidth / 2
+            
+            
+            let textLabel = createLabel(CGRectMake(photoImageView.frame.origin.x + photoRightPadding + photoImageView.frame.width, topOrBottomPadding + (imageHeight - labelHeight) / 2 + 5, UIScreen.mainScreen().bounds.width - photoImageView.frame.origin.x - photoRightPadding, self.labelHeight), string: contact.name, color: UIColor.darkTextColor(), fontName: "AlNile", fontSize: 17)
+            textLabel.tag = 1100
+            cell.addSubview(textLabel)
+            cell.addSubview(photoImageView)
+            
+            cell.toggleView(nil,subViewTags: [1000,1100])
+            
+        }
+       
         return cell
     }
     
