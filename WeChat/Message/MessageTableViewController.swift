@@ -173,6 +173,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         tableView.tableHeaderView = headerView
     }
     
+    
     //MARKS: 滚动条事件,移除customAlertView
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         if !self.isUserDrag {

@@ -88,14 +88,62 @@ class PersonViewController: WeChatTableViewNormalController {
         }
     }
     
+    var lastPosition:CGPoint = CGPointZero
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initFrame()
         //tableView.registerClass(PersonInfoCell.self, forCellReuseIdentifier: "InfoCell")
+        initSnowTimer()
     }
+    
+    var startY:CGFloat = 0
+    var isUserDrag:Bool = false
+    
+    //MARKS: 滚动条事件,移除customAlertView
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        if !self.isUserDrag {
+            return
+        }
+    }
+    
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.isUserDrag = false
+        
+        let position:CGPoint = scrollView.contentOffset
+        
+        let newY = scrollView.contentOffset.y
+        if(self.startY - newY > 0) {//向上滚动
+            if position.y < lastPosition.y {
+                print(lastPosition.y - position.y)
+                invalidateTimer()
+                addSnowTimer(self.view.frame.height + (lastPosition.y - position.y))
+            }
+        } else if self.startY - newY < 0{//向下滚动
+            if position.y > lastPosition.y {
+                invalidateTimer()
+                addSnowTimer(self.view.frame.height + (position.y - lastPosition.y))
+                print(position.y - lastPosition.y)
+            }
+            
+        }
+        
+        //self.startY = scrollView.contentOffset.y
+    }
+    
+    //MARKS: 即将开始滚动
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.isUserDrag = true
+        self.startY = scrollView.contentOffset.y
+    }
+    
+    //MARKS: 滚动结束
     
     //MARKS: 初始化
     func initFrame(){
+        let topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
+        self.lastPosition = CGPointMake(0, -topHeight)
+        
         //设置标题
         navigationItem.title = navigationTitle
         
@@ -110,6 +158,24 @@ class PersonViewController: WeChatTableViewNormalController {
         //self.automaticallyAdjustsScrollViewInsets = false
         initTableHeaderView()
         initData()
+    }
+    
+    //MARKS: 清除飘雪定时器
+    override func viewDidDisappear(animated: Bool) {
+        //stopSnowTimer()
+        invalidateTimer()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        //显示隐藏的导航条
+        self.navigationController?.navigationBar.hidden = false
+        
+        //清空选中状态
+        for customView in customViews {
+            customView.bgImageView?.removeFromSuperview()
+        }
+        
+        //startSnowTimer()
     }
     
     //MARKS: 初始化数据
@@ -222,15 +288,6 @@ class PersonViewController: WeChatTableViewNormalController {
         tableView.tableHeaderView = headerView
     }
     
-    override func viewWillAppear(animated: Bool) {
-        //显示隐藏的导航条
-        self.navigationController?.navigationBar.hidden = false
-        
-        //清空选中状态
-        for customView in customViews {
-            customView.bgImageView?.removeFromSuperview()
-        }
-    }
     
     //MARKS: 返回cell行数
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

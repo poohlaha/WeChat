@@ -127,6 +127,115 @@ class WeChatTableViewNormalController:WeChatCustomTableViewController,WeChatProp
         }
     }
     
+    //雪花图片
+    var snowImage:UIImage?
+    
+    var snowTime:NSTimeInterval = 1
+    var snowTimer:NSTimer?
+    var firstTimer:NSTimer?
+    
+    
+    func initSnowTimer(){
+        addSnowTimer(nil)
+    }
+    
+    //MARKS: 添加雪花
+    func addSnowTimer(originY:CGFloat?){
+        if snowImage == nil {
+            snowImage = UIImage(named: "snow")
+        }
+        
+        //添加到延迟队列
+        /*let dTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
+        dispatch_after(dTime,dispatch_get_main_queue() , {
+            //启动定时器，实现飘雪效果
+            self.snowTimer = NSTimer.scheduledTimerWithTimeInterval(self.snowTime, target: self, selector: "onSnowTimer", userInfo: nil, repeats: true)
+        })*/
+        
+        //只执行一次定时器
+        //self.firstTimer = NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: "getSnowTimer", userInfo: nil, repeats: false)
+        self.firstTimer = NSTimer(fireDate: NSDate(timeIntervalSinceNow: 0.1), interval: snowTime, target: self, selector: "getSnowTimer", userInfo: originY, repeats: false)
+        self.firstTimer?.fire()//激活定时器
+    }
+    
+    //MARKS: 启动定时器，实现飘雪效果
+    func getSnowTimer(){
+        var originY:CGFloat = 0
+        let userInfo = self.firstTimer?.userInfo
+        if userInfo == nil {
+            originY = self.view.frame.height
+        } else {
+            originY = userInfo as! CGFloat
+        }
+        
+        onSnowTimer()
+        self.snowTimer = NSTimer.scheduledTimerWithTimeInterval(self.snowTime, target: self, selector: "onSnowTimer", userInfo: originY, repeats: true)
+    }
+    
+    var snowImageViews:[UIImageView] = [UIImageView]()
+    
+    //MARKS: 飘雪定时器
+    func onSnowTimer(){
+        let snowImageView = UIImageView(image: snowImage)
+        
+        let startX:CGFloat = round(CGFloat(random() % 320))
+        let endX:CGFloat = round(CGFloat(random() % 320))
+        
+        let scale:CGFloat = 1 / round(CGFloat(random() % 100)) + 1.0
+        let speed:CGFloat = 1 / round(CGFloat(random() % 100)) + 1.0
+        
+        snowImageView.frame = CGRectMake(startX, -100.0, 25.0 * scale, 25.0 * scale)
+        snowImageView.alpha = 1
+        
+        var y:CGFloat = 0
+        let userInfo = self.snowTimer?.userInfo
+        if userInfo == nil {
+            y = self.view.frame.height
+        } else {
+            y = userInfo as! CGFloat
+        }
+        
+        let count:CGFloat = 10
+        
+        self.view.addSubview(snowImageView)
+        //snowImageViews.append(snowImageView)
+        
+        UIView.animateWithDuration(NSTimeInterval(count * speed), animations: { () -> Void in
+            snowImageView.frame = CGRectMake(endX, y, 25.0 * scale, 25.0 * scale);
+            }) { (Bool) -> Void in
+            snowImageView.removeFromSuperview()
+        }
+    }
+    
+    
+    //MARKS: 清除飘雪定时器
+    func clearSnowTimer(){
+        snowTimer?.invalidate()
+    }
+    
+    //MARKS: 激活定时器
+    func fireSnowTimer(){
+        snowTimer?.fire()
+    }
+    
+    //MARKS: 停止定时器
+    func invalidateTimer(){
+        snowTimer?.invalidate()
+        if snowTimer != nil {
+            snowTimer = nil
+        }
+    }
+    
+    //MARKS: 重启定时器,在页面将要进入前台
+    func startSnowTimer(){
+        self.snowTimer?.fireDate = NSDate.distantPast()
+    }
+    
+    //MARKS: 关闭定时器,在页面消失后
+    func stopSnowTimer(){
+        self.snowTimer?.fireDate = NSDate.distantFuture()
+    }
+    
     //MARKS: 获取随机数
     func getRandom(min:UInt32,max:UInt32) -> UInt32 {
         let min:UInt32 = min
