@@ -74,6 +74,7 @@
 		76947B601C7D68E10064E74D /* WeChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5D1C7D68E10064E74D /* WeChatNavigationController.swift */; };
 		76947B611C7D68E10064E74D /* WeChatTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */; };
 		769948761C7EA6AA00D62FEF /* SpringAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769948751C7EA6AA00D62FEF /* SpringAnimation.swift */; };
+		769AC6581C8681960076947A /* ShoppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AC6571C8681960076947A /* ShoppingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +168,7 @@
 		76947B5D1C7D68E10064E74D /* WeChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatNavigationController.swift; sourceTree = "<group>"; };
 		76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTabBarController.swift; sourceTree = "<group>"; };
 		769948751C7EA6AA00D62FEF /* SpringAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringAnimation.swift; sourceTree = "<group>"; };
+		769AC6571C8681960076947A /* ShoppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +326,7 @@
 			children = (
 				76947A831C7D58950064E74D /* Discover.storyboard */,
 				76947A841C7D58950064E74D /* DiscoverViewController.swift */,
+				769AC6571C8681960076947A /* ShoppingViewController.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				76947A731C7D58810064E74D /* LastCellCustomView.swift in Sources */,
 				76947B571C7D68BA0064E74D /* WeChatRefreshView.swift in Sources */,
 				76947A721C7D58810064E74D /* CommentDetailViewController.swift in Sources */,
+				769AC6581C8681960076947A /* ShoppingViewController.swift in Sources */,
 				76947B411C7D68BA0064E74D /* WeChatBottomAlert.swift in Sources */,
 				76947B541C7D68BA0064E74D /* UtilTools.swift in Sources */,
 				76947B491C7D68BA0064E74D /* WeChatCustomPhotoView.swift in Sources */,
