@@ -40,11 +40,10 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     
     func initFrame(){
         topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
-        self.navigationItem.title = "ztyjr888/WeChat"
+        //self.navigationItem.title = "ztyjr888/WeChat"
         
         initWebViewFrame()
         initBackgroundView()
-        initLoadingView()
         loadProgress()
         initBtns()
     }
@@ -92,11 +91,11 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
         webView = UIWebView(frame: CGRectMake(0,topHeight,self.view.bounds.width,self.view.bounds.height))
         //let url = NSURL(string: "https://github.com/ztyjr888/WeChat")
         let url = NSURL(string: "https://wq.jd.com")
+        //let url = NSURL(string: "https://m.taobao.com")
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
         webView.opaque = false//webView是否是不透明的，false为透明
         webView.backgroundColor = UIColor.darkGrayColor()
-        //webView.delegate = self
         
         let label = UILabel(frame: CGRectMake(0,10,self.view.bounds.width,20))
         label.text = "网页由 wq.jd.com 提供"
@@ -121,19 +120,17 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     func webViewProgress(webViewProgress: WeChatWebViewProgress, updateProgress progress: CGFloat) {
         self.progressView.setProgress(progress,animated: true)
         
-        //self.navigationItem.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+        self.navigationItem.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
     }
     
     
     //MARKS: webView加载失败
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        print("failed")
     }
     
     //MARKS: webView加载完成
     func webViewDidFinishLoad(webView: UIWebView) {
         self.backgroundView.removeFromSuperview()
-        //self.progressView.removeFromSuperview()
     }
     
     //MARKS: webView开始加载
