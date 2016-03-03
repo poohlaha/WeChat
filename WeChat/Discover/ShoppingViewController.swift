@@ -46,6 +46,12 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
         initBackgroundView()
         initLoadingView()
         loadProgress()
+        initBtns()
+    }
+    
+    //MARKS: 初始化buttons
+    func initBtns(){
+        //self.navigationItem.backBarButtonItem?.enabled = self.webView.canGoBack
     }
     
     //MARKS: 加载进度条
@@ -84,8 +90,8 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     //MARKS: 初始化WebView
     func initWebViewFrame(){
         webView = UIWebView(frame: CGRectMake(0,topHeight,self.view.bounds.width,self.view.bounds.height))
-        let url = NSURL(string: "https://github.com/ztyjr888/WeChat")
-        //let url = NSURL(string: "https://www.baidu.com")
+        //let url = NSURL(string: "https://github.com/ztyjr888/WeChat")
+        let url = NSURL(string: "https://wq.jd.com")
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
         webView.opaque = false//webView是否是不透明的，false为透明
@@ -93,7 +99,7 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
         //webView.delegate = self
         
         let label = UILabel(frame: CGRectMake(0,10,self.view.bounds.width,20))
-        label.text = "网页由 github.com 提供"
+        label.text = "网页由 wq.jd.com 提供"
         label.textColor = UIColor.lightGrayColor()
         label.font = UIFont(name: "Arial", size: 12)
         label.textAlignment = .Center
@@ -121,7 +127,7 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     
     //MARKS: webView加载失败
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        
+        print("failed")
     }
     
     //MARKS: webView加载完成

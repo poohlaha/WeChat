@@ -75,6 +75,7 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
     
     let completeUrlPath = "/wechatwebviewprogressproxy/complete"//完成标识
    
+    //MARKS: 每次加载之前都会调用这个方法,如果返回false，代表不允许加载这个请求
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if request.URL?.path == self.completeUrlPath {
             self.completeProgress()
@@ -100,6 +101,8 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
         }
         
         let isTopLevelNavigation:Bool = request.mainDocumentURL == request.URL
+        
+        //协议头
         let isHTTPOrLocalFile = (request.URL?.scheme == "http" || request.URL?.scheme == "https" || request.URL?.scheme == "file")
         
         if ret && !isFragmentJump && isHTTPOrLocalFile && isTopLevelNavigation {
@@ -156,8 +159,10 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
             self.webViewProxyDelegate!.webViewDidFinishLoad!(webView)
         }
         
-        self.loadingCount--
-        self.incrementProgress()
+        if loadingCount > 0 {
+            self.loadingCount--
+            self.incrementProgress()
+        }
         
         let readyState:String = webView.stringByEvaluatingJavaScriptFromString("document.readyState")!
         let _interactive:Bool = (readyState == "interactive")
@@ -170,7 +175,7 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
             
         }
         
-        let isNotRedirect:Bool = (self.currentUrl != nil ) && (self.currentUrl == webView.request?.mainDocumentURL!)
+        let isNotRedirect:Bool = (self.currentUrl != nil ) && (webView.request?.mainDocumentURL !=  nil) && (self.currentUrl == webView.request?.mainDocumentURL!)
         
         let complete:Bool = (readyState == "complete")
         if complete && isNotRedirect {

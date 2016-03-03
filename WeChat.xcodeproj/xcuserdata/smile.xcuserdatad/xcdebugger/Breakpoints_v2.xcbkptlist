@@ -694,16 +694,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Loading/WebView/WeChatWebViewProgress.swift"
-            timestampString = "478683600.723594"
+            timestampString = "478685742.825944"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "webView(_:shouldStartLoadWithRequest:navigationType:)"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "webViewDidStartLoad(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -714,12 +714,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Loading/WebView/WeChatWebViewProgress.swift"
-            timestampString = "478683827.723922"
+            timestampString = "478685742.825944"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "webViewDidStartLoad(_:)"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "webView(_:didFailLoadWithError:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Loading/WebView/WeChatWebViewProgress.swift"
+            timestampString = "478686056.103525"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "webViewDidFinishLoad(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
