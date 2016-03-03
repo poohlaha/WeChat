@@ -23,12 +23,15 @@ import UIKit
         </dict>
     </plist>
 */
-class ShoppingViewController: UIViewController,UIWebViewDelegate {
+class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewProgressDelegate {
 
     var webView:UIWebView!
     var backgroundView:UIView!
     var topHeight:CGFloat = 0
     var loadingView:UIActivityIndicatorView!//UIActivityIndicatorView
+    
+    var progressView:WeChatWebViewProgressView!
+    var progressProxy:WeChatWebViewProgress!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +45,23 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate {
         initWebViewFrame()
         initBackgroundView()
         initLoadingView()
+        loadProgress()
+    }
+    
+    //MARKS: 加载进度条
+    func loadProgress(){
+        self.progressProxy = WeChatWebViewProgress()
+        self.webView.delegate = self.progressProxy
+        self.progressProxy.webViewProxyDelegate = self
+        self.progressProxy.progressDelegate = self
+        
+        let progressBarHeight:CGFloat = 3
+        let navigationBarBounds = self.navigationController?.navigationBar.bounds
+        let barFrame = CGRectMake(0, navigationBarBounds!.size.height - progressBarHeight / 2, navigationBarBounds!.size.width, progressBarHeight)
+        
+        self.progressView = WeChatWebViewProgressView(frame: barFrame)
+        self.progressView.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
+
     }
     
     //MARKS: 加载进度条
@@ -65,11 +85,12 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate {
     func initWebViewFrame(){
         webView = UIWebView(frame: CGRectMake(0,topHeight,self.view.bounds.width,self.view.bounds.height))
         let url = NSURL(string: "https://github.com/ztyjr888/WeChat")
+        //let url = NSURL(string: "https://www.baidu.com")
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
         webView.opaque = false//webView是否是不透明的，false为透明
         webView.backgroundColor = UIColor.darkGrayColor()
-        webView.delegate = self
+        //webView.delegate = self
         
         let label = UILabel(frame: CGRectMake(0,10,self.view.bounds.width,20))
         label.text = "网页由 github.com 提供"
@@ -81,6 +102,23 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate {
         self.view.addSubview(webView)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController!.navigationBar.addSubview(self.progressView)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.progressView.removeFromSuperview()
+    }
+    
+    func webViewProgress(webViewProgress: WeChatWebViewProgress, updateProgress progress: CGFloat) {
+        self.progressView.setProgress(progress,animated: true)
+        
+        //self.navigationItem.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+    }
+    
+    
     //MARKS: webView加载失败
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         
@@ -89,10 +127,12 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate {
     //MARKS: webView加载完成
     func webViewDidFinishLoad(webView: UIWebView) {
         self.backgroundView.removeFromSuperview()
+        //self.progressView.removeFromSuperview()
     }
     
     //MARKS: webView开始加载
     func webViewDidStartLoad(webView: UIWebView) {
+        
     }
     
 }
