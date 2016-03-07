@@ -23,6 +23,24 @@ import UIKit
         </dict>
     </plist>
 */
+
+/**
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>baidu.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+*/
 class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewProgressDelegate {
 
     var webView:UIWebView!
@@ -32,6 +50,7 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     
     var progressView:WeChatWebViewProgressView!
     var progressProxy:WeChatWebViewProgress!
+    var errorLabel:UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +59,23 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     
     func initFrame(){
         topHeight = (self.navigationController?.navigationBar.frame.height)! + UIApplication.sharedApplication().statusBarFrame.height
-        //self.navigationItem.title = "ztyjr888/WeChat"
+        self.navigationItem.title = "ztyjr888/WeChat"
+        
+        //修改左侧为"返回"
+        self.navigationController!.navigationBar.backItem?.title = "返回"
+        
+        let rightBarItem = UIBarButtonItem(image: UIImage(named: "shopping-right-normal"), style: .Plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = rightBarItem
         
         initWebViewFrame()
         initBackgroundView()
         loadProgress()
         initBtns()
+    }
+    
+    //MARKS: 右侧按钮点击事件
+    func rightBarClick(){
+        
     }
     
     //MARKS: 初始化buttons
@@ -90,8 +120,8 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     func initWebViewFrame(){
         webView = UIWebView(frame: CGRectMake(0,topHeight,self.view.bounds.width,self.view.bounds.height))
         //let url = NSURL(string: "https://github.com/ztyjr888/WeChat")
-        let url = NSURL(string: "https://wq.jd.com")
-        //let url = NSURL(string: "https://m.taobao.com")
+        //let url = NSURL(string: "https://wq.jd.com")
+        let url = NSURL(string: "https://m.taobao.com")
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
         webView.opaque = false//webView是否是不透明的，false为透明
@@ -120,17 +150,33 @@ class ShoppingViewController: UIViewController,UIWebViewDelegate,WeChatWebViewPr
     func webViewProgress(webViewProgress: WeChatWebViewProgress, updateProgress progress: CGFloat) {
         self.progressView.setProgress(progress,animated: true)
         
-        self.navigationItem.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+        //self.navigationItem.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+    }
+    
+    func initErrorLabel(){
+        if errorLabel == nil {
+            let errorLabelWidth:CGFloat = 30
+            let beginY:CGFloat = (self.backgroundView.frame.height - topHeight - errorLabelWidth) / 2
+            errorLabel = UILabel(frame: CGRectMake(0,beginY,self.view.bounds.width,errorLabelWidth))
+            errorLabel!.text = "网页信息无法加载,请稍后重试!"
+            errorLabel!.textColor = UIColor.lightGrayColor()
+            errorLabel!.font = UIFont(name: "Arial", size: 16)
+            errorLabel!.textAlignment = .Center
+        }
     }
     
     
     //MARKS: webView加载失败
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+         initErrorLabel()
+         self.backgroundView.addSubview(errorLabel!)
+         self.view.addSubview(backgroundView)
     }
     
     //MARKS: webView加载完成
     func webViewDidFinishLoad(webView: UIWebView) {
         self.backgroundView.removeFromSuperview()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "shopping-right"), style: .Plain, target: self, action: "rightBarClick")
     }
     
     //MARKS: webView开始加载

@@ -21,7 +21,7 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
     
     var progressDelegate:WeChatWebViewProgressDelegate?
     var progress:CGFloat = 0
-    var progressBlock:WeChatWebViewProgressBlock?
+    var progressBlock:WeChatWebViewProgressBlock = WeChatWebViewProgressBlock(progress: 0)
     
     let initialProgressValue:CGFloat = 0.1
     let interactiveProgressValue:CGFloat = 0.5
@@ -38,6 +38,9 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
     
     //MARKS: 进度条增长
     func incrementProgress(){
+        if maxLoadCount <= 0{
+            return
+        }
         var _progress:CGFloat = self.progress
         let maxProgress:CGFloat = self.interactive ? self.finalProgressValue : self.interactiveProgressValue
         let remainPercent:CGFloat = CGFloat(self.loadingCount / self.maxLoadCount)
@@ -66,9 +69,7 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
             
             progressDelegate?.webViewProgress(self, updateProgress: self.progress)
             
-            if progressBlock != nil {
-                progressBlock = WeChatWebViewProgressBlock(progress: self.progress)
-            }
+            progressBlock = WeChatWebViewProgressBlock(progress: self.progress)
         }
     }
     
@@ -115,10 +116,15 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
     
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        self.webViewDidFinishLoad(webView)
         
-        self.loadingCount--
-        self.incrementProgress()
+        if webViewProxyDelegate!.respondsToSelector(Selector("webView:didFailLoadWithError:")) {
+            self.webViewProxyDelegate!.webView!(webView, didFailLoadWithError: error)
+        }
+        
+        if loadingCount > 0 {
+            self.incrementProgress()
+            self.loadingCount--
+        }
         
         let readyState:String = webView.stringByEvaluatingJavaScriptFromString("document.readyState")!
         let _interactive:Bool = (readyState == "interactive")
@@ -132,7 +138,7 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
             
         }
 
-        let isNotRedirect:Bool = (self.currentUrl != nil ) && (self.currentUrl == webView.request?.mainDocumentURL!)
+        let isNotRedirect:Bool = (self.currentUrl != nil ) && (webView.request?.mainDocumentURL != nil) && (self.currentUrl == webView.request?.mainDocumentURL!)
         
         let complete:Bool = (readyState == "complete")
         if ((complete && isNotRedirect) || error != nil) {
@@ -160,8 +166,8 @@ class WeChatWebViewProgress:NSObject,UIWebViewDelegate{
         }
         
         if loadingCount > 0 {
-            self.loadingCount--
             self.incrementProgress()
+            self.loadingCount--
         }
         
         let readyState:String = webView.stringByEvaluatingJavaScriptFromString("document.readyState")!
