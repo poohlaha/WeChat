@@ -147,7 +147,7 @@ class WeChatCustomKeyBordView: UIView,UITextViewDelegate{
         self.textView.editable = true//是否可编辑
         self.textView.selectable = true//是否可选
         self.textView.dataDetectorTypes = .None//给文字中的电话号码和网址自动加链接,这里不需要添加
-        self.textView.returnKeyType = .Send
+        self.textView.returnKeyType = .Done
         self.textView.font = UIFont(name: "AlNile", size: 16)
         //设置不可以滚动
         self.textView.showsVerticalScrollIndicator = false
@@ -580,6 +580,10 @@ class WeChatEmojiDialogView:UIView,UIScrollViewDelegate{
     }
 }
 
+enum PlaceholderLocation {
+    case Top,Center,Bottom
+}
+
 //自定义TextView Placeholder类
 class PlaceholderTextView:UITextView,UITextViewDelegate {
     
@@ -592,6 +596,8 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
     var isLayedOut:Bool = false
     var placeholderLabelHeight:CGFloat = 0
     var defaultHeight:CGFloat = 0
+    var placeholderLocation:PlaceholderLocation = PlaceholderLocation.Center
+    
     
     init(frame:CGRect,placeholder:String?,color:UIColor?,font:UIFont?){
         super.init(frame: frame, textContainer: nil)
@@ -637,7 +643,12 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
         let options : NSStringDrawingOptions = [.UsesLineFragmentOrigin,.UsesFontLeading]
         labelHeight = self.placeholder!.boundingRectWithSize(maxSize, options: options, attributes: [NSFontAttributeName:self.font!], context: nil).size.height
         
-        self.labelTopPadding = (self.frame.height - labelHeight) / 2 + 3
+        if placeholderLocation == PlaceholderLocation.Center {
+           self.labelTopPadding = (self.frame.height - labelHeight) / 2 + 3
+        } else if placeholderLocation == PlaceholderLocation.Bottom {
+           self.labelTopPadding = self.frame.height - labelHeight - 3
+        }
+        
         self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelTopPadding,labelWidth , labelHeight)
         placeholderLabelHeight = labelHeight
         self.addSubview(placeholderLabel!)
