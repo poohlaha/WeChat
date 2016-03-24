@@ -619,6 +619,12 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
         } else {
             self.font = UIFont.systemFontOfSize(fontSize)
         }
+        
+        if self.placeholder != nil && !self.placeholder!.isEmpty {
+            initFrame()
+        }
+        
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -644,11 +650,11 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
         labelHeight = self.placeholder!.boundingRectWithSize(maxSize, options: options, attributes: [NSFontAttributeName:self.font!], context: nil).size.height
         
         if placeholderLocation == PlaceholderLocation.Center {
-           self.labelTopPadding = (self.frame.height - labelHeight) / 2 + 3
+           self.labelTopPadding = (self.frame.height - labelHeight) / 2
         } else if placeholderLocation == PlaceholderLocation.Bottom {
-           self.labelTopPadding = self.frame.height - labelHeight - 3
+           self.labelTopPadding = self.frame.height - labelHeight
         } else if placeholderLocation == PlaceholderLocation.Top {
-           self.labelTopPadding += 3
+           
         }
         
         self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelTopPadding,labelWidth , labelHeight)
@@ -666,18 +672,6 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
     
     let labelLeftPadding:CGFloat = 7
     var labelTopPadding:CGFloat = 5
-    
-    override func layoutSubviews() {
-       super.layoutSubviews()
-        if !isLayedOut {
-            if self.placeholder == nil || self.placeholder!.isEmpty {
-                return
-            }
-            
-            initFrame()
-            isLayedOut = true
-        }
-    }
     
     
     var curTopPadding:CGFloat = 5

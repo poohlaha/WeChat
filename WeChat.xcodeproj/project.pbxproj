@@ -27,7 +27,6 @@
 		765964171C3BE90700910F0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765964151C3BE90700910F0D /* LaunchScreen.storyboard */; };
 		765964221C3BE90700910F0D /* WeChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765964211C3BE90700910F0D /* WeChatTests.swift */; };
 		7659642D1C3BE90700910F0D /* WeChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7659642C1C3BE90700910F0D /* WeChatUITests.swift */; };
-		767322201CA3803A0009FA8B /* WeChatTextFieldNoKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7673221F1CA3803A0009FA8B /* WeChatTextFieldNoKeyboard.swift */; };
 		76947A641C7D58810064E74D /* Contact-Detail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76947A4A1C7D58810064E74D /* Contact-Detail.storyboard */; };
 		76947A651C7D58810064E74D /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76947A4B1C7D58810064E74D /* Contact.storyboard */; };
 		76947A661C7D58810064E74D /* RemarkTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947A4D1C7D58810064E74D /* RemarkTagViewController.swift */; };
@@ -131,7 +130,6 @@
 		765964281C3BE90700910F0D /* WeChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7659642C1C3BE90700910F0D /* WeChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatUITests.swift; sourceTree = "<group>"; };
 		7659642E1C3BE90700910F0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7673221F1CA3803A0009FA8B /* WeChatTextFieldNoKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTextFieldNoKeyboard.swift; sourceTree = "<group>"; };
 		76947A4A1C7D58810064E74D /* Contact-Detail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Contact-Detail.storyboard"; sourceTree = "<group>"; };
 		76947A4B1C7D58810064E74D /* Contact.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		76947A4D1C7D58810064E74D /* RemarkTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemarkTagViewController.swift; sourceTree = "<group>"; };
@@ -536,7 +534,6 @@
 			isa = PBXGroup;
 			children = (
 				76947B381C7D68BA0064E74D /* WeChatTextField.swift */,
-				7673221F1CA3803A0009FA8B /* WeChatTextFieldNoKeyboard.swift */,
 			);
 			path = TextField;
 			sourceTree = "<group>";
@@ -755,7 +752,6 @@
 				76947B541C7D68BA0064E74D /* UtilTools.swift in Sources */,
 				76947B491C7D68BA0064E74D /* WeChatCustomPhotoView.swift in Sources */,
 				76947B4A1C7D68BA0064E74D /* WeChatNavigationBottomLabelView.swift in Sources */,
-				767322201CA3803A0009FA8B /* WeChatTextFieldNoKeyboard.swift in Sources */,
 				76947A781C7D58810064E74D /* PersonViewController.swift in Sources */,
 				76947B4B1C7D68BA0064E74D /* WeChatSearchBar.swift in Sources */,
 				76947A691C7D58810064E74D /* Contact.swift in Sources */,

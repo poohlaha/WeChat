@@ -8,6 +8,10 @@
 
 import UIKit
 
+@objc protocol AddressViewDelegate {
+    optional func saveButtonClick()
+    optional func updateButtonClick()
+}
 //添加或修改Address页面
 class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelegate,
         UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,AddressPickerViewDelegate{
@@ -18,13 +22,14 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     
     var tableView: UITableView!
     var font:UIFont!
-    
     let SECTION_COUNT:Int = 1
-    
     var data:[MyAddress] = []
     
     var CELL_HEADER_HEIGHT:CGFloat = 20
     var addressPickerView:AddressPickerView?
+    
+    var myAddressInfo:MyAddressInfo?
+    var addressViewDelegate:AddressViewDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +91,9 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         let alertController = UIAlertController(title: "确定要放弃此次编辑", message: "", preferredStyle: UIAlertControllerStyle.Alert)
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
         let okAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
-            self.rightBarClick()
+            self.dismissViewControllerAnimated(true) { () -> Void in
+                UtilTools().weChatTabBarController.selectedIndex = 3
+            }
         }
         
         alertController.addAction(cancelAction)
@@ -97,14 +104,26 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     
     //MARKS: 右侧点击事件
     func rightBarClick() {
+        clearViews()
+        self.dismissViewControllerAnimated(true) { () -> Void in
+            UtilTools().weChatTabBarController.selectedIndex = 3
+            if self.addressViewDelegate != nil {
+                if self.myAddressInfo == nil {
+                    self.addressViewDelegate?.saveButtonClick!()
+                } else {
+                    self.addressViewDelegate?.updateButtonClick!()
+                }
+                
+            }
+        }
+    }
+    
+    func clearViews(){
         for textField in textFields {
             textField.resignFirstResponder()
         }
         self.textView?.resignFirstResponder()
         self.areaTextField?.resignFirstResponder()
-        self.dismissViewControllerAnimated(true) { () -> Void in
-            UtilTools().weChatTabBarController.selectedIndex = 3
-        }
     }
     
     //MARKS: 返回分组数
@@ -159,6 +178,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
             string: myAddress.nameLabel,
             color: UIColor.blackColor()
         )
+        
         cell?.addSubview(label)
         
         let textFieldBeginX:CGFloat = leftOrRightPadding + labelWidth + labelRightPadding
@@ -168,6 +188,13 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
             self.textView = createTextView(CGRectMake(textFieldBeginX, 5, textFieldWidth, cell!.frame.height - (5 * 2)), placeholder: myAddress.nameLabel)
             
             cell?.addSubview(textView!)
+            
+            //设值
+            if myAddressInfo != nil {
+               self.textView?.text = myAddressInfo?.address
+               self.textView?.placeholderLabel?.hidden = true
+            }
+            
         }else{
             let textField = createTextField(
                 CGRectMake(textFieldBeginX, 5, textFieldWidth, cell!.frame.height - (5 * 2)),
@@ -184,7 +211,21 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
             }else{
                 textFields.append(textField)
             }
+            
+            //设值
+            if myAddressInfo != nil {
+                if indexPath.row == 0 {//收货人
+                    textField.text = myAddressInfo?.name
+                } else if indexPath.row == 1 {
+                    textField.text = myAddressInfo?.phone
+                } else if indexPath.row == 2 {
+                    textField.text = myAddressInfo?.area
+                } else if indexPath.row == 4 {
+                    textField.text = myAddressInfo?.yb
+                }
+            }
         }
+        
         
         cell?.selectionStyle = .None
         

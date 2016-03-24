@@ -61,7 +61,7 @@ class AddressPickerView: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         cancelBtn.setTitle("取消", forState: .Normal)
         cancelBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         cancelBtn.layer.borderWidth = 0
-        cancelBtn.addTarget(self, action: #selector(AddressPickerView.cancelClick), forControlEvents: .TouchUpInside)
+        cancelBtn.addTarget(self, action: "cancelClick", forControlEvents: .TouchUpInside)
         self.topView.addSubview(cancelBtn)
         
         let doneBtnBeginX:CGFloat = self.frame.width - leftOrRightPadding - btnWidth
@@ -72,7 +72,7 @@ class AddressPickerView: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         doneBtn.layer.borderWidth = 0.2
         doneBtn.layer.cornerRadius = 5
         doneBtn.backgroundColor = UIColor(red: 0/255, green: 170/255, blue: 221/255, alpha:1)
-        doneBtn.addTarget(self, action: #selector(AddressPickerView.doneClick), forControlEvents: .TouchUpInside)
+        doneBtn.addTarget(self, action: "doneClick", forControlEvents: .TouchUpInside)
         self.topView.addSubview(doneBtn)
         
         self.addSubview(topView)
