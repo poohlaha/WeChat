@@ -10,7 +10,7 @@ import UIKit
 
 //添加或修改Address页面
 class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelegate,
-        UITableViewDelegate,UITableViewDataSource,UITextViewDelegate{
+        UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,AddressPickerViewDelegate{
     
     var navigation:WeChatCustomNavigationHeaderView!
     var navigationHeight:CGFloat = 44
@@ -24,6 +24,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     var data:[MyAddress] = []
     
     var CELL_HEADER_HEIGHT:CGFloat = 20
+    var addressPickerView:AddressPickerView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,16 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         initNavigationBar()
         initTableView()
         initData()
+        createPicker()
+    }
+    
+    //MARKS:  创建城市三级联动
+    func createPicker(){
+        if self.addressPickerView == nil {
+            let height:CGFloat = UIScreen.mainScreen().bounds.height * 2 / 5
+            self.addressPickerView = AddressPickerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height))
+            self.addressPickerView?.pickViewDelegate = self
+        }
     }
     
     //MARKS: 初始化tableView
@@ -75,9 +86,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         let alertController = UIAlertController(title: "确定要放弃此次编辑", message: "", preferredStyle: UIAlertControllerStyle.Alert)
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
         let okAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
-            self.dismissViewControllerAnimated(true) { () -> Void in
-                UtilTools().weChatTabBarController.selectedIndex = 3
-            }
+            self.rightBarClick()
         }
         
         alertController.addAction(cancelAction)
@@ -88,6 +97,11 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     
     //MARKS: 右侧点击事件
     func rightBarClick() {
+        for textField in textFields {
+            textField.resignFirstResponder()
+        }
+        self.textView?.resignFirstResponder()
+        self.areaTextField?.resignFirstResponder()
         self.dismissViewControllerAnimated(true) { () -> Void in
             UtilTools().weChatTabBarController.selectedIndex = 3
         }
@@ -124,6 +138,10 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     let labelRightPadding:CGFloat = 10
     var textView:PlaceholderTextView?
     
+    var areaTextField:UITextField?
+    
+    var textFields:[UITextField] = []
+    
     //MARKS: 返回每行的单元格
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell\(indexPath.section)\(indexPath.row)")
@@ -157,11 +175,31 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
             )
             
             cell?.addSubview(textField)
+            
+            //给选择地区添加监听事件
+            if indexPath.row == 2 {
+                self.areaTextField = textField
+                self.areaTextField?.clearButtonMode = .WhileEditing
+                self.areaTextField?.inputView = addressPickerView//设置城市三级联动
+            }else{
+                textFields.append(textField)
+            }
         }
         
         cell?.selectionStyle = .None
         
         return cell!
+    }
+    
+    func cancelClick() {
+        self.addressPickerView?.removeFromSuperview()
+        self.areaTextField?.resignFirstResponder()
+    }
+    
+    func doneClick() {
+        self.addressPickerView?.removeFromSuperview()
+        self.areaTextField?.text = self.addressPickerView?.getSelectedData()
+        self.areaTextField?.resignFirstResponder()
     }
     
     //MARKS: Label高度自适应
@@ -181,16 +219,18 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         return boundingRect.size.height
     }
     
+    //MARKS: 创建textField
     func createTextField(frame:CGRect,placeholder:String) -> UITextField{
-        let textField = WeChatTextField(frame: frame, palceholderLeftPadding: 0, font: nil,topPadding: 5)
+        let textField = UITextField(frame: frame)
         textField.frame = frame
-        textField.borderStyle = .RoundedRect
         textField.placeholder = placeholder
-        textField.font = UIFont(name: "AlNile", size: 18)
+        textField.font = UIFont(name: "AlNile", size: 16)
         textField.contentMode = .Center
+        textField.borderStyle = .None
         return textField
     }
     
+    //MARKS:创建textView
     func createTextView(frame:CGRect,placeholder:String) -> PlaceholderTextView{
         let textView = PlaceholderTextView(frame: frame,placeholder: placeholder,color: nil,font: nil)
         textView.layer.borderWidth = 0.5  //边框粗细
@@ -207,16 +247,14 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         //不允许滚动，当textview的大小足以容纳它的text的时候，需要设置scrollEnabed为false，否则会出现光标乱滚动的情况
         //textView.scrollEnabled = false//此属性可能导致textView无法换行
         textView.scrollsToTop = false
-        //设置圆角
-        textView.layer.cornerRadius = 4
-        textView.layer.masksToBounds = true
         textView.delegate = self
         textView.placeholderLocation = PlaceholderLocation.Top
+        textView.layer.borderWidth = 0 //去看边框
         return textView
     }
     
     //MARSK: 去掉回车,限制UITextView的行数
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    /*func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let labelHeight:CGFloat = getLabelHeight(self.textView!.frame.width,str:self.textView!.text + text)
         let numLine:Int = Int(ceil(labelHeight / getOneCharHeight(textView.frame.width)))
         if numLine > 2 {
@@ -225,7 +263,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         }
         
         return true
-    }
+    }*/
     
     func getOneCharHeight(width:CGFloat) ->CGFloat{
         return getLabelHeight(width,str:"我")
@@ -233,14 +271,14 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     
     
     //MARKS: 当空字符的时候重绘placeholder
-    /*func textViewDidChange(textView: UITextView) {
-        let contentSize = CGSizeMake(textView.frame.width,CGFloat(MAXFLOAT))
-        let labelHeight:CGFloat = getLabelHeight(textView.frame.width, str: textView.text)
-        var numLine:Int = 1//显示行数
-        numLine = Int(ceil(labelHeight / textView.frame.height))
-        
-        //textView.sizeThatFits(contentSize)
-    }*/
+    func textViewDidChange(textView: UITextView) {
+        if self.textView!.text?.characters.count > 40 {
+            var text = NSString(string: self.textView!.text!)
+            let range = NSRange(location: 0,length: 40)
+            text = text.substringWithRange(range)
+            self.textView!.text = text as String
+        }
+    }
     
 
     

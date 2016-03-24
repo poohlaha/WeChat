@@ -647,6 +647,8 @@ class PlaceholderTextView:UITextView,UITextViewDelegate {
            self.labelTopPadding = (self.frame.height - labelHeight) / 2 + 3
         } else if placeholderLocation == PlaceholderLocation.Bottom {
            self.labelTopPadding = self.frame.height - labelHeight - 3
+        } else if placeholderLocation == PlaceholderLocation.Top {
+           self.labelTopPadding += 3
         }
         
         self.placeholderLabel!.frame = CGRectMake(labelLeftPadding, self.labelTopPadding,labelWidth , labelHeight)
