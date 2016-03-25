@@ -14,7 +14,7 @@ import UIKit
 }
 //添加或修改Address页面
 class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelegate,
-        UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,AddressPickerViewDelegate{
+        UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,AddressPickerViewDelegate,UITextFieldDelegate{
     
     var navigation:WeChatCustomNavigationHeaderView!
     var navigationHeight:CGFloat = 44
@@ -47,7 +47,15 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
     func createPicker(){
         if self.addressPickerView == nil {
             let height:CGFloat = UIScreen.mainScreen().bounds.height * 2 / 5
-            self.addressPickerView = AddressPickerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height))
+            var address:String = ""
+            if myAddressInfo != nil {
+                if myAddressInfo?.address != nil {
+                    address = myAddressInfo!.area
+                }
+            }
+            
+            self.addressPickerView = AddressPickerView(frame: CGRectMake(0, UIScreen.mainScreen().bounds.height - height, UIScreen.mainScreen().bounds.width, height),address:address)
+            
             self.addressPickerView?.pickViewDelegate = self
         }
     }
@@ -91,6 +99,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         let alertController = UIAlertController(title: "确定要放弃此次编辑", message: "", preferredStyle: UIAlertControllerStyle.Alert)
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
         let okAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            self.areaTextField?.resignFirstResponder()
             self.dismissViewControllerAnimated(true) { () -> Void in
                 UtilTools().weChatTabBarController.selectedIndex = 3
             }
@@ -208,6 +217,7 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
                 self.areaTextField = textField
                 self.areaTextField?.clearButtonMode = .WhileEditing
                 self.areaTextField?.inputView = addressPickerView//设置城市三级联动
+                self.areaTextField?.delegate = self
             }else{
                 textFields.append(textField)
             }
@@ -232,11 +242,19 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         return cell!
     }
     
+    func textFieldDidEndEditing(textField: UITextField) {
+        if self.areaTextField!.text!.isEmpty {
+            self.addressPickerView?.resetValues()
+        }
+    }
+    
+    //MARKS: pickerView上取消按钮事件
     func cancelClick() {
         self.addressPickerView?.removeFromSuperview()
         self.areaTextField?.resignFirstResponder()
     }
     
+    //MARKS: pickView上确定按钮事件
     func doneClick() {
         self.addressPickerView?.removeFromSuperview()
         self.areaTextField?.text = self.addressPickerView?.getSelectedData()
@@ -294,22 +312,9 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
         return textView
     }
     
-    //MARSK: 去掉回车,限制UITextView的行数
-    /*func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        let labelHeight:CGFloat = getLabelHeight(self.textView!.frame.width,str:self.textView!.text + text)
-        let numLine:Int = Int(ceil(labelHeight / getOneCharHeight(textView.frame.width)))
-        if numLine > 2 {
-            self.textView!.text = (self.textView!.text as NSString).substringToIndex(self.textView!.text.characters.count)
-            return false
-        }
-        
-        return true
-    }*/
-    
     func getOneCharHeight(width:CGFloat) ->CGFloat{
         return getLabelHeight(width,str:"我")
     }
-    
     
     //MARKS: 当空字符的时候重绘placeholder
     func textViewDidChange(textView: UITextView) {
@@ -320,8 +325,6 @@ class AddressViewController: UIViewController,WeChatCustomNavigationHeaderDelega
             self.textView!.text = text as String
         }
     }
-    
-
     
 }
 

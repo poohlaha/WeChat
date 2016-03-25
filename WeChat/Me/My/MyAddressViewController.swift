@@ -31,7 +31,7 @@ class MyAddressViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func initData(){
-        let address = MyAddressInfo(name: "张三", phone: "13100000000", area: "安徽省 芜湖市 三山区", address: "北京市丰台区", yb: "240000")
+        let address = MyAddressInfo(name: "张三", phone: "13100000000", area: "江苏省 无锡市 锡山区", address: "江苏省无锡市锡山区", yb: "240000")
         addresses.append(address)
     }
     

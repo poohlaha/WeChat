@@ -209,7 +209,7 @@ class TextSearchView:UIView,UITextFieldDelegate {
         }
         
         textField = WeChatTextField(frame: CGRectMake(beginX, beginY, textFieldWidth, textFieldHeight), palceholderLeftPadding: 0, font: nil,topPadding: textFieldTopOrBottomPadding)
-        textField.tintColor = UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1)//设置光标颜色
+        textField.tintColor = WeChatColor().curColor//设置光标颜色
         //textField.textAlignment = .Left//水平对齐
         textField.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom//垂直对齐
         textField.borderStyle = .None

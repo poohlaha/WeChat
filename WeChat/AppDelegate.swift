@@ -19,21 +19,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        //MARKS: Set TabBarItem Images
-        /*let tabbar = WeChatTabBarController()
-        let messageTabController = WeChatTableViewController()
-        var img = UIImage(named: "message")
-        img = img?.imageWithRenderingMode(.AlwaysOriginal)
-        messageTabController.tabBarItem.image = img
-        messageTabController.tabBarItem.title = "首页"
-        messageTabController.tabBarItem.selectedImage = img
-        
-        tabbar.viewControllers = [messageTabController]
-        self.window?.rootViewController = tabbar
-        self.window?.backgroundColor = UIColor.whiteColor()*/
-        
-        initSliderMenu()
+        //self.window?.rootViewController = FirstLoginOrRegisterViewController()
+        initFirstStart()
+        //initSliderMenu()
         return true
+    }
+    
+    //MARKS: 增加标识，用于判断是否是第一次启动应用
+    func initFirstStart(){
+        if !NSUserDefaults.standardUserDefaults().boolForKey("everLaunched") {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "everLaunched")
+            
+            //self.window?.rootViewController = FirstStartViewController()
+            //设置弹出是否允许知道对话框
+            let notificationSettings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert, categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+            
+            
+        }
     }
     
     func initSliderMenu(){

@@ -84,6 +84,10 @@
 		76947B611C7D68E10064E74D /* WeChatTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */; };
 		769948761C7EA6AA00D62FEF /* SpringAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769948751C7EA6AA00D62FEF /* SpringAnimation.swift */; };
 		769AC6581C8681960076947A /* ShoppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AC6571C8681960076947A /* ShoppingViewController.swift */; };
+		76A5FC011CA4DE0A006322BD /* WeChatFirstStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5FC001CA4DE0A006322BD /* WeChatFirstStartViewController.swift */; };
+		76A5FC031CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5FC021CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift */; };
+		76A5FC071CA4FECA006322BD /* WeChatLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5FC061CA4FECA006322BD /* WeChatLoginViewController.swift */; };
+		76A5FC091CA4FEE6006322BD /* WeChatRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5FC081CA4FEE6006322BD /* WeChatRegisterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +191,10 @@
 		76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatTabBarController.swift; sourceTree = "<group>"; };
 		769948751C7EA6AA00D62FEF /* SpringAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringAnimation.swift; sourceTree = "<group>"; };
 		769AC6571C8681960076947A /* ShoppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingViewController.swift; sourceTree = "<group>"; };
+		76A5FC001CA4DE0A006322BD /* WeChatFirstStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatFirstStartViewController.swift; sourceTree = "<group>"; };
+		76A5FC021CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatLoginOrRegisterViewController.swift; sourceTree = "<group>"; };
+		76A5FC061CA4FECA006322BD /* WeChatLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatLoginViewController.swift; sourceTree = "<group>"; };
+		76A5FC081CA4FEE6006322BD /* WeChatRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatRegisterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,8 +251,8 @@
 		76309DEF1CA261EF000FBC6D /* Me */ = {
 			isa = PBXGroup;
 			children = (
-				76309DF01CA261EF000FBC6D /* Me.storyboard */,
 				76309DF11CA261EF000FBC6D /* My */,
+				76309DF01CA261EF000FBC6D /* Me.storyboard */,
 			);
 			name = Me;
 			path = WeChat/Me;
@@ -562,7 +570,11 @@
 			isa = PBXGroup;
 			children = (
 				76947B5B1C7D68E10064E74D /* Custom */,
+				76A5FC041CA4FE89006322BD /* Login */,
+				76A5FC051CA4FE90006322BD /* Register */,
 				76947B5E1C7D68E10064E74D /* WeChatTabBarController.swift */,
+				76A5FC021CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift */,
+				76A5FC001CA4DE0A006322BD /* WeChatFirstStartViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -575,6 +587,23 @@
 			);
 			path = Custom;
 			sourceTree = "<group>";
+		};
+		76A5FC041CA4FE89006322BD /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				76A5FC061CA4FECA006322BD /* WeChatLoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		76A5FC051CA4FE90006322BD /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				76A5FC081CA4FEE6006322BD /* WeChatRegisterViewController.swift */,
+			);
+			name = Register;
+			path = WeChat/Main/Register;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -717,6 +746,7 @@
 				76947B511C7D68BA0064E74D /* WeChatCustomViewController.swift in Sources */,
 				76947B501C7D68BA0064E74D /* WeChatTableViewCell.swift in Sources */,
 				76947A741C7D58810064E74D /* PersonCustomView.swift in Sources */,
+				76A5FC091CA4FEE6006322BD /* WeChatRegisterViewController.swift in Sources */,
 				76309DF91CA261EF000FBC6D /* AddressViewController.swift in Sources */,
 				76947B561C7D68BA0064E74D /* WeChatDrawView.swift in Sources */,
 				76947A761C7D58810064E74D /* PersonInfo.swift in Sources */,
@@ -726,6 +756,7 @@
 				76947B4C1C7D68BA0064E74D /* WeChatSearchLabelView.swift in Sources */,
 				76947B4E1C7D68BA0064E74D /* SliderPanelViewController.swift in Sources */,
 				76309DFC1CA261EF000FBC6D /* MyAddressViewController.swift in Sources */,
+				76A5FC011CA4DE0A006322BD /* WeChatFirstStartViewController.swift in Sources */,
 				76947B611C7D68E10064E74D /* WeChatTabBarController.swift in Sources */,
 				76309DFB1CA261EF000FBC6D /* MeViewController.swift in Sources */,
 				76309DEB1CA26122000FBC6D /* WeChatWebViewProgress.swift in Sources */,
@@ -757,6 +788,7 @@
 				76947A691C7D58810064E74D /* Contact.swift in Sources */,
 				7659640A1C3BE90700910F0D /* AppDelegate.swift in Sources */,
 				769948761C7EA6AA00D62FEF /* SpringAnimation.swift in Sources */,
+				76A5FC071CA4FECA006322BD /* WeChatLoginViewController.swift in Sources */,
 				76947A6E1C7D58810064E74D /* ContactAddFriendsTableViewController.swift in Sources */,
 				76947A6B1C7D58810064E74D /* ContactSearchArcView.swift in Sources */,
 				765964121C3BE90700910F0D /* WeChat.xcdatamodeld in Sources */,
@@ -774,6 +806,7 @@
 				76947B591C7D68BA0064E74D /* MyTwoDime.swift in Sources */,
 				76309DEE1CA26154000FBC6D /* WeChatToolsBottomAlert.swift in Sources */,
 				76947B4D1C7D68BA0064E74D /* SliderContainerViewController.swift in Sources */,
+				76A5FC031CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift in Sources */,
 				76947B421C7D68BA0064E74D /* WeChatChatViewController.swift in Sources */,
 				76309DFD1CA261EF000FBC6D /* MyNameViewController.swift in Sources */,
 				76947A701C7D58810064E74D /* AddCommentViewController.swift in Sources */,

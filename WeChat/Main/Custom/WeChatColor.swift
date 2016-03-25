@@ -15,6 +15,7 @@ class WeChatColor {
     let barTintColor = UIColor(red: 0/255, green: 170/255, blue: 221/255, alpha:1)
     let tintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha:1)
     let titleColor = UIColor.whiteColor()
+    let curColor = UIColor(red: 46/255, green: 139/255, blue: 87/255, alpha: 1)//光标颜色
     
     //AlertView
     let alertViewColor = UIColor(red: 0/255, green: 170/255, blue: 221/255, alpha:1)
