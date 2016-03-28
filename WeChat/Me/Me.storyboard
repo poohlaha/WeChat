@@ -28,7 +28,7 @@
                                                     <rect key="frame" x="15" y="10" width="552" height="65"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="my-header" translatesAutoresizingMaskIntoConstraints="NO" id="1tZ-6G-5IB">
-                                                            <rect key="frame" x="0.0" y="0.0" width="65" height="45"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="65" height="33"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="65" id="c1H-2i-dLg"/>
                                                             </constraints>
@@ -362,7 +362,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="my-header" translatesAutoresizingMaskIntoConstraints="NO" id="dnt-Ze-7EO">
-                                                            <rect key="frame" x="487" y="10" width="65" height="45"/>
+                                                            <rect key="frame" x="487" y="16" width="65" height="33"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="65" id="0YH-Js-w2m"/>
                                                             </constraints>

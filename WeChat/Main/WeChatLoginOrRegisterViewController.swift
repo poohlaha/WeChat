@@ -47,9 +47,11 @@ class WeChatLoginOrRegisterViewController: UIViewController {
     
     //MARKS: 注册按钮事件
     func loginButtonClick(){
-        if self.loginViewController == nil {
+        /*if self.loginViewController == nil {
             self.loginViewController = WeChatLoginViewController()
-        }
+        }*/
+        
+        ((UIApplication.sharedApplication().delegate) as! AppDelegate).initSliderMenu()
     }
     
     //MAKRS: 登陆按钮事件

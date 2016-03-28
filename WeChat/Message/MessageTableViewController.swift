@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 // extension String
 extension String {
@@ -21,7 +22,7 @@ extension String {
 }
 
 //消息页面
-class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete {
+class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBarDelegate,WeChatCustomTableViewControllerDelete,CLLocationManagerDelegate {
     
     //MARKS: Properties
     var chats = [Message]()
@@ -116,6 +117,7 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         //创建导航条左侧图片
         createBarItem(true)
         createAlertViews()
+        locationManager.delegate = self
     }
     
     //MARKS: 移除alertView
@@ -146,12 +148,49 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         }
     }
     
+    //MARKS: 添加获取权限对话框
+    //.NotDetermined 表示用户还未对该应用的定位权限做出选择
+    /*在 info.plist里加入定位描述（Value值为空也可以）：
+         NSLocationWhenInUseDescription ：允许在前台获取GPS的描述
+         NSLocationAlwaysUsageDescription ：允许在后台获取GPS的描述
+   */
+    
+    let locationManager = CLLocationManager()
+    
     override func viewWillAppear(animated: Bool) {
         //self.navigationController?.tabBarController!.tabBar.hidden = false
         self.navigationController?.navigationBar.hidden = false
         //添加手势
         addOrRemoveRecognizer(true)
+        if !NSUserDefaults.standardUserDefaults().boolForKey("everLaunched") {
+            if CLLocationManager.locationServicesEnabled() {
+                
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest//控制定位精度,越高耗电量越大
+                locationManager.distanceFilter = 100//控制定位服务更新频率。单位是“米”
+                locationManager.startUpdatingLocation()
+                if CLLocationManager.authorizationStatus() == .NotDetermined {
+                if locationManager.respondsToSelector("requestAlwaysAuthorization") {
+                    locationManager.requestWhenInUseAuthorization()//用户使用的时候才用到定位
+                }
+                }
+            }else {
+                let alert = UIAlertController(title: "打开定位开关", message:"定位服务未开启,请进入系统设置>隐私>定位服务中打开开关,并允许WeChat使用定位服务", preferredStyle: .Alert)
+                let tempAction = UIAlertAction(title: "取消", style: .Cancel) { (action) in
+                }
+                let callAction = UIAlertAction(title: "立即设置", style: .Default) { (action) in
+                    let url = NSURL.init(string: UIApplicationOpenSettingsURLString)
+                    if(UIApplication.sharedApplication().canOpenURL(url!)) {
+                        UIApplication.sharedApplication().openURL(url!)
+                    }
+                }
+                alert.addAction(tempAction)
+                alert.addAction(callAction)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+        
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

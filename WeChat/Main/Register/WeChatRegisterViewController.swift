@@ -110,7 +110,7 @@ class WeChatRegisterViewController: UIViewController,WeChatCustomNavigationHeade
         let textField = UITextField(frame: frame)
         textField.frame = frame
         textField.placeholder = placeholder
-        textField.font = UIFont(name: "AlNile", size: 16)
+        textField.font = UIFont(name: "宋体", size: 16)
         textField.contentMode = .Center
         textField.borderStyle = .None
         textField.tintColor = WeChatColor().curColor//设置光标颜色
@@ -200,13 +200,13 @@ class WeChatRegisterViewController: UIViewController,WeChatCustomNavigationHeade
             let numberBeginX:CGFloat = addLabelWidth + cellLeftPadding
             self.numberTextField = createTextField(CGRectMake(numberBeginX, toppadding, labelLeftWidth - addLabelWidth, cellComponentHeight), placeholder: "")
             numberTextField!.text = "86"
-            numberTextField?.font = UIFont(name: self.fontName, size: 22)
+            //numberTextField?.font = UIFont(name: self.fontName, size: 22)
             cell?.addSubview(numberTextField!)
             
             let phoneWidth:CGFloat = cell!.frame.width - cellLeftPadding - labelLeftWidth
             let phoneBeginX:CGFloat = cellLeftPadding + labelLeftWidth + cellTextFieldLeftPadding
             self.phoneTextField = createTextField(CGRectMake(phoneBeginX, toppadding, phoneWidth, cellComponentHeight), placeholder: "请输入手机号码")
-            phoneTextField?.font = UIFont(name: self.fontName, size: 22)
+            //phoneTextField?.font = UIFont(name: self.fontName, size: 22)
             
             //注册change事件通知
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "phoneTextChange", name: UITextFieldTextDidChangeNotification, object: phoneTextField)

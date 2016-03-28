@@ -17,7 +17,6 @@ class DiscoverViewController: WeChatTableViewNormalController{
     }
     
     func initFrame(){
-        initTableView()
         //MARKS: 设置导航行背景及字体颜色
         WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
     }
