@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>请点击“允许”以允许访问。                       若不允许,你将无法在WeChat中使用摇一摇、附近的人等功能,也无法发送地理位置。</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleExecutable</key>

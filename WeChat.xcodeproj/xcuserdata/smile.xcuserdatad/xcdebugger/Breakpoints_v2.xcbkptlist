@@ -554,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Message/MessageTableViewController.swift"
-            timestampString = "480846543.283403"
+            timestampString = "480848114.660281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -966,15 +966,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Message/MessageTableViewController.swift"
-            timestampString = "480846543.283403"
+            timestampString = "480848114.660281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>

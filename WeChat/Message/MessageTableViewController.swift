@@ -117,7 +117,6 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
         //创建导航条左侧图片
         createBarItem(true)
         createAlertViews()
-        locationManager.delegate = self
     }
     
     //MARKS: 移除alertView
@@ -169,9 +168,9 @@ class MessageTableViewController: WeChatCustomTableViewController,WeChatSearchBa
                 locationManager.distanceFilter = 100//控制定位服务更新频率。单位是“米”
                 locationManager.startUpdatingLocation()
                 if CLLocationManager.authorizationStatus() == .NotDetermined {
-                if locationManager.respondsToSelector("requestAlwaysAuthorization") {
-                    locationManager.requestWhenInUseAuthorization()//用户使用的时候才用到定位
-                }
+                    if locationManager.respondsToSelector("requestAlwaysAuthorization") {
+                        locationManager.requestWhenInUseAuthorization()//用户使用的时候才用到定位
+                    }
                 }
             }else {
                 let alert = UIAlertController(title: "打开定位开关", message:"定位服务未开启,请进入系统设置>隐私>定位服务中打开开关,并允许WeChat使用定位服务", preferredStyle: .Alert)
