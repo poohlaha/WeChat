@@ -54,6 +54,8 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         //MARKS: 设置导航行背景及字体颜色
         //WeChatNavigation().setNavigationBarProperties((self.navigationController?.navigationBar)!)
         
+        //解决录音时touchDown事件影响
+        self.navigationController!.interactivePopGestureRecognizer!.delaysTouchesBegan = false
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         self.nagHeight = statusBarFrame.height + self.navigationController!.navigationBar.frame.height
         self.navigationItem.title = self.nagTitle
