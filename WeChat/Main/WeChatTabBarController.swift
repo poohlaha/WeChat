@@ -19,8 +19,13 @@ class WeChatTabBarController: UITabBarController {
 
     override func viewDidAppear(animated: Bool) {
         //MARKS: Load Controllers
+        super.viewDidAppear(animated)
         configTabBar()
         self.tabBar.showBadgeOnItemIndex(2)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     func configTabBar() {
