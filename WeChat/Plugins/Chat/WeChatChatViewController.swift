@@ -7,20 +7,41 @@
 //
 
 import UIKit
+import AVFoundation
+
+let messageOutSound: SystemSoundID = {
+    var soundID: SystemSoundID = 10120
+    let soundUrl = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "MessageOutgoing", "aiff", nil)
+    AudioServicesCreateSystemSoundID(soundUrl, &soundID)
+    return soundID
+}()
+
+
+let messageInSound: SystemSoundID = {
+    var soundID: SystemSoundID = 10121
+    let soundUrl = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "MessageIncoming", "aiff", nil)
+    AudioServicesCreateSystemSoundID(soundUrl, &soundID)
+    return soundID
+}()
+
 
 //聊天窗口页面
 class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableViewDelegate , UITextViewDelegate {
     
     var tableView:UITableView!
     var toolBarView:WeChatChatToolBar!
-    var recordIndicatorView: WeChatChatVoiceView!
+    var recordIndicatorView: WeChatChatRecordIndicatorView!
     var videoController: WeChatChatVideoViewController!
-    let toolBarMinHeight: CGFloat = 44.0
+    let toolBarMinHeight: CGFloat = 50
+    let indicatorViewH: CGFloat = 120
     
     var nagTitle:String!
     var nagHeight:CGFloat = 0//导航条高度
     var messageList = [ChatMessage]()
-     var toolBarConstranit: NSLayoutConstraint!
+    var toolBarConstranit: NSLayoutConstraint!
+    
+    var recorder: WeChatChatAudioRecorder!
+    var player: WeChatChatAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +59,35 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         self.navigationItem.title = self.nagTitle
         self.view.backgroundColor = UIColor.whiteColor()
         initTableView()
+        initToolBar()
+        initRecordIndicatorView()
+        addConstraints()
+    }
+    
+    //MARKS: 添加约束
+    func addConstraints(){
+        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1, constant: toolBarMinHeight))
+        toolBarConstranit = NSLayoutConstraint(item: toolBarView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
+        view.addConstraint(toolBarConstranit)
+        
+        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Bottom, relatedBy: .Equal, toItem: toolBarView, attribute: .Top, multiplier: 1, constant: 0))
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hiddenMenuController:", name: UIMenuControllerWillHideMenuNotification, object: nil)
+    }
+    
+    //MARKS: 初始化toolBar
+    func initToolBar(){
+        toolBarView = WeChatChatToolBar(taget: self, voiceSelector: "voiceClick:", recordSelector: "recordClick:", emotionSelector: "emotionClick:", moreSelector: "moreClick:")
+        toolBarView.textView.delegate = self
+        view.addSubview(toolBarView)
+        toolBarView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     //MARKS: 初始化tableView
@@ -52,30 +102,15 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         tableView.separatorStyle = .None
         
         tableView.registerClass(WeChatChatTextCell.self, forCellReuseIdentifier: NSStringFromClass(WeChatChatTextCell))
+        tableView.registerClass(WeChatChatVoiceCell.self, forCellReuseIdentifier: NSStringFromClass(WeChatChatVoiceCell))
+        
         view.addSubview(tableView)
-        
-        toolBarView = WeChatChatToolBar(taget: self, voiceSelector: "voiceClick:", recordSelector: "recordClick:", emotionSelector: "emotionClick:", moreSelector: "moreClick:")
-        toolBarView.textView.delegate = self
-        view.addSubview(toolBarView)
-        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        toolBarView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: toolBarView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1, constant: toolBarMinHeight))
-        toolBarConstranit = NSLayoutConstraint(item: toolBarView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0)
-        view.addConstraint(toolBarConstranit)
-        
-        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: tableView, attribute: .Bottom, relatedBy: .Equal, toItem: toolBarView, attribute: .Top, multiplier: 1, constant: 0))
-        
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapTableView:"))
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hiddenMenuController:", name: UIMenuControllerWillHideMenuNotification, object: nil)
-        
+    }
+    
+    func initRecordIndicatorView(){
+        recordIndicatorView = WeChatChatRecordIndicatorView(frame: CGRectMake(self.view.center.x - indicatorViewH / 2, self.view.center.y - indicatorViewH / 3, indicatorViewH, indicatorViewH))
     }
     
     deinit {
@@ -85,11 +120,11 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        /*if player != nil {
+        if player != nil {
             if player.audioPlayer.playing {
                 player.stopPlaying()
             }
-        }*/
+        }
     }
     
     // show menuController
@@ -113,6 +148,9 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         switch message.messageType {
         case .Text:
             cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(WeChatChatTextCell), forIndexPath: indexPath) as! WeChatChatTextCell
+            break
+        case .Voice:
+            cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(WeChatChatVoiceCell), forIndexPath: indexPath) as! WeChatChatVoiceCell
             break
         default:
             cell = nil
@@ -214,12 +252,31 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         }
     }
     
+    //MARKS: 复制
     func copyAction(menuController: UIMenuController) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             if let message = messageList[selectedIndexPath.row] as? TextMessage {
                 UIPasteboard.generalPasteboard().string = message.text
             }
         }
+    }
+    
+    //MARKS: 转发
+    func transtionAction(menuController: UIMenuController) {
+        NSLog("转发")
+    }
+    
+    //MARKS: 删除
+    func deleteAction(menuController: UIMenuController) {
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            messageList.removeAtIndex(selectedIndexPath.row)
+            tableView.reloadData()
+        }
+    }
+    
+    //MARKS: 更多
+    func moreAciton(menuController: UIMenuController) {
+        NSLog("click more")
     }
     
     // MARK: - gestureRecognizer
@@ -242,19 +299,98 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         let pressCell = tableView.cellForRowAtIndexPath(pressIndexPath)
         let message = messageList[pressIndexPath.row]
         
-        
+        if message.messageType == .Voice {
+            let message = message as! VoiceMessage
+            let cell = pressCell as! WeChatChatVoiceCell
+            let play = WeChatChatAudioPlayer()
+            player = play
+            player.startPlaying(message)
+            cell.beginAnimation()
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(message.voiceTime.intValue) * 1000 * 1000 * 1000), dispatch_get_main_queue(), { () -> Void in
+                cell.stopAnimation()
+            })
+        } else if message.messageType == .Video {
+            let message = message as! VideoMessage
+            if videoController != nil {
+                videoController = nil
+            }
+            videoController = WeChatChatVideoViewController()
+            videoController.setPlayUrl(message.url)
+            presentViewController(videoController, animated: true, completion: nil)
+        }
     }
 }
 
 
-extension WeChatChatViewController{
+extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigationControllerDelegate,WeChatChatAudioRecorderDelegate{
     
+    //MARKS: 点击左边图片事件
     func voiceClick(button: UIButton) {
         if toolBarView.recordButton.hidden == false {
             toolBarView.showRecord(false)
         } else {
             toolBarView.showRecord(true)
             self.view.endEditing(true)
+        }
+    }
+    
+    //marks: 语音按住speak
+    func recordClick(button: UIButton) {
+        button.setTitle("松开 结束", forState: .Normal)
+        button.addTarget(self, action: "recordComplection:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: "recordDragOut:", forControlEvents: .TouchDragOutside)
+        button.addTarget(self, action: "recordCancel:", forControlEvents: .TouchUpOutside)
+        
+        let currentTime = NSDate().timeIntervalSinceReferenceDate
+        let record = WeChatChatAudioRecorder(fileName: "\(currentTime).wav")
+        record.delegate = self
+        recorder = record
+        recorder.startRecord()
+        
+        recordIndicatorView = WeChatChatRecordIndicatorView(frame: CGRectMake(self.view.center.x - indicatorViewH / 2, self.view.center.y - indicatorViewH / 3, indicatorViewH, indicatorViewH))
+        view.addSubview(recordIndicatorView)
+    }
+    
+    //MARKS: speak完成
+    func recordComplection(button: UIButton) {
+        button.setTitle("按住 说话", forState: .Normal)
+        recorder.stopRecord()
+        recorder.delegate = nil
+        recordIndicatorView.removeFromSuperview()
+        recordIndicatorView = nil
+        
+        if recorder.timeInterval != nil {
+            let message = VoiceMessage(incoming: false, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: recorder.timeInterval)
+            let receiveMessage = VoiceMessage(incoming: true, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: recorder.timeInterval)
+            
+            messageList.append(message)
+            reloadTableView()
+            messageList.append(receiveMessage)
+            reloadTableView()
+            AudioServicesPlayAlertSound(messageOutSound)
+        }
+    }
+    
+    //MARKS: 触摸在控件外拖动时
+    func recordDragOut(button: UIButton) {
+        button.setTitle("按住 说话", forState: .Normal)
+        recordIndicatorView.showText("松开手指,取消发送", textColor: UIColor.redColor())
+    }
+    
+    //MARKS: speak取消
+    func recordCancel(button: UIButton) {
+        button.setTitle("按住 说话", forState: .Normal)
+        recorder.stopRecord()
+        recorder.delegate = nil
+        recordIndicatorView.removeFromSuperview()
+        recordIndicatorView = nil
+    }
+    
+    // MARK: -WeChatChatAudioRecorderDelegate
+    func audioRecorderUpdateMetra(metra: Float) {
+        if recordIndicatorView != nil {
+            recordIndicatorView.updateLevelMetra(metra)
         }
     }
     

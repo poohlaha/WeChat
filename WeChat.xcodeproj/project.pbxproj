@@ -97,6 +97,11 @@
 		76ADF8881CAA4FE100EE7861 /* WeChatChatTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8871CAA4FE100EE7861 /* WeChatChatTextCell.swift */; };
 		76ADF88B1CAA533E00EE7861 /* MessageIncoming.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 76ADF8891CAA533E00EE7861 /* MessageIncoming.aiff */; };
 		76ADF88C1CAA533E00EE7861 /* MessageOutgoing.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 76ADF88A1CAA533E00EE7861 /* MessageOutgoing.aiff */; };
+		76ADF88E1CAA67F100EE7861 /* WeChatChatRecordIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF88D1CAA67F100EE7861 /* WeChatChatRecordIndicatorView.swift */; };
+		76ADF8901CAA6C3300EE7861 /* WeChatChatAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF88F1CAA6C3300EE7861 /* WeChatChatAudioRecorder.swift */; };
+		76ADF8921CAA73BB00EE7861 /* WeChatChatVoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8911CAA73BB00EE7861 /* WeChatChatVoiceCell.swift */; };
+		76ADF8941CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8931CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift */; };
+		76ADF8981CAA766800EE7861 /* WeChatChatAVPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8971CAA766800EE7861 /* WeChatChatAVPlayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +218,11 @@
 		76ADF8871CAA4FE100EE7861 /* WeChatChatTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatTextCell.swift; sourceTree = "<group>"; };
 		76ADF8891CAA533E00EE7861 /* MessageIncoming.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = MessageIncoming.aiff; sourceTree = "<group>"; };
 		76ADF88A1CAA533E00EE7861 /* MessageOutgoing.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = MessageOutgoing.aiff; sourceTree = "<group>"; };
+		76ADF88D1CAA67F100EE7861 /* WeChatChatRecordIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatRecordIndicatorView.swift; sourceTree = "<group>"; };
+		76ADF88F1CAA6C3300EE7861 /* WeChatChatAudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatAudioRecorder.swift; sourceTree = "<group>"; };
+		76ADF8911CAA73BB00EE7861 /* WeChatChatVoiceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatVoiceCell.swift; sourceTree = "<group>"; };
+		76ADF8931CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatAudioPlayer.swift; sourceTree = "<group>"; };
+		76ADF8971CAA766800EE7861 /* WeChatChatAVPlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatAVPlayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,6 +488,10 @@
 				76ADF87C1CAA3CBE00EE7861 /* WeChatChatToolBar.swift */,
 				76ADF87E1CAA3D6200EE7861 /* WeChatChatVideoViewController.swift */,
 				76ADF8801CAA3DC300EE7861 /* WeChatChatVoiceView.swift */,
+				76ADF88D1CAA67F100EE7861 /* WeChatChatRecordIndicatorView.swift */,
+				76ADF88F1CAA6C3300EE7861 /* WeChatChatAudioRecorder.swift */,
+				76ADF8931CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift */,
+				76ADF8971CAA766800EE7861 /* WeChatChatAVPlayView.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -636,6 +650,7 @@
 			children = (
 				76ADF8841CAA42A500EE7861 /* WeChatChatBaseCell.swift */,
 				76ADF8871CAA4FE100EE7861 /* WeChatChatTextCell.swift */,
+				76ADF8911CAA73BB00EE7861 /* WeChatChatVoiceCell.swift */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -806,10 +821,12 @@
 				76309DEA1CA26122000FBC6D /* WeChatNormalLoadingView.swift in Sources */,
 				76947B451C7D68BA0064E74D /* Emoji.swift in Sources */,
 				76947B441C7D68BA0064E74D /* TableViewIndex.swift in Sources */,
+				76ADF8901CAA6C3300EE7861 /* WeChatChatAudioRecorder.swift in Sources */,
 				76947A861C7D58950064E74D /* DiscoverViewController.swift in Sources */,
 				76346DB31CA271C3002B353C /* AddressPickerViewController.swift in Sources */,
 				76947A961C7D58A00064E74D /* Message.swift in Sources */,
 				76947B5F1C7D68E10064E74D /* WeChatColor.swift in Sources */,
+				76ADF8981CAA766800EE7861 /* WeChatChatAVPlayView.swift in Sources */,
 				76947B461C7D68BA0064E74D /* WeChatCustomKeyBordView.swift in Sources */,
 				76947A6D1C7D58810064E74D /* ContactViewController.swift in Sources */,
 				76947B471C7D68BA0064E74D /* WeChatCustomNavigationBottomView.swift in Sources */,
@@ -817,6 +834,7 @@
 				76ADF87D1CAA3CBE00EE7861 /* WeChatChatToolBar.swift in Sources */,
 				76947A731C7D58810064E74D /* LastCellCustomView.swift in Sources */,
 				76ADF8881CAA4FE100EE7861 /* WeChatChatTextCell.swift in Sources */,
+				76ADF8921CAA73BB00EE7861 /* WeChatChatVoiceCell.swift in Sources */,
 				76947B571C7D68BA0064E74D /* WeChatRefreshView.swift in Sources */,
 				76947A721C7D58810064E74D /* CommentDetailViewController.swift in Sources */,
 				769AC6581C8681960076947A /* ShoppingViewController.swift in Sources */,
@@ -847,10 +865,12 @@
 				76947A981C7D58A00064E74D /* MessageTableViewController.swift in Sources */,
 				76947A971C7D58A00064E74D /* MessageTableViewCell.swift in Sources */,
 				76947A671C7D58810064E74D /* ResourceDetailViewController.swift in Sources */,
+				76ADF8941CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift in Sources */,
 				76947B591C7D68BA0064E74D /* MyTwoDime.swift in Sources */,
 				76309DEE1CA26154000FBC6D /* WeChatToolsBottomAlert.swift in Sources */,
 				76947B4D1C7D68BA0064E74D /* SliderContainerViewController.swift in Sources */,
 				76A5FC031CA4F6DD006322BD /* WeChatLoginOrRegisterViewController.swift in Sources */,
+				76ADF88E1CAA67F100EE7861 /* WeChatChatRecordIndicatorView.swift in Sources */,
 				76947B421C7D68BA0064E74D /* WeChatChatViewControllerBak.swift in Sources */,
 				76309DFD1CA261EF000FBC6D /* MyNameViewController.swift in Sources */,
 				76947A701C7D58810064E74D /* AddCommentViewController.swift in Sources */,

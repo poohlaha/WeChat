@@ -47,7 +47,8 @@ class WeChatChatToolBar: UIView {
     
     convenience init(taget: UIViewController, voiceSelector: Selector, recordSelector: Selector, emotionSelector: Selector, moreSelector: Selector) {
         self.init()
-        backgroundColor = UIColor().hexStringToColor("D8EBF2")
+        //backgroundColor = UIColor().hexStringToColor("D8EBF2")
+        backgroundColor = UIColor.whiteColor()
         
         voiceButton = UIButton(type: .Custom)
         voiceButton.setImage(UIImage(named: "ToolViewInputVoice"), forState: .Normal)
@@ -62,7 +63,7 @@ class WeChatChatToolBar: UIView {
         textView.layer.cornerRadius = 5.0
         textView.scrollsToTop = false
         textView.textContainerInset = UIEdgeInsetsMake(5, 5, 5, 5)
-        textView.backgroundColor = UIColor().hexStringToColor("f8fefb")
+        //textView.backgroundColor = UIColor().hexStringToColor("f8fefb")
         textView.returnKeyType = .Send
         self.addSubview(textView)
         
@@ -81,13 +82,12 @@ class WeChatChatToolBar: UIView {
         self.addSubview(moreButton)
         
         recordButton = UIButton(type: .Custom)
-        recordButton.setTitle("按住     说话", forState: .Normal)
+        recordButton.setTitle("按住 说话", forState: .Normal)
         recordButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
-        recordButton.setBackgroundImage(UIImage.imageWithColor(UIColor().hexStringToColor("F6F6F6")), forState: .Normal)
+        //recordButton.setBackgroundImage(UIImage.imageWithColor(UIColor().hexStringToColor("F6F6F6")), forState: .Normal)
         recordButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         recordButton.addTarget(taget, action: recordSelector, forControlEvents: .TouchDown)
         recordButton.layer.borderColor = UIColor().hexStringToColor("DADADA").CGColor
-        recordButton.layer.borderWidth = 1
         recordButton.layer.cornerRadius = 5.0
         recordButton.layer.masksToBounds = true
         recordButton.hidden = true
@@ -112,7 +112,14 @@ class WeChatChatToolBar: UIView {
         self.addConstraint(NSLayoutConstraint(item: moreButton, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1, constant: -5))
         self.addConstraint(NSLayoutConstraint(item: moreButton, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 5))
         
-        
+        createLineOnTop()
+    }
+    
+    //MARKS: 顶部画线
+    func createLineOnTop(){
+        let shape = WeChatDrawView().drawLine(beginPointX: 0, beginPointY: 0, endPointX: UIScreen.mainScreen().bounds.width, endPointY: 0,color:UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1))
+        shape.lineWidth = 0.2
+        self.layer.addSublayer(shape)
     }
     
     
@@ -129,8 +136,11 @@ class WeChatChatToolBar: UIView {
         if show {
             recordButton.hidden = false
             recordButton.frame = textView.frame
+            recordButton.layer.borderWidth = 1
             textView.hidden = true
-            recordButton.setTitle("按住     说话", forState: .Normal)
+            recordButton.setTitle("按住 说话", forState: .Normal)
+            recordButton.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+            recordButton.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Normal)
             voiceButton.setImage(UIImage(named: "ToolViewKeyboard"), forState: .Normal)
             voiceButton.setImage(UIImage(named: "ToolViewKeyboardHL"), forState: .Highlighted)
             
