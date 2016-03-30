@@ -478,7 +478,7 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
             reloadTableView()
             messageList.append(receiveMessage)
             reloadTableView()
-            //AudioServicesPlayAlertSound(messageOutSound)
+            AudioServicesPlayAlertSound(messageOutSound)
             textView.text = ""
             return false
         }
