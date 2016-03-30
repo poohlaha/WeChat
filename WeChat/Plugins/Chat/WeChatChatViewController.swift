@@ -142,7 +142,7 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         return messageList.count
     }
     
-    
+    //MAKRS: tableView添加Cell
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var cell: WeChatChatBaseCell?
@@ -162,7 +162,7 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
             
         }
         
-        // add gustureRecognizer to show menu items
+        //添加双击和长按手势菜单
         let action: Selector = "showMenuAction:"
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: action)
         doubleTapGesture.numberOfTapsRequired = 2
@@ -190,6 +190,7 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         return nil
     }
     
+    //MARKS: 添加tableViewCell后自动滚动到底部
     func scrollToBottom() {
         let numberOfRows = tableView.numberOfRowsInSection(0)
         if numberOfRows > 0 {
@@ -197,6 +198,7 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
         }
     }
     
+    //MARKS: 刷新table
     func reloadTableView() {
         let count = messageList.count
         tableView.beginUpdates()
@@ -407,21 +409,18 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
             if recorder.timeInterval.intValue > 0 {
                 messageList.append(message)
                 reloadTableView()
-                messageList.append(receiveMessage)
-                reloadTableView()
+                //messageList.append(receiveMessage)
+                //reloadTableView()
                 AudioServicesPlayAlertSound(messageOutSound)
             } else {//时间太短,弹出对话框
                 createShortView()
-                self.view.addSubview(self.shortView!)
-                performSelector("readyToRemoveShorView", withObject: self, afterDelay: 0.2)
             }
             
         }else{
             createShortView()
-            self.view.addSubview(self.shortView!)
-            performSelector("readyToRemoveShorView", withObject: self, afterDelay: 0.2)
         }
     }
+    
     
     //MARKS: 移除shortView
     func readyToRemoveShorView(){
@@ -433,6 +432,9 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
         if self.shortView == nil {
             self.shortView = WeChatChatRecordShortView(frame: CGRectMake(self.view.center.x - indicatorViewH / 2, self.view.center.y - indicatorViewH / 3, indicatorViewH, indicatorViewH))
         }
+        
+        self.view.addSubview(self.shortView!)
+        performSelector("readyToRemoveShorView", withObject: self, afterDelay: 0.2)
     }
     
     //MARKS: 触摸在控件外拖动时
@@ -476,8 +478,8 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
             
             messageList.append(message)
             reloadTableView()
-            messageList.append(receiveMessage)
-            reloadTableView()
+            //messageList.append(receiveMessage)
+            //reloadTableView()
             AudioServicesPlayAlertSound(messageOutSound)
             textView.text = ""
             return false

@@ -15,7 +15,7 @@ let backgroundImageTag = 10020
 let indicatorTag = 10030//消失状态标识
 
 let timeFont = UIFont.systemFontOfSize(12.0)
-let messageFont = UIFont.systemFontOfSize(14.0)
+let messageFont = UIFont.systemFontOfSize(16.0)
 let indicatorFont = UIFont.systemFontOfSize(10.0)
 
 extension UIImage {
@@ -48,8 +48,8 @@ class WeChatChatBaseCell: UITableViewCell {
     
     let iconImageViewWidth:CGFloat = 45     //头像高度
     let iconImageViewHeight:CGFloat = 45    //头像宽度
-    let indicatorViewWidth:CGFloat = 17     //失败消息宽度
-    let indicatorViewHeight:CGFloat = 17    //失败消息高度
+    let indicatorViewWidth:CGFloat = 25     //失败消息宽度
+    let indicatorViewHeight:CGFloat = 25    //失败消息高度
     
     var iconContraintNotime: NSLayoutConstraint!
     var iconContraintWithTime: NSLayoutConstraint!
@@ -81,6 +81,8 @@ class WeChatChatBaseCell: UITableViewCell {
         indicatorView.hidden = true
         indicatorView.setTitleColor(UIColor.blackColor(), forState: .Normal)
         indicatorView.titleLabel?.font = indicatorFont
+        
+        //创建刷新标识
         
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
@@ -132,6 +134,7 @@ class WeChatChatBaseCell: UITableViewCell {
         indicatorView.addConstraint(NSLayoutConstraint(item: indicatorView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: indicatorViewHeight))
         contentView.addConstraint(NSLayoutConstraint(item: indicatorView, attribute: .CenterY, relatedBy: .Equal, toItem: backgroundImageView, attribute: .CenterY, multiplier: 1, constant: -5))
         contentView.addConstraint(NSLayoutConstraint(item: indicatorView, attribute: .Left, relatedBy: .Equal, toItem: backgroundImageView, attribute: .Right, multiplier: 1, constant: 0))
+        
         
         //没有带时间的约束,相对于contentView顶部10
         iconContraintNotime = NSLayoutConstraint(item: iconImageView, attribute: .Top, relatedBy: .Equal, toItem: contentView, attribute: .Top, multiplier: 1, constant: 10)
