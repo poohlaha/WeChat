@@ -110,7 +110,7 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
         do {
             try audioSession.setActive(false, withOptions: .NotifyOthersOnDeactivation)
         } catch {
-            // no-op
+            NSLog("readyStopRecord Error.")
         }
         
         audioData = NSData(contentsOfURL: recorder.url)

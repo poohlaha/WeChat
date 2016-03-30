@@ -84,7 +84,7 @@ class WeChatChatToolBar: UIView {
         recordButton = UIButton(type: .Custom)
         recordButton.setTitle("按住 说话", forState: .Normal)
         recordButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
-        recordButton.setBackgroundImage(UIImage.imageWithColor(UIColor().hexStringToColor("F6F6F6")), forState: .Normal)
+        recordButton.setBackgroundImage(UIImage.imageWithColor(UIColor.whiteColor()), forState: .Normal)
         recordButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         recordButton.addTarget(taget, action: recordSelector, forControlEvents: .TouchDown)
         recordButton.layer.borderColor = UIColor().hexStringToColor("DADADA").CGColor

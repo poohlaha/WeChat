@@ -31,9 +31,10 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
     var tableView:UITableView!
     var toolBarView:WeChatChatToolBar!
     var recordIndicatorView: WeChatChatRecordIndicatorView!
+    var recordIndicatorCancelView:WeChatChatRecordIndicatorCancelView?
     var videoController: WeChatChatVideoViewController!
     let toolBarMinHeight: CGFloat = 50
-    let indicatorViewH: CGFloat = 120
+    let indicatorViewH: CGFloat = 150
     
     var nagTitle:String!
     var nagHeight:CGFloat = 0//导航条高度
@@ -42,6 +43,7 @@ class WeChatChatViewController: UIViewController,UITableViewDataSource, UITableV
     
     var recorder: WeChatChatAudioRecorder!
     var player: WeChatChatAudioPlayer!
+    var shortView:WeChatChatRecordShortView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -339,10 +341,13 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
     
     //marks: 语音按住speak
     func recordClick(button: UIButton) {
-        button.setTitle("松开 结束", forState: .Normal)
+        button.setTitle(talkButtonHightedMessage, forState: .Normal)
         button.addTarget(self, action: "recordComplection:", forControlEvents: .TouchUpInside)
         button.addTarget(self, action: "recordDragOut:", forControlEvents: .TouchDragOutside)
+        button.addTarget(self, action: "recordDragIn:", forControlEvents: .TouchDragInside)
         button.addTarget(self, action: "recordCancel:", forControlEvents: .TouchUpOutside)
+        button.addTarget(self, action: "recordDragExit:", forControlEvents: .TouchDragExit)
+        button.addTarget(self, action: "recordDragEnter:", forControlEvents: .TouchDragEnter)
         
         let currentTime = NSDate().timeIntervalSinceReferenceDate
         let record = WeChatChatAudioRecorder(fileName: "\(currentTime).wav")
@@ -354,9 +359,42 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
         view.addSubview(recordIndicatorView)
     }
     
+    //MARKS: 从控件窗口之外拖动到内部
+    func recordDragEnter(button: UIButton){
+        button.setTitle(talkButtonHightedMessage, forState: .Normal)
+        recorder.startRecord()
+        if recordIndicatorCancelView != nil {
+            recordIndicatorCancelView?.removeFromSuperview()
+        }
+        //recordIndicatorView.showText(talkMessage, textColor: UIColor.whiteColor())
+        view.addSubview(recordIndicatorView)
+    }
+    
+    //MARKS: 手指在控件上拖动
+    func recordDragIn(button: UIButton){
+       
+    }
+    
+    
+    //MARKS: 控件窗口内部拖动到外部
+    func recordDragExit(button: UIButton){
+        button.setTitle(talkButtonHightedMessage, forState: .Normal)
+        recorder.stopRecord()
+        recordIndicatorView.removeFromSuperview()
+        
+        createCancelView()
+        view.addSubview(recordIndicatorCancelView!)
+    }
+    
+    func createCancelView(){
+        if recordIndicatorCancelView == nil {
+            recordIndicatorCancelView = WeChatChatRecordIndicatorCancelView(frame: CGRectMake(self.view.center.x - indicatorViewH / 2, self.view.center.y - indicatorViewH / 3, indicatorViewH, indicatorViewH))
+        }
+    }
+    
     //MARKS: speak完成
     func recordComplection(button: UIButton) {
-        button.setTitle("按住 说话", forState: .Normal)
+        button.setTitle(talkButtonDefaultMessage, forState: .Normal)
         recorder.stopRecord()
         recorder.delegate = nil
         recordIndicatorView.removeFromSuperview()
@@ -366,27 +404,56 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
             let message = VoiceMessage(incoming: false, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: recorder.timeInterval)
             let receiveMessage = VoiceMessage(incoming: true, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: recorder.timeInterval)
             
-            messageList.append(message)
-            reloadTableView()
-            messageList.append(receiveMessage)
-            reloadTableView()
-            AudioServicesPlayAlertSound(messageOutSound)
+            if recorder.timeInterval.intValue > 0 {
+                messageList.append(message)
+                reloadTableView()
+                messageList.append(receiveMessage)
+                reloadTableView()
+                AudioServicesPlayAlertSound(messageOutSound)
+            } else {//时间太短,弹出对话框
+                createShortView()
+                self.view.addSubview(self.shortView!)
+                performSelector("readyToRemoveShorView", withObject: self, afterDelay: 0.2)
+            }
+            
+        }else{
+            createShortView()
+            self.view.addSubview(self.shortView!)
+            performSelector("readyToRemoveShorView", withObject: self, afterDelay: 0.2)
+        }
+    }
+    
+    //MARKS: 移除shortView
+    func readyToRemoveShorView(){
+        self.shortView?.removeFromSuperview()
+    }
+    
+    //MARKS: 说话时间太短
+    func createShortView(){
+        if self.shortView == nil {
+            self.shortView = WeChatChatRecordShortView(frame: CGRectMake(self.view.center.x - indicatorViewH / 2, self.view.center.y - indicatorViewH / 3, indicatorViewH, indicatorViewH))
         }
     }
     
     //MARKS: 触摸在控件外拖动时
     func recordDragOut(button: UIButton) {
-        button.setTitle("按住 说话", forState: .Normal)
-        recordIndicatorView.showText("松开手指,取消发送", textColor: UIColor.redColor())
+        button.setTitle(talkButtonDefaultMessage, forState: .Normal)
+        recorder.stopRecord()
+        
+        createCancelView()
+        view.addSubview(recordIndicatorCancelView!)
     }
     
     //MARKS: speak取消
     func recordCancel(button: UIButton) {
-        button.setTitle("按住 说话", forState: .Normal)
+        button.setTitle(talkButtonDefaultMessage, forState: .Normal)
         recorder.stopRecord()
         recorder.delegate = nil
         recordIndicatorView.removeFromSuperview()
         recordIndicatorView = nil
+        
+        recordIndicatorCancelView?.removeFromSuperview()
+        recordIndicatorCancelView = nil
     }
     
     // MARK: -WeChatChatAudioRecorderDelegate
