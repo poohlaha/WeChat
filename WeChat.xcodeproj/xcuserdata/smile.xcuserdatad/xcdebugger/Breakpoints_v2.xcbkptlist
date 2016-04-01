@@ -986,11 +986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Chat/WeChatChatAudioRecorder.swift"
-            timestampString = "480952512.445704"
+            timestampString = "481170348.298012"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "stopRecord()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1002,11 +1002,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Chat/WeChatChatAudioRecorder.swift"
-            timestampString = "480952904.444279"
+            timestampString = "481170985.353509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "readyStopRecord()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1040,6 +1040,22 @@
             startingLineNumber = "451"
             endingLineNumber = "451"
             landmarkName = "recordCancel(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeChat/Plugins/Chat/WeChatChatViewController.swift"
+            timestampString = "481170450.622013"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
+            landmarkName = "recordComplection(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -20,7 +20,7 @@ let audioSettings: [String: AnyObject] = [AVLinearPCMIsFloatKey: NSNumber(bool: 
                                           AVLinearPCMBitDepthKey: NSNumber(int: 16),
                                           AVFormatIDKey: NSNumber(unsignedInt: kAudioFormatLinearPCM),//格式编码
                                           AVNumberOfChannelsKey: NSNumber(int: 1),//采集音轨
-                                          AVSampleRateKey: NSNumber(int: 16000),//声音采样率
+                                          AVSampleRateKey: NSNumber(int: 44100),//声音采样率
                                           AVEncoderAudioQualityKey: NSNumber(integer: AVAudioQuality.Medium.rawValue)//音频质量
                                           ]
 
@@ -35,7 +35,7 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
     var endTimer: Double!
     var timeInterval: NSNumber!
     var delegate:WeChatChatAudioRecorderDelegate?
-    
+    var totalTime:Double = 0
     
     convenience init(fileName: String) {
         self.init()
@@ -87,7 +87,8 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
     func stopRecord() {
         endTimer = NSDate().timeIntervalSince1970
         timeInterval = nil
-        if (endTimer - startTime) < 0.5 {
+        totalTime = endTimer - startTime
+        if totalTime < 0.5 {
             //在0.5秒内取消执行函数，带的参数必须一样，才能取消成功
             NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "readyStartRecord", object: self)
         } else {
@@ -123,7 +124,7 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
             timeInterval = NSNumber(float: NSNumber(double: recorder.currentTime).floatValue)
             let averagePower = recorder.averagePowerForChannel(0)
             delegate?.audioRecorderUpdateMetra(averagePower)
-            NSThread.sleepForTimeInterval(0.2)
+            //NSThread.sleepForTimeInterval(0.2)
         } while(recorder.recording)
     }
     
