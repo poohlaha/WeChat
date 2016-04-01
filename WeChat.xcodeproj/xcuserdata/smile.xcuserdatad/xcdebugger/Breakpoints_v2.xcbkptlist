@@ -1034,7 +1034,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Chat/WeChatChatViewController.swift"
-            timestampString = "481008234.841329"
+            timestampString = "481172173.638667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "451"
@@ -1050,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WeChat/Plugins/Chat/WeChatChatViewController.swift"
-            timestampString = "481170450.622013"
+            timestampString = "481172173.638667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "407"
+            endingLineNumber = "407"
             landmarkName = "recordComplection(_:)"
             landmarkType = "5">
          </BreakpointContent>

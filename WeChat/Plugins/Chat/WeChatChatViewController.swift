@@ -403,19 +403,19 @@ extension WeChatChatViewController:UIImagePickerControllerDelegate, UINavigation
         recordIndicatorView = nil
         
         if recorder.timeInterval != nil {
-            let message = VoiceMessage(incoming: false, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: lroundf(Float(recorder.totalTime)))
-            let receiveMessage = VoiceMessage(incoming: true, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: lroundf(Float(recorder.totalTime)))
-            
-            if lroundf(Float(recorder.totalTime)) > 0 {
-                messageList.append(message)
-                reloadTableView()
-                //messageList.append(receiveMessage)
-                //reloadTableView()
-                AudioServicesPlayAlertSound(messageOutSound)
-            } else {//时间太短,弹出对话框
-                createShortView()
+            var time = 0
+            if recorder.timeInterval.intValue < 1 {
+                time = 1
             }
             
+            let message = VoiceMessage(incoming: false, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: time)
+            let receiveMessage = VoiceMessage(incoming: true, sentDate: NSDate(), iconName: "", voicePath: recorder.recorder.url, voiceTime: time)
+            
+            messageList.append(message)
+            reloadTableView()
+            //messageList.append(receiveMessage)
+            //reloadTableView()
+            AudioServicesPlayAlertSound(messageOutSound)
         }else{
             createShortView()
         }
