@@ -19,7 +19,7 @@ let audioSettings: [String: AnyObject] = [AVLinearPCMIsFloatKey: NSNumber(bool: 
                                           AVLinearPCMIsBigEndianKey: NSNumber(bool: false),
                                           AVLinearPCMBitDepthKey: NSNumber(int: 16),
                                           AVFormatIDKey: NSNumber(unsignedInt: kAudioFormatLinearPCM),//格式编码
-                                          AVNumberOfChannelsKey: NSNumber(int: 1),//采集音轨
+                                          AVNumberOfChannelsKey: NSNumber(int: 1),//采集音轨,这里采用单声道
                                           AVSampleRateKey: NSNumber(int: 44100),//声音采样率
                                           AVEncoderAudioQualityKey: NSNumber(integer: AVAudioQuality.Medium.rawValue)//音频质量
                                           ]
@@ -64,7 +64,7 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
         let audioSession = AVAudioSession.sharedInstance()//获取AVAudioSession类的实例,AVAudioSession是一个单例模式
         
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryRecord)
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
         } catch {
             NSLog("setCategory fail")
             return
@@ -76,6 +76,8 @@ class WeChatChatAudioRecorder:NSObject, AVAudioRecorderDelegate {
             NSLog("setActive fail")
             return
         }
+        
+        
         
         recorder.record()
         let operation = NSBlockOperation()

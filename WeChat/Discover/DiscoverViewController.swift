@@ -30,6 +30,12 @@ class DiscoverViewController: WeChatTableViewNormalController{
             self.navigationController?.pushViewController(shoppingViewController, animated: false)
         }
         
+        if(section == 1 && row == 0){
+            let scanViewController = ScanViewController()
+            scanViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(scanViewController, animated: false)
+        }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: false)//取消cell选中事件
     }
 }

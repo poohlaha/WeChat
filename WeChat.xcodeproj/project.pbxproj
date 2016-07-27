@@ -102,6 +102,7 @@
 		76ADF8921CAA73BB00EE7861 /* WeChatChatVoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8911CAA73BB00EE7861 /* WeChatChatVoiceCell.swift */; };
 		76ADF8941CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8931CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift */; };
 		76ADF8981CAA766800EE7861 /* WeChatChatAVPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ADF8971CAA766800EE7861 /* WeChatChatAVPlayView.swift */; };
+		76DEBA3C1D3DFA1700D4A4F0 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DEBA3B1D3DFA1700D4A4F0 /* ScanViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,6 +224,7 @@
 		76ADF8911CAA73BB00EE7861 /* WeChatChatVoiceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatVoiceCell.swift; sourceTree = "<group>"; };
 		76ADF8931CAA74BB00EE7861 /* WeChatChatAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatAudioPlayer.swift; sourceTree = "<group>"; };
 		76ADF8971CAA766800EE7861 /* WeChatChatAVPlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatChatAVPlayView.swift; sourceTree = "<group>"; };
+		76DEBA3B1D3DFA1700D4A4F0 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -434,6 +436,7 @@
 				76947A831C7D58950064E74D /* Discover.storyboard */,
 				76947A841C7D58950064E74D /* DiscoverViewController.swift */,
 				769AC6571C8681960076947A /* ShoppingViewController.swift */,
+				76DEBA3B1D3DFA1700D4A4F0 /* ScanViewController.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -723,7 +726,7 @@
 				TargetAttributes = {
 					765964051C3BE90700910F0D = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 95UT5H262V;
+						DevelopmentTeam = VQHX2K74Q9;
 					};
 					7659641C1C3BE90700910F0D = {
 						CreatedOnToolsVersion = 7.2;
@@ -851,6 +854,7 @@
 				76A5FC071CA4FECA006322BD /* WeChatLoginViewController.swift in Sources */,
 				76ADF8851CAA42A500EE7861 /* WeChatChatBaseCell.swift in Sources */,
 				76ADF8811CAA3DC300EE7861 /* WeChatChatVoiceView.swift in Sources */,
+				76DEBA3C1D3DFA1700D4A4F0 /* ScanViewController.swift in Sources */,
 				76947A6E1C7D58810064E74D /* ContactAddFriendsTableViewController.swift in Sources */,
 				76947A6B1C7D58810064E74D /* ContactSearchArcView.swift in Sources */,
 				765964121C3BE90700910F0D /* WeChat.xcdatamodeld in Sources */,
@@ -1018,11 +1022,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = WeChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ChatKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "WeChats-Room";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1032,11 +1038,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = WeChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ChatKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "WeChats-Room";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
